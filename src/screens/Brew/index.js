@@ -1,15 +1,44 @@
-import React, {useState} from 'react';
+import React, {useReducer} from 'react';
 import {ScrollView} from 'react-native';
 
 import FormWrapper from './components/FormWrapper';
 import TextField from './components/TextField';
 
+import formReducer, {actionTypes, initialState} from './reducer';
+
 const Brew = (props) => {
-  const [roastName, setRoastName] = useState('');
+  const [{data, error}, dispatch] = useReducer(formReducer, initialState);
+
+  const updateField = (field, payload) => {
+    dispatch({type: actionTypes.UPDATE_FIELD, field, payload});
+  };
+
+  const updateError = (field, payload) => {
+    dispatch({type: actionTypes.UPDATE_ERROR, field, payload});
+  };
+
+  const validateForm = () => {
+    let hasErrors = false;
+
+    for (const key in error) {
+      // valid
+      if (data[key] && data[key].length > 0) continue;
+
+      // add key and error
+      updateError(key, true);
+
+      // some errors exists
+      hasErrors = true;
+    }
+
+    return hasErrors;
+  };
 
   const handleSubmit = () => {
     // quick valid check for text field fill
-    if (roastName.length <= 0) return;
+    const hasErrors = validateForm();
+
+    if (hasErrors) return;
 
     // close modal
     props.onRequestClose();
@@ -20,11 +49,12 @@ const Brew = (props) => {
       <FormWrapper onSubmit={handleSubmit}>
         <TextField
           hasTopRoom
+          error={error.roastName}
           label={'Roast Name'}
           placeholder={'Enter roast name'}
-          value={roastName}
+          value={data.roastName}
           onChangeText={(text) => {
-            setRoastName(text);
+            updateField('roastName', text);
           }}
         />
       </FormWrapper>
