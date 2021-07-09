@@ -3,7 +3,7 @@ import {View, Text} from 'react-native';
 import HoverButton from '../../common/components/HoverButton';
 import ModalWrapper from '../../common/components/ModalWrapper';
 
-import BrewForm from '../BrewForm';
+import Brew from '../Brew';
 import styles from './styles';
 
 const Home = () => {
@@ -23,7 +23,11 @@ const Home = () => {
       <ModalWrapper
         visible={isModalVisible}
         onRequestClose={handleRequestClose}>
-        <BrewForm />
+        <Brew
+          onRequestClose={() => {
+            setModalVisible(false);
+          }}
+        />
       </ModalWrapper>
       <HoverButton
         buttonType={'hover'}
