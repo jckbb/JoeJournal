@@ -8,9 +8,13 @@ export const initialState = {
     roastName: {
       hasError: false,
     },
+    brewMethod: {
+      hasError: false,
+    },
   },
   data: {
     roastName: undefined,
+    brewMethod: undefined,
   },
 };
 
@@ -29,6 +33,12 @@ const formReducer = (state, action) => {
     case actionTypes.UPDATE_FIELD:
       return {
         ...state,
+        error: {
+          ...state.error,
+          [action.field]: {
+            hasError: false,
+          },
+        },
         data: {
           ...state.data,
           [action.field]: action.payload,
