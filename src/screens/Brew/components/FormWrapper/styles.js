@@ -1,11 +1,12 @@
 import {StyleSheet} from 'react-native';
-import {BLACK, WHITE} from '../../../../common/res/colors';
+import {WHITE} from '../../../../common/res/colors';
 
 export default StyleSheet.create({
   form: {
     flex: 1,
     minHeight: 350,
     justifyContent: 'flex-end',
+    paddingHorizontal: 20,
   },
   button: {
     height: 50,
