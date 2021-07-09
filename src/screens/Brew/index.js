@@ -3,6 +3,7 @@ import {ScrollView} from 'react-native';
 
 import FormWrapper from './components/FormWrapper';
 import TextField from './components/TextField';
+import ButtonField from './components/ButtonField';
 
 import formReducer, {actionTypes, initialState} from './reducer';
 
@@ -56,6 +57,14 @@ const Brew = (props) => {
           onChangeText={(text) => {
             updateField('roastName', text);
           }}
+        />
+        <ButtonField
+          hasTopRoom
+          error={error.brewMethod}
+          label={'Brew Method'}
+          value={data.brewMethod}
+          placeholder={'Enter brew method'}
+          onPress={() => {}}
         />
       </FormWrapper>
     </ScrollView>
