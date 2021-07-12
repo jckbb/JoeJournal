@@ -11,10 +11,14 @@ export const initialState = {
     brewMethod: {
       hasError: false,
     },
+    grinder: {
+      hasError: false,
+    },
   },
   data: {
     roastName: undefined,
     brewMethod: undefined,
+    grinder: undefined,
   },
 };
 
