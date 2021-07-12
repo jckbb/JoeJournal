@@ -34,4 +34,8 @@ export default StyleSheet.create({
     opacity: 0.3,
     letterSpacing: 0.2,
   },
+  fieldText: {
+    fontSize: 20,
+    fontWeight: '500',
+  },
 });
