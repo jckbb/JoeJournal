@@ -9,6 +9,7 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
   },
   button: {
+    marginTop: 20,
     height: 50,
     borderRadius: 7,
     alignItems: 'center',
