@@ -12,6 +12,7 @@ import FormWrapper from './components/FormWrapper';
 import TextField from './components/TextField';
 import ButtonField from './components/ButtonField';
 import OptionList from './components/OptionList';
+import SliderField from './components/SliderField';
 
 import formReducer, {actionTypes, initialState} from './reducer';
 import styles from './styles';
@@ -109,6 +110,18 @@ const Brew = (props) => {
                 names: grinderModelByName,
               });
               setBottomDrawerVisible(true);
+            }}
+          />
+          <SliderField
+            hasTopRoom
+            shouldHideSlider={!data.grinder}
+            label={'Dial'}
+            value={data.dial}
+            minDial={0}
+            maxDial={40}
+            step={2}
+            onValueChange={(value) => {
+              updateField('dial', value);
             }}
           />
         </FormWrapper>

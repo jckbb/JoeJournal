@@ -14,11 +14,15 @@ export const initialState = {
     grinder: {
       hasError: false,
     },
+    dial: {
+      hasError: false,
+    },
   },
   data: {
     roastName: undefined,
     brewMethod: undefined,
     grinder: undefined,
+    dial: 0,
   },
 };
 
