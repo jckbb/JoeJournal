@@ -17,12 +17,23 @@ export const initialState = {
     dial: {
       hasError: false,
     },
+    waterTemperature: {
+      hasError: false,
+    },
+    waterAmount: {
+      hasError: false,
+    },
+    coffeeAmount: {
+      hasError: false,
+    },
   },
   data: {
     roastName: undefined,
     brewMethod: undefined,
     grinder: undefined,
     dial: 0,
+    coffeeAmount: 0,
+    waterTemperature: 0,
   },
 };
 
