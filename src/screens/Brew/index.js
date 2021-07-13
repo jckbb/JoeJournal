@@ -1,5 +1,5 @@
 import React, {useReducer, useState} from 'react';
-import {ScrollView} from 'react-native';
+import {View, ScrollView} from 'react-native';
 
 import {
   grinderModelData,
@@ -8,11 +8,13 @@ import {
   brewModelData,
 } from '../../common/data';
 import BottomDrawer, {drawerState} from '../../common/components/BottomDrawer';
+import {unitType} from '../../common/res/strings';
 import FormWrapper from './components/FormWrapper';
 import TextField from './components/TextField';
 import ButtonField from './components/ButtonField';
 import OptionList from './components/OptionList';
 import SliderField from './components/SliderField';
+import NumberField from './components/NumberField';
 
 import formReducer, {actionTypes, initialState} from './reducer';
 import styles from './styles';
@@ -124,6 +126,41 @@ const Brew = (props) => {
               updateField('dial', value);
             }}
           />
+          <NumberField
+            hasTopRoom
+            error={error.coffeeAmount}
+            label={'Coffee Amount'}
+            placeholder={'15g'}
+            unit={unitType.gram}
+            value={data.coffeeAmount}
+            onChangeNumber={(value) => {
+              updateField('coffeeAmount', value);
+            }}
+          />
+          <View style={styles.formRow}>
+            <NumberField
+              hasTopRoom
+              error={error.waterAmount}
+              label={'Water Amount'}
+              placeholder={'350g'}
+              unit={unitType.gram}
+              value={data.waterAmount}
+              onChangeNumber={(value) => {
+                updateField('waterAmount', value);
+              }}
+            />
+            <NumberField
+              hasTopRoom
+              error={error.waterTemperature}
+              label={'Water Temperature'}
+              placeholder={'90°C'}
+              unit={unitType.celsius}
+              value={data.waterTemperature}
+              onChangeNumber={(value) => {
+                updateField('waterTemperature', value);
+              }}
+            />
+          </View>
         </FormWrapper>
       </ScrollView>
       <BottomDrawer
