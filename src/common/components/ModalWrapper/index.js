@@ -12,7 +12,6 @@ const ModalWrapper = ({children, ...props}) => {
   }, [props.visible]);
 
   const handleClosePress = () => {
-    console.log('test');
     props.onRequestClose();
   };
 

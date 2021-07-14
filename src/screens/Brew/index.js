@@ -1,5 +1,5 @@
-import React, {useReducer, useState} from 'react';
-import {View, ScrollView} from 'react-native';
+import React, {useEffect, useReducer, useState} from 'react';
+import {Text, View, ScrollView} from 'react-native';
 
 import {
   grinderModelData,
@@ -7,6 +7,7 @@ import {
   brewModelByName,
   brewModelData,
 } from '../../common/data';
+import IconButton from '../../common/components/IconButton';
 import BottomDrawer, {drawerState} from '../../common/components/BottomDrawer';
 import {unitType} from '../../common/res/strings';
 import FormWrapper from './components/FormWrapper';
@@ -15,6 +16,7 @@ import ButtonField from './components/ButtonField';
 import OptionList from './components/OptionList';
 import SliderField from './components/SliderField';
 import NumberField from './components/NumberField';
+import FormItem from './components/FormItem';
 
 import formReducer, {actionTypes, initialState} from './reducer';
 import styles from './styles';
@@ -36,6 +38,23 @@ const Brew = (props) => {
 
   const updateError = (field, payload) => {
     dispatch({type: actionTypes.UPDATE_ERROR, field, payload});
+  };
+
+  const addSplitItem = () => {
+    dispatch({type: actionTypes.ADD_SPLIT_ITEM});
+  };
+
+  const removeSplitItem = (payload) => {
+    dispatch({type: actionTypes.DELETE_SPLIT_ITEM, payload});
+  };
+
+  const updateSplitField = (field, payload, key) => {
+    dispatch({
+      type: actionTypes.UPDATE_SPLIT_FIELD,
+      field,
+      key,
+      payload,
+    });
   };
 
   const validateForm = () => {
@@ -68,6 +87,69 @@ const Brew = (props) => {
   const handleBottomDrawerClose = () => {
     setBottomDrawerVisible(false);
     setOptions(initialOptions);
+  };
+
+  const renderBrewSplits = (splits) => {
+    if (splits.length <= 0) return;
+
+    return (
+      <View style={styles.splitList}>
+        {splits.map((splitIndex, index) => {
+          const split = data.splitData[splitIndex];
+          const isDisabled =
+            index === 0 || index !== data.splitByIndex.length - 1;
+
+          return (
+            <FormItem
+              hasTopRoom={index > 0}
+              disabled={isDisabled}
+              key={index}
+              onRemoveItem={() => {
+                removeSplitItem(splitIndex);
+              }}>
+              <TextField
+                error={error[splitIndex].stageName}
+                label={`Stage #${index + 1}`}
+                placeholder={'Bloom'}
+                value={split.stage}
+                onChangeText={(text) => {
+                  updateSplitField('stage', text, splitIndex);
+                }}
+              />
+              <View style={styles.formRow}>
+                <NumberField
+                  error={error[splitIndex].waterAmount}
+                  label={'Water Amount'}
+                  placeholder={'40g'}
+                  unit={unitType.gram}
+                  value={split.waterAmount}
+                  onChangeNumber={(value) => {
+                    updateSplitField('waterAmount', value, splitIndex);
+                  }}
+                />
+                <NumberField
+                  error={error[splitIndex].duration}
+                  label={'Duration'}
+                  placeholder={'45s'}
+                  unit={unitType.seconds}
+                  value={split.duration}
+                  onChangeNumber={(value) => {
+                    updateSplitField('duration', value, splitIndex);
+                  }}
+                />
+              </View>
+            </FormItem>
+          );
+        })}
+        <View style={styles.splitListSpacer} />
+        <IconButton
+          onPress={() => {
+            addSplitItem();
+          }}>
+          <Text style={styles.addText}>{'+'}</Text>
+        </IconButton>
+      </View>
+    );
   };
 
   return (
@@ -161,6 +243,7 @@ const Brew = (props) => {
               }}
             />
           </View>
+          {renderBrewSplits(data.splitByIndex)}
         </FormWrapper>
       </ScrollView>
       <BottomDrawer
