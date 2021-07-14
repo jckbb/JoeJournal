@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {PRIMARY_COLOR} from '../../common/res/colors';
 
 export default StyleSheet.create({
   brew: {
@@ -8,5 +9,16 @@ export default StyleSheet.create({
   formRow: {
     justifyContent: 'space-between',
     flexDirection: 'row',
+  },
+  addText: {
+    fontSize: 34,
+    fontWeight: '700',
+    color: PRIMARY_COLOR,
+  },
+  splitList: {
+    marginTop: 60,
+  },
+  splitListSpace: {
+    height: 20,
   },
 });
