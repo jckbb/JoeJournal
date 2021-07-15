@@ -17,6 +17,7 @@ import OptionList from './components/OptionList';
 import SliderField from './components/SliderField';
 import NumberField from './components/NumberField';
 import FormItem from './components/FormItem';
+import {createLog} from '../../storage';
 
 import formReducer, {actionTypes, initialState} from './reducer';
 import styles from './styles';
@@ -74,11 +75,18 @@ const Brew = (props) => {
     return hasErrors;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // quick valid check for text field fill
-    const hasErrors = validateForm();
+    // const hasErrors = validateForm();
+    // if (hasErrors) return;
 
-    if (hasErrors) return;
+    const createdAt = new Date().getTime();
+    const logData = {
+      ...data,
+      createdAt,
+    };
+
+    await createLog(createdAt, logData);
 
     // close modal
     props.onRequestClose();
