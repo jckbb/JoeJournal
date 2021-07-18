@@ -10,6 +10,14 @@ export default StyleSheet.create({
     height: 50,
     justifyContent: 'center',
   },
+  logText: {
+    fontSize: 20,
+    fontWeight: '500',
+  },
+  logList: {
+    flex: 1,
+    paddingHorizontal: 20,
+  },
   divider: {
     height: 1,
     backgroundColor: PRIMARY_COLOR,
