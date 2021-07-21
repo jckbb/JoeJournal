@@ -37,5 +37,6 @@ export default StyleSheet.create({
   fieldText: {
     fontSize: 20,
     fontWeight: '500',
+    color: BLACK,
   },
 });
