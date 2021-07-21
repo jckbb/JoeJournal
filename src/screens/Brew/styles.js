@@ -1,10 +1,10 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {PRIMARY_COLOR} from '../../common/res/colors';
 
 export default StyleSheet.create({
   brew: {
     flex: 1,
-    marginVertical: 80,
+    marginVertical: Platform.OS === 'ios' ? 80 : 50,
   },
   formRow: {
     justifyContent: 'space-between',

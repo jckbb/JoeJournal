@@ -4,10 +4,12 @@ import HoverButton from '../../common/components/HoverButton';
 import ModalWrapper from '../../common/components/ModalWrapper';
 import {readLogs} from '../../storage';
 import Brew from '../Brew';
+import LogModal from '../LogModal';
 
 import styles from './styles';
 
 const Home = () => {
+  const [logModalVisible, setLogModalVisible] = useState(false);
   const [selectedLog, setSelectedLog] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [log, setLog] = useState({
@@ -38,6 +40,7 @@ const Home = () => {
         style={styles.logButton}
         onPress={() => {
           setSelectedLog(log.data[item]);
+          setLogModalVisible(true);
         }}>
         <Text style={styles.logText}>{new Date(log.data[item].createdAt).toISOString()}</Text>
       </TouchableOpacity>
@@ -51,6 +54,14 @@ const Home = () => {
         data={log.keys}
         renderItem={renderItem}
         keyExtractor={(__, index) => index.toString()}
+      />
+      <LogModal
+        data={selectedLog}
+        isVisible={logModalVisible}
+        onRequestClose={() => {
+          setLogModalVisible(false);
+          setSelectedLog(null);
+        }}
       />
       <ModalWrapper
         visible={isModalVisible}
