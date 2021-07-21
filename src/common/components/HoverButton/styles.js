@@ -5,6 +5,7 @@ const DIMENSION = 60;
 
 export default StyleSheet.create({
   closeButton: {
+    elevation: 1,
     position: 'absolute',
     height: DIMENSION,
     minWidth: DIMENSION,
@@ -13,8 +14,9 @@ export default StyleSheet.create({
     paddingHorizontal: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    top: 40,
-    right: 30,
+    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    top: 10,
+    right: 20,
   },
   hoverButton: {
     position: 'absolute',
