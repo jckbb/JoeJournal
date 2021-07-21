@@ -3,11 +3,12 @@ import {TouchableOpacity, Text, View, FlatList} from 'react-native';
 import HoverButton from '../../common/components/HoverButton';
 import ModalWrapper from '../../common/components/ModalWrapper';
 import {readLogs} from '../../storage';
-
 import Brew from '../Brew';
+
 import styles from './styles';
 
 const Home = () => {
+  const [selectedLog, setSelectedLog] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [log, setLog] = useState({
     data: null,
@@ -16,6 +17,7 @@ const Home = () => {
 
   useEffect(() => {
     getLogs();
+    setSelectedLog(null);
   }, []);
 
   const getLogs = async () => {
@@ -32,8 +34,12 @@ const Home = () => {
 
   const renderItem = ({item, index}) => {
     return (
-      <TouchableOpacity style={styles.logButton} onPress={() => {}}>
-        <Text>{new Date(log.data[item].createdAt).toISOString()}</Text>
+      <TouchableOpacity
+        style={styles.logButton}
+        onPress={() => {
+          setSelectedLog(log.data[item]);
+        }}>
+        <Text style={styles.logText}>{new Date(log.data[item].createdAt).toISOString()}</Text>
       </TouchableOpacity>
     );
   };
@@ -41,11 +47,10 @@ const Home = () => {
   return (
     <View style={styles.home}>
       <FlatList
-        style={{flex: 1}}
+        style={styles.logList}
         data={log.keys}
         renderItem={renderItem}
         keyExtractor={(__, index) => index.toString()}
-        ItemSeparatorComponent={() => <View style={styles.divider} />}
       />
       <ModalWrapper
         visible={isModalVisible}
