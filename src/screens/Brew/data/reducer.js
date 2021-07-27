@@ -1,10 +1,4 @@
-export const actionTypes = {
-  UPDATE_FIELD: 'update field',
-  UPDATE_ERROR: 'update error',
-  ADD_SPLIT_ITEM: 'add split',
-  DELETE_SPLIT_ITEM: 'delete split',
-  UPDATE_SPLIT_FIELD: 'update split field',
-};
+import {actionTypes} from './actions';
 
 const initialSplitState = {
   stage: undefined,
@@ -26,7 +20,7 @@ const initialErrorSplitState = {
 
 export const initialState = {
   error: {
-    roastName: {
+    roaster: {
       hasError: false,
     },
     brewMethod: {
@@ -47,10 +41,14 @@ export const initialState = {
     coffeeAmount: {
       hasError: false,
     },
+    region: {
+      hasError: false,
+    },
     split_0: initialErrorSplitState,
   },
   data: {
-    roastName: undefined,
+    roaster: undefined,
+    region: undefined,
     brewMethod: undefined,
     grinder: undefined,
     dial: 0,
