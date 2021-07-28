@@ -6,17 +6,25 @@ export const actionTypes = {
   UPDATE_SPLIT_FIELD: 'update split field',
 };
 
-export const updateField = (field, payload) => ({
+export const updateField = (field, data) => ({
   type: actionTypes.UPDATE_FIELD,
   field,
-  payload,
+  payload: {
+    value: data,
+    hasError: data === undefined || data.length < 0,
+    error: '',
+  },
 });
 
-export const updateSplitField = (field, payload, key) => ({
+export const updateSplitField = (field, data, index) => ({
   type: actionTypes.UPDATE_SPLIT_FIELD,
   field,
-  key,
-  payload,
+  index,
+  payload: {
+    value: data,
+    hasError: data === undefined || data.length < 0,
+    error: '',
+  },
 });
 
 export const updateError = (field, payload) => ({
