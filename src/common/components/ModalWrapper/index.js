@@ -27,7 +27,7 @@ const ModalWrapper = ({children, ...props}) => {
         {children}
         <HoverButton
           buttonType={'close'}
-          label={'Close'}
+          label={'x'}
           onPress={handleClosePress}
         />
       </View>
