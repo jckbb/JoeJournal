@@ -1,14 +1,34 @@
 import {Platform, StyleSheet} from 'react-native';
-import {PRIMARY_COLOR} from '../../common/res/colors';
+import {WHITE, PRIMARY_COLOR} from '../../common/res/colors';
 
 export default StyleSheet.create({
   brew: {
     flex: 1,
-    marginVertical: Platform.OS === 'ios' ? 80 : 50,
+  },
+  brewContent: {
+    paddingVertical: Platform.OS === 'ios' ? 80 : 50,
   },
   formRow: {
     justifyContent: 'space-between',
     flexDirection: 'row',
+  },
+  labelResponse: {
+    fontSize: 18,
+    fontWeight: '700',
+    letterSpacing: 0,
+    color: WHITE,
+    marginLeft: 5,
+  },
+  label: {
+    fontSize: 18,
+    fontWeight: '500',
+    letterSpacing: 0.2,
+    color: WHITE,
+    marginBottom: 3,
+  },
+  brewTotals: {
+    justifyContent: 'flex-start',
+    marginBottom: 8,
   },
   addText: {
     fontSize: 34,
