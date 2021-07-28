@@ -13,7 +13,7 @@ const ButtonField = (props) => {
       <TouchableOpacity
         style={[styles.fieldBox, styles.fieldButton]}
         onPress={props.onPress}>
-        <Text style={[textStyling, props.error.hasError && styles.error]}>
+        <Text style={[textStyling, props.error && styles.error]}>
           {content}
         </Text>
       </TouchableOpacity>
