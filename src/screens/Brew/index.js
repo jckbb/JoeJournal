@@ -19,7 +19,14 @@ import NumberField from './components/NumberField';
 import FormItem from './components/FormItem';
 import {createLog} from '../../storage';
 
-import formReducer, {actionTypes, initialState} from './reducer';
+import {createBrewRecord, fromSecondsToMinutes, validateForm} from './utils';
+import formReducer, {initialState} from './data/reducer';
+import {
+  removeSplitItem,
+  updateSplitField,
+  addSplitItem,
+  updateField,
+} from './data/actions';
 import styles from './styles';
 
 const initialOptions = {
@@ -29,64 +36,52 @@ const initialOptions = {
 };
 
 const Brew = (props) => {
+  const [showFormErrors, setShowFormErrors] = useState(false);
   const [options, setOptions] = useState(initialOptions);
   const [isBottomDrawerVisible, setBottomDrawerVisible] = useState(false);
-  const [{data, error}, dispatch] = useReducer(formReducer, initialState);
+  const [state, dispatch] = useReducer(formReducer, initialState);
 
-  const updateField = (field, payload) => {
-    dispatch({type: actionTypes.UPDATE_FIELD, field, payload});
-  };
+  useEffect(() => {
+    return () => {
+      setBottomDrawerVisible(false);
+    };
+  }, []);
 
-  const updateError = (field, payload) => {
-    dispatch({type: actionTypes.UPDATE_ERROR, field, payload});
-  };
+  const renderBrewTotals = (brewSplits) => {
+    let totalWaterAmount = 0;
+    let totalTime = 0;
 
-  const addSplitItem = () => {
-    dispatch({type: actionTypes.ADD_SPLIT_ITEM});
-  };
-
-  const removeSplitItem = (payload) => {
-    dispatch({type: actionTypes.DELETE_SPLIT_ITEM, payload});
-  };
-
-  const updateSplitField = (field, payload, key) => {
-    dispatch({
-      type: actionTypes.UPDATE_SPLIT_FIELD,
-      field,
-      key,
-      payload,
-    });
-  };
-
-  const validateForm = () => {
-    let hasErrors = false;
-
-    for (const key in error) {
-      // valid
-      if (data[key] && data[key].length > 0) continue;
-
-      // add key and error
-      updateError(key, true);
-
-      // some errors exists
-      hasErrors = true;
+    for (const brewSplit of brewSplits) {
+      totalWaterAmount += brewSplit.waterAmount.value;
+      totalTime += brewSplit.duration.value;
     }
 
-    return hasErrors;
+    return (
+      <View style={styles.brewTotals}>
+        <View style={styles.formRow}>
+          <Text style={styles.label}>{'Total Water'}</Text>
+          <Text
+            style={[
+              styles.label,
+              styles.labelResponse,
+            ]}>{`${totalWaterAmount}${unitType.gram}`}</Text>
+        </View>
+        <View style={styles.formRow}>
+          <Text style={styles.label}>{'Total Time'}</Text>
+          <Text style={[styles.label, styles.labelResponse]}>{fromSecondsToMinutes(totalTime)}</Text>
+        </View>
+      </View>
+    );
   };
 
   const handleSubmit = async () => {
-    // quick valid check for text field fill
-    // const hasErrors = validateForm();
-    // if (hasErrors) return;
+    if (!validateForm(state)) {
+      setShowFormErrors(true);
+      return;
+    }
+    const record = createBrewRecord(state);
 
-    const createdAt = new Date().getTime();
-    const logData = {
-      ...data,
-      createdAt,
-    };
-
-    await createLog(createdAt, logData);
+    createLog(record.createdAt, record);
 
     // close modal
     props.onRequestClose();
@@ -97,15 +92,14 @@ const Brew = (props) => {
     setOptions(initialOptions);
   };
 
-  const renderBrewSplits = (splits) => {
-    if (splits.length <= 0) return;
+  const renderBrewSplits = (brewSplits) => {
+    if (brewSplits.length <= 0) return;
 
     return (
       <View style={styles.splitList}>
-        {splits.map((splitIndex, index) => {
-          const split = data.splitData[splitIndex];
-          const isDisabled =
-            index === 0 || index !== data.splitByIndex.length - 1;
+        {renderBrewTotals(brewSplits)}
+        {brewSplits.map((brewSplit, index) => {
+          const isDisabled = index === 0 || index < brewSplits.length - 1;
 
           return (
             <FormItem
@@ -113,36 +107,36 @@ const Brew = (props) => {
               disabled={isDisabled}
               key={index}
               onRemoveItem={() => {
-                removeSplitItem(splitIndex);
+                dispatch(removeSplitItem(index));
               }}>
               <TextField
-                error={error[splitIndex].stageName}
+                error={showFormErrors && brewSplit.stage.hasError}
                 label={`Stage #${index + 1}`}
                 placeholder={'Bloom'}
-                value={split.stage}
+                value={brewSplit.stage.value}
                 onChangeText={(text) => {
-                  updateSplitField('stage', text, splitIndex);
+                  dispatch(updateSplitField('stage', text, index));
                 }}
               />
               <View style={styles.formRow}>
                 <NumberField
-                  error={error[splitIndex].waterAmount}
+                  error={showFormErrors && brewSplit.waterAmount.hasError}
                   label={'Water Amount'}
                   placeholder={'40g'}
                   unit={unitType.gram}
-                  value={split.waterAmount}
+                  value={brewSplit.waterAmount.value}
                   onChangeNumber={(value) => {
-                    updateSplitField('waterAmount', value, splitIndex);
+                    dispatch(updateSplitField('waterAmount', value, index));
                   }}
                 />
                 <NumberField
-                  error={error[splitIndex].duration}
+                  error={showFormErrors && brewSplit.duration.hasError}
                   label={'Duration'}
                   placeholder={'45s'}
                   unit={unitType.seconds}
-                  value={split.duration}
+                  value={brewSplit.duration.value}
                   onChangeNumber={(value) => {
-                    updateSplitField('duration', value, splitIndex);
+                    dispatch(updateSplitField('duration', value, index));
                   }}
                 />
               </View>
@@ -152,7 +146,7 @@ const Brew = (props) => {
         <View style={styles.splitListSpacer} />
         <IconButton
           onPress={() => {
-            addSplitItem();
+            dispatch(addSplitItem());
           }}>
           <Text style={styles.addText}>{'+'}</Text>
         </IconButton>
@@ -162,23 +156,35 @@ const Brew = (props) => {
 
   return (
     <>
-      <ScrollView style={styles.brew}>
+      <ScrollView
+        style={styles.brew}
+        contentContainerStyle={styles.brewContent}>
         <FormWrapper onSubmit={handleSubmit}>
           <TextField
             hasTopRoom
-            error={error.roastName}
-            label={'Roast Name'}
-            placeholder={'Enter roast name'}
-            value={data.roastName}
+            error={showFormErrors && state.roaster.hasError}
+            label={'Roaster Name'}
+            placeholder={'Enter roaster'}
+            value={state.roaster.value}
             onChangeText={(text) => {
-              updateField('roastName', text);
+              dispatch(updateField('roaster', text));
+            }}
+          />
+          <TextField
+            hasTopRoom
+            error={showFormErrors && state.region.hasError}
+            label={'Region Name'}
+            placeholder={'Enter region'}
+            value={state.region.value}
+            onChangeText={(text) => {
+              dispatch(updateField('region', text));
             }}
           />
           <ButtonField
             hasTopRoom
-            error={error.brewMethod}
+            error={showFormErrors && state.brewMethod.hasError}
             label={'Brew Method'}
-            value={data.brewMethod}
+            value={state.brewMethod.value}
             placeholder={'Select brew method'}
             onPress={() => {
               setOptions({
@@ -191,9 +197,9 @@ const Brew = (props) => {
           />
           <ButtonField
             hasTopRoom
-            error={error.grinder}
+            error={showFormErrors && state.grinder.hasError}
             label={'Grinder'}
-            value={data.grinder}
+            value={state.grinder.value}
             placeholder={'Select grinder'}
             onPress={() => {
               setOptions({
@@ -206,52 +212,41 @@ const Brew = (props) => {
           />
           <SliderField
             hasTopRoom
-            shouldHideSlider={!data.grinder}
+            shouldHideSlider={!state.grinder.value}
             label={'Dial'}
-            value={data.dial}
+            value={state.dial.value}
             minDial={0}
             maxDial={40}
             step={2}
             onValueChange={(value) => {
-              updateField('dial', value);
-            }}
-          />
-          <NumberField
-            hasTopRoom
-            error={error.coffeeAmount}
-            label={'Coffee Amount'}
-            placeholder={'15g'}
-            unit={unitType.gram}
-            value={data.coffeeAmount}
-            onChangeNumber={(value) => {
-              updateField('coffeeAmount', value);
+              dispatch(updateField('dial', value));
             }}
           />
           <View style={styles.formRow}>
             <NumberField
               hasTopRoom
-              error={error.waterAmount}
-              label={'Water Amount'}
-              placeholder={'350g'}
+              error={showFormErrors && state.coffeeAmount.hasError}
+              label={'Coffee Amount'}
+              placeholder={'15g'}
               unit={unitType.gram}
-              value={data.waterAmount}
+              value={state.coffeeAmount.value}
               onChangeNumber={(value) => {
-                updateField('waterAmount', value);
+                dispatch(updateField('coffeeAmount', value));
               }}
             />
             <NumberField
               hasTopRoom
-              error={error.waterTemperature}
+              error={showFormErrors && state.waterTemperature.hasError}
               label={'Water Temperature'}
               placeholder={'90°C'}
               unit={unitType.celsius}
-              value={data.waterTemperature}
+              value={state.waterTemperature.value}
               onChangeNumber={(value) => {
-                updateField('waterTemperature', value);
+                dispatch(updateField('waterTemperature', value));
               }}
             />
           </View>
-          {renderBrewSplits(data.splitByIndex)}
+          {renderBrewSplits(state.brewSplits)}
         </FormWrapper>
       </ScrollView>
       <BottomDrawer
@@ -265,7 +260,8 @@ const Brew = (props) => {
           optionData={options.data}
           options={options.names}
           onOptionChange={selectedOption => {
-            updateField(options.type, selectedOption);
+            console.log(selectedOption);
+            dispatch(updateField(options.type, selectedOption));
             handleBottomDrawerClose();
           }}
         />
