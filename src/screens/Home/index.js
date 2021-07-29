@@ -1,10 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {TouchableOpacity, Text, View, FlatList} from 'react-native';
+import {StatusBar, TouchableOpacity, Text, View, FlatList} from 'react-native';
 import HoverButton from '../../common/components/HoverButton';
 import ModalWrapper from '../../common/components/ModalWrapper';
 import {readLogs} from '../../storage';
 import Brew from '../Brew';
 import LogModal from '../LogModal';
+import {
+  fromTimestampToTime,
+  fromTimestampToDate,
+} from '../../common/utils/time';
 
 import styles from './styles';
 
@@ -35,25 +39,36 @@ const Home = () => {
   };
 
   const renderItem = ({item, index}) => {
+    const data = log.data[item];
+
     return (
       <TouchableOpacity
         style={styles.logButton}
         onPress={() => {
-          setSelectedLog(log.data[item]);
+          setSelectedLog(data);
           setLogModalVisible(true);
         }}>
-        <Text style={styles.logText}>{new Date(log.data[item].createdAt).toISOString()}</Text>
+        <View style={styles.date}>
+          <Text style={styles.dateText}>{fromTimestampToDate(data.createdAt)}</Text>
+        </View>
+        <View>
+          <Text style={styles.logText}>{data.region}</Text>
+          <Text style={styles.logText}>{data.roaster}</Text>
+          <Text style={styles.timeText}>{fromTimestampToTime(data.createdAt)}</Text>
+        </View>
       </TouchableOpacity>
     );
   };
 
   return (
     <View style={styles.home}>
+      <StatusBar hidden />
       <FlatList
         style={styles.logList}
         data={log.keys}
         renderItem={renderItem}
         keyExtractor={(__, index) => index.toString()}
+        ItemSeparatorComponent={() => <View style={styles.divider} />}
       />
       <LogModal
         data={selectedLog}
