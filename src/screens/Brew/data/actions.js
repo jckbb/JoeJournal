@@ -4,7 +4,13 @@ export const actionTypes = {
   ADD_SPLIT_ITEM: 'add split',
   DELETE_SPLIT_ITEM: 'delete split',
   UPDATE_SPLIT_FIELD: 'update split field',
+  UPDATE_STATE: 'update state',
 };
+
+export const updateState = (data) => ({
+  type: actionTypes.UPDATE_STATE,
+  payload: data,
+});
 
 export const updateField = (field, data) => ({
   type: actionTypes.UPDATE_FIELD,
