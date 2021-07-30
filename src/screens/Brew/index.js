@@ -17,15 +17,16 @@ import OptionList from './components/OptionList';
 import SliderField from './components/SliderField';
 import NumberField from './components/NumberField';
 import FormItem from './components/FormItem';
-import {createLog} from '../../storage';
+import {getPreviousBrewForm, setLog} from '../../storage/utils';
 
-import {createBrewRecord, fromSecondsToMinutes, validateForm} from './utils';
+import {fromSecondsToMinutes, validateForm} from './utils';
 import formReducer, {initialState} from './data/reducer';
 import {
   removeSplitItem,
   updateSplitField,
   addSplitItem,
   updateField,
+  updateState,
 } from './data/actions';
 import styles from './styles';
 
@@ -42,10 +43,22 @@ const Brew = (props) => {
   const [state, dispatch] = useReducer(formReducer, initialState);
 
   useEffect(() => {
+    // read storage for last log
+    // populate reducer state with last log if exists
+    fetchLastLog();
+
     return () => {
       setBottomDrawerVisible(false);
     };
   }, []);
+
+  const fetchLastLog = async () => {
+    const brewFormState = await getPreviousBrewForm();
+
+    if (!brewFormState) return;
+
+    dispatch(updateState(brewFormState));
+  };
 
   const renderBrewTotals = (brewSplits) => {
     let totalWaterAmount = 0;
@@ -79,9 +92,8 @@ const Brew = (props) => {
       setShowFormErrors(true);
       return;
     }
-    const record = createBrewRecord(state);
 
-    createLog(record.createdAt, record);
+    await setLog(state);
 
     // close modal
     props.onRequestClose();
@@ -260,7 +272,6 @@ const Brew = (props) => {
           optionData={options.data}
           options={options.names}
           onOptionChange={selectedOption => {
-            console.log(selectedOption);
             dispatch(updateField(options.type, selectedOption));
             handleBottomDrawerClose();
           }}
