@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {StatusBar, TouchableOpacity, Text, View, FlatList} from 'react-native';
 import HoverButton from '../../common/components/HoverButton';
 import ModalWrapper from '../../common/components/ModalWrapper';
-import {readLogs} from '../../storage';
+import {getLogs, wipeStorage} from '../../storage/utils';
 import Brew from '../Brew';
 import LogModal from '../LogModal';
 import {
@@ -16,18 +16,17 @@ const Home = () => {
   const [logModalVisible, setLogModalVisible] = useState(false);
   const [selectedLog, setSelectedLog] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [log, setLog] = useState({
-    data: null,
-    keys: [],
-  });
+  const [log, setLog] = useState([]);
 
   useEffect(() => {
-    getLogs();
-    setSelectedLog(null);
+    fetchLogs();
   }, []);
 
-  const getLogs = async () => {
-    setLog(await readLogs());
+  const fetchLogs = async () => {
+    // await wipeStorage();
+
+    const logs = await getLogs();
+    setLog(logs);
   };
 
   const handleBrewPress = () => {
@@ -39,7 +38,7 @@ const Home = () => {
   };
 
   const renderItem = ({item, index}) => {
-    const data = log.data[item];
+    const data = item;
 
     return (
       <TouchableOpacity
@@ -65,7 +64,7 @@ const Home = () => {
       <StatusBar hidden />
       <FlatList
         style={styles.logList}
-        data={log.keys}
+        data={log}
         renderItem={renderItem}
         keyExtractor={(__, index) => index.toString()}
         ItemSeparatorComponent={() => <View style={styles.divider} />}
