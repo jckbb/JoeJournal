@@ -1,21 +1,36 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const keyPrefix = {
-  LOG: 'log',
+export const keyTypes = {
+  LOGS: 'logs',
+  LAST_LOG: 'lastLog',
+  BREW_FORM: 'brewForm',
 };
 
-export const createLog = async (keySuffix, data) => {
-  const jsonData = JSON.stringify(data);
-  const key = `${keyPrefix.LOG}_${keySuffix}`;
-
+export const createMultipleStorageItems = async (pairSetData) => {
   try {
-    return await AsyncStorage.setItem(key, jsonData);
+    return await AsyncStorage.multiSet(pairSetData);
   } catch (error) {
     throw error;
   }
 };
 
-export const readLogKeys = async () => {
+export const createStorageItem = async (key, data) => {
+  try {
+    return await AsyncStorage.setItem(key, JSON.stringify(data));
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const readStorageItem = async (key) => {
+  try {
+    return await AsyncStorage.getItem(key);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const readAllKeys = async () => {
   try {
     return await AsyncStorage.getAllKeys();
   } catch (error) {
@@ -23,20 +38,9 @@ export const readLogKeys = async () => {
   }
 };
 
-export const readLogs = async () => {
-  let keys = [];
-  let data = {};
+export const deleteAllStorage = async () => {
   try {
-    const response = await AsyncStorage.multiGet(await readLogKeys());
-
-    for (let i = 0; i < response.length; i++) {
-      const key = response[i][0];
-      const jsonData = response[i][1];
-      keys = [...keys, key];
-      data = {...data, [key]: JSON.parse(jsonData)};
-    }
-
-    return {keys: keys, data: data};
+    return await AsyncStorage.clear();
   } catch (error) {
     throw error;
   }

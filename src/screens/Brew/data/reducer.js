@@ -59,6 +59,8 @@ export const initialState = {
 
 const formReducer = (state, action) => {
   switch (action.type) {
+    case actionTypes.UPDATE_STATE:
+      return action.payload;
     case actionTypes.UPDATE_FIELD:
       return {
         ...state,
