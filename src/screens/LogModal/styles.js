@@ -1,27 +1,25 @@
 import {StyleSheet} from 'react-native';
-import {BLACK, IVORY_WHITE, PRIMARY_COLOR} from '../../common/res/colors';
+import {BLACK, IVORY_WHITE, WHITE} from '../../common/res/colors';
 
 export default StyleSheet.create({
   log: {
     flex: 1,
-    backgroundColor: PRIMARY_COLOR,
-  },
-  generalContainer: {
-    paddingTop: 50,
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-    borderBottomRightRadius: 28,
-    borderBottomLeftRadius: 28,
     backgroundColor: IVORY_WHITE,
+    marginTop: 40,
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    paddingLeft: 25,
+    paddingTop: 30,
   },
   row: {
     flexDirection: 'row',
   },
   title: {
-    fontSize: 28,
+    fontSize: 30,
     fontWeight: '600',
-    marginBottom: 20,
-    color: 'rgba(0, 0, 0, 0.7)',
+    marginTop: 20,
+    marginLeft: 20,
+    color: WHITE,
   },
   detailText: {
     color: BLACK,
@@ -30,32 +28,20 @@ export default StyleSheet.create({
     letterSpacing: 0.3,
   },
   section: {
-    marginTop: 15,
-  },
-  brewContainer: {
-    flex: 1,
-    paddingLeft: 20,
-    borderTopRightRadius: 28,
-    borderTopLeftRadius: 28,
-    backgroundColor: IVORY_WHITE,
-    marginTop: 20,
-    paddingTop: 20,
+    marginBottom: 24,
   },
   detail: {
     marginTop: 5,
   },
   column: {
     flex: 1,
-    alignItems: 'flex-start',
   },
   brewSplit: {
     marginTop: 15,
-    justifyContent: 'space-between',
     flexDirection: 'row',
   },
   brewSplitsHeader: {
     marginTop: 24,
-    justifyContent: 'space-between',
     flexDirection: 'row',
   },
   labelText: {
