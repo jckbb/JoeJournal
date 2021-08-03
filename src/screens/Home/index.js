@@ -6,7 +6,7 @@ import {getLogs, wipeStorage} from '../../storage/utils';
 import Brew from '../Brew';
 import LogModal from '../LogModal';
 import {
-  fromTimestampToTime,
+  fromTimestampToTimeOfDay,
   fromTimestampToDate,
 } from '../../common/utils/time';
 
@@ -53,7 +53,7 @@ const Home = () => {
         <View>
           <Text style={styles.logText}>{data.region}</Text>
           <Text style={styles.logText}>{data.roaster}</Text>
-          <Text style={styles.timeText}>{fromTimestampToTime(data.createdAt)}</Text>
+          <Text style={styles.timeText}>{fromTimestampToTimeOfDay(data.createdAt)}</Text>
         </View>
       </TouchableOpacity>
     );

@@ -6,16 +6,17 @@ export const fromTimestampToDate = (timestamp) => {
   return `${month}/${day}`;
 };
 
-export const fromTimestampToTime = (timestamp) => {
+export const fromTimestampToTimeOfDay = (timestamp) => {
   const date = new Date(timestamp);
   let hour = date.getHours();
   const minutes = date.getMinutes();
   let ampm = 'am';
 
+  ampm = hour >= 12 && 'pm';
+
   if (hour > 12) {
     hour = hour - 12;
-    ampm = 'pm';
   }
 
-  return `${hour}:${minutes}${ampm}`;
+  return `${hour}:${minutes < 10 ? `0${minutes}` : minutes}${ampm}`;
 };
