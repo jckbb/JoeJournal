@@ -3,7 +3,10 @@ import {ScrollView, View, Text} from 'react-native';
 import ModalWrapper from '../../common/components/ModalWrapper';
 import {unitType} from '../../common/res/strings';
 
-import {fromTimestampToReadableDate} from './utils';
+import {
+  fromTimestampToDate,
+  fromTimestampToTimeOfDay,
+} from '../../common/utils/time';
 import styles from './styles';
 
 const LogModal = (props) => {
@@ -44,7 +47,7 @@ const LogModal = (props) => {
         visible={props.isVisible}
         onRequestClose={props.onRequestClose}>
         <Text style={styles.title}>
-          {fromTimestampToReadableDate(props.data.createdAt)}
+          {`${fromTimestampToDate(props.data.createdAt)} ${fromTimestampToTimeOfDay(props.data.createdAt)}`}
         </Text>
         <ScrollView contentContainerStyle={styles.log}>
           {renderSection(
