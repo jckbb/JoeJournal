@@ -41,4 +41,9 @@ export default StyleSheet.create({
   splitListSpace: {
     height: 20,
   },
+  header: {
+    marginRight: 20,
+    marginTop: 30,
+    alignItems: 'flex-end',
+  },
 });

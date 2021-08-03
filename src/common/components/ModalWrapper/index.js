@@ -23,14 +23,7 @@ const ModalWrapper = ({children, ...props}) => {
       onRequestClose={() => {
         props.onRequestClose();
       }}>
-      <View style={styles.modal}>
-        {children}
-        <HoverButton
-          buttonType={'close'}
-          label={'x'}
-          onPress={handleClosePress}
-        />
-      </View>
+      <View style={styles.modal}>{children}</View>
     </Modal>
   );
 };

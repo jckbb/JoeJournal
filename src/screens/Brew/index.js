@@ -9,6 +9,7 @@ import {
 } from '../../common/data';
 import IconButton from '../../common/components/IconButton';
 import BottomDrawer, {drawerState} from '../../common/components/BottomDrawer';
+import ModalCloseButton from '../../common/components/ModalCloseButton';
 import {unitType} from '../../common/res/strings';
 import FormWrapper from './components/FormWrapper';
 import TextField from './components/TextField';
@@ -168,6 +169,9 @@ const Brew = (props) => {
 
   return (
     <>
+      <View style={styles.header}>
+        <ModalCloseButton onPress={props.onRequestClose} />
+      </View>
       <ScrollView
         style={styles.brew}
         contentContainerStyle={styles.brewContent}>
