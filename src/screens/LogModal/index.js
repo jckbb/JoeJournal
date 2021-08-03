@@ -1,5 +1,6 @@
 import React from 'react';
 import {ScrollView, View, Text} from 'react-native';
+import ModalCloseButton from '../../common/components/ModalCloseButton';
 import ModalWrapper from '../../common/components/ModalWrapper';
 import {unitType} from '../../common/res/strings';
 
@@ -46,9 +47,12 @@ const LogModal = (props) => {
       <ModalWrapper
         visible={props.isVisible}
         onRequestClose={props.onRequestClose}>
-        <Text style={styles.title}>
-          {`${fromTimestampToDate(props.data.createdAt)} ${fromTimestampToTimeOfDay(props.data.createdAt)}`}
-        </Text>
+        <View style={styles.header}>
+          <Text style={styles.title}>
+            {`${fromTimestampToDate(props.data.createdAt)} ${fromTimestampToTimeOfDay(props.data.createdAt)}`}
+          </Text>
+          <ModalCloseButton onPress={props.onRequestClose} />
+        </View>
         <ScrollView contentContainerStyle={styles.log}>
           {renderSection(
             <>

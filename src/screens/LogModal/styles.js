@@ -51,4 +51,10 @@ export default StyleSheet.create({
     fontWeight: '400',
     letterSpacing: 0.1,
   },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    marginRight: 20,
+  },
 });
