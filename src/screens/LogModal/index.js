@@ -11,6 +11,7 @@ import {
 import styles from './styles';
 
 const LogModal = (props) => {
+
   const renderDetail = (label, value) => (
     <View style={[styles.row, styles.detail]}>
       <Text style={styles.labelText}>{`${label}:`}</Text>
@@ -37,6 +38,24 @@ const LogModal = (props) => {
       </View>
     );
   };
+
+  const renderBrewTotals = () => (
+    <View style={styles.brewSplit}>
+      <View style={styles.column}>
+        <Text style={styles.labelText}>{'Total'}</Text>
+      </View>
+      <View style={styles.column}>
+        <Text style={styles.detailText}>
+          {`${props.data.totalWaterAmount}${unitType.gram}`}
+        </Text>
+      </View>
+      <View style={styles.column}>
+        <Text style={styles.detailText}>
+          {`${props.data.totalDuration}${unitType.seconds}`}
+        </Text>
+      </View>
+    </View>
+  );
 
   const renderSection = (children) => (
     <View style={styles.section}>{children}</View>
@@ -81,6 +100,7 @@ const LogModal = (props) => {
             </View>
           </View>
           {props.data.brewSplits.map(renderSplitDetail)}
+          {renderBrewTotals()}
         </ScrollView>
       </ModalWrapper>
     )

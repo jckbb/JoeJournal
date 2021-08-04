@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {StatusBar, TouchableOpacity, Text, View, FlatList} from 'react-native';
 import HoverButton from '../../common/components/HoverButton';
 import ModalWrapper from '../../common/components/ModalWrapper';
-import {getLogs, wipeStorage} from '../../storage/utils';
+import {getLogs} from '../../storage/utils';
 import Brew from '../Brew';
 import LogModal from '../LogModal';
 import {
@@ -16,17 +16,14 @@ const Home = () => {
   const [logModalVisible, setLogModalVisible] = useState(false);
   const [selectedLog, setSelectedLog] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [log, setLog] = useState([]);
+  const [logs, setLog] = useState([]);
 
   useEffect(() => {
     fetchLogs();
   }, []);
 
   const fetchLogs = async () => {
-    // await wipeStorage();
-
-    const logs = await getLogs();
-    setLog(logs);
+    setLog(await getLogs());
   };
 
   const handleBrewPress = () => {
@@ -64,7 +61,7 @@ const Home = () => {
       <StatusBar hidden />
       <FlatList
         style={styles.logList}
-        data={log}
+        data={logs}
         renderItem={renderItem}
         keyExtractor={(__, index) => index.toString()}
         ItemSeparatorComponent={() => <View style={styles.divider} />}
@@ -81,7 +78,10 @@ const Home = () => {
         visible={isModalVisible}
         onRequestClose={handleRequestClose}>
         <Brew
-          onRequestClose={() => {
+          onRequestClose={(log) => {
+            if (log) {
+              setLog([log, ...logs]);
+            }
             setModalVisible(false);
           }}
         />
