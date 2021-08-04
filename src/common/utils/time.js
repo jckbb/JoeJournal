@@ -10,9 +10,7 @@ export const fromTimestampToTimeOfDay = (timestamp) => {
   const date = new Date(timestamp);
   let hour = date.getHours();
   const minutes = date.getMinutes();
-  let ampm = 'am';
-
-  ampm = hour >= 12 && 'pm';
+  const ampm = hour >= 12 ? 'pm' : 'am';
 
   if (hour > 12) {
     hour = hour - 12;
