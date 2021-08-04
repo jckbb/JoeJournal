@@ -20,7 +20,7 @@ import NumberField from './components/NumberField';
 import FormItem from './components/FormItem';
 import {getPreviousBrewForm, setLog} from '../../storage/utils';
 
-import {fromSecondsToMinutes, validateForm} from './utils';
+import {createBrewRecord, fromSecondsToMinutes, validateForm} from './utils';
 import formReducer, {initialState} from './data/reducer';
 import {
   removeSplitItem,
@@ -37,7 +37,10 @@ const initialOptions = {
   names: [],
 };
 
+const initialBrewTotals = {totalDuration: 0, totalWaterAmount: 0};
+
 const Brew = (props) => {
+  const [brewTotals, setBrewTotals] = useState(initialBrewTotals);
   const [showFormErrors, setShowFormErrors] = useState(false);
   const [options, setOptions] = useState(initialOptions);
   const [isBottomDrawerVisible, setBottomDrawerVisible] = useState(false);
@@ -53,6 +56,21 @@ const Brew = (props) => {
     };
   }, []);
 
+  useEffect(() => {
+    let totalWaterAmount = 0;
+    let totalTime = 0;
+
+    for (const brewSplit of state.brewSplits) {
+      totalWaterAmount += brewSplit.waterAmount.value;
+      totalTime += brewSplit.duration.value;
+    }
+
+    setBrewTotals({
+      totalDuration: totalTime,
+      totalWaterAmount: totalWaterAmount,
+    });
+  }, [state.brewSplits]);
+
   const fetchLastLog = async () => {
     const brewFormState = await getPreviousBrewForm();
 
@@ -61,15 +79,7 @@ const Brew = (props) => {
     dispatch(updateState(brewFormState));
   };
 
-  const renderBrewTotals = (brewSplits) => {
-    let totalWaterAmount = 0;
-    let totalTime = 0;
-
-    for (const brewSplit of brewSplits) {
-      totalWaterAmount += brewSplit.waterAmount.value;
-      totalTime += brewSplit.duration.value;
-    }
-
+  const renderBrewTotals = () => {
     return (
       <View style={styles.brewTotals}>
         <View style={styles.formRow}>
@@ -78,11 +88,13 @@ const Brew = (props) => {
             style={[
               styles.label,
               styles.labelResponse,
-            ]}>{`${totalWaterAmount}${unitType.gram}`}</Text>
+            ]}>{`${brewTotals.totalWaterAmount}${unitType.gram}`}</Text>
         </View>
         <View style={styles.formRow}>
           <Text style={styles.label}>{'Total Time'}</Text>
-          <Text style={[styles.label, styles.labelResponse]}>{fromSecondsToMinutes(totalTime)}</Text>
+          <Text style={[styles.label, styles.labelResponse]}>
+            {fromSecondsToMinutes(brewTotals.totalDuration)}
+          </Text>
         </View>
       </View>
     );
@@ -94,10 +106,12 @@ const Brew = (props) => {
       return;
     }
 
-    await setLog(state);
+    const record = createBrewRecord(state, brewTotals);
+
+    await setLog(state, record);
 
     // close modal
-    props.onRequestClose();
+    props.onRequestClose(record);
   };
 
   const handleBottomDrawerClose = () => {
@@ -110,7 +124,7 @@ const Brew = (props) => {
 
     return (
       <View style={styles.splitList}>
-        {renderBrewTotals(brewSplits)}
+        {renderBrewTotals()}
         {brewSplits.map((brewSplit, index) => {
           const isDisabled = index === 0 || index < brewSplits.length - 1;
 
@@ -170,7 +184,11 @@ const Brew = (props) => {
   return (
     <>
       <View style={styles.header}>
-        <ModalCloseButton onPress={props.onRequestClose} />
+        <ModalCloseButton
+          onPress={() => {
+            props.onRequestClose(null);
+          }}
+        />
       </View>
       <ScrollView
         style={styles.brew}
