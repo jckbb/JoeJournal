@@ -2,9 +2,6 @@ import {Platform, StyleSheet} from 'react-native';
 import {WHITE, PRIMARY_COLOR} from '../../common/res/colors';
 
 export default StyleSheet.create({
-  brew: {
-    flex: 1,
-  },
   brewContent: {
     paddingVertical: Platform.OS === 'ios' ? 80 : 50,
   },
