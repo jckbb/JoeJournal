@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {StatusBar, TouchableOpacity, Text, View, FlatList} from 'react-native';
 import HoverButton from '../../common/components/HoverButton';
-import ModalWrapper from '../../common/components/ModalWrapper';
 import {getLogs} from '../../storage/utils';
-import Brew from '../Brew';
+import CreateLogModal from '../CreateLogModal';
 import LogModal from '../LogModal';
 import {
   fromTimestampToTimeOfDay,
@@ -12,10 +11,18 @@ import {
 
 import styles from './styles';
 
+const initialModalVisibility = {
+  logDetails: {
+    visible: false,
+  },
+  createLog: {
+    visible: false,
+  },
+};
+
 const Home = () => {
-  const [logModalVisible, setLogModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(initialModalVisibility);
   const [selectedLog, setSelectedLog] = useState(null);
-  const [isModalVisible, setModalVisible] = useState(false);
   const [logs, setLog] = useState([]);
 
   useEffect(() => {
@@ -27,11 +34,21 @@ const Home = () => {
   };
 
   const handleBrewPress = () => {
-    setModalVisible(true);
+    showModal('createLog');
+  };
+
+  const showModal = (type) => {
+    setModalVisible({
+      ...modalVisible,
+      [type]: {
+        visible: true,
+      },
+    });
   };
 
   const handleRequestClose = () => {
-    setModalVisible(false);
+    console.log(initialModalVisibility);
+    setModalVisible(initialModalVisibility);
   };
 
   const renderItem = ({item, index}) => {
@@ -42,7 +59,7 @@ const Home = () => {
         style={styles.logButton}
         onPress={() => {
           setSelectedLog(data);
-          setLogModalVisible(true);
+          showModal('logDetails');
         }}>
         <View style={styles.date}>
           <Text style={styles.dateText}>{fromTimestampToDate(data.createdAt)}</Text>
@@ -68,24 +85,22 @@ const Home = () => {
       />
       <LogModal
         data={selectedLog}
-        isVisible={logModalVisible}
+        isVisible={modalVisible.logDetails.visible}
         onRequestClose={() => {
-          setLogModalVisible(false);
+          handleRequestClose();
           setSelectedLog(null);
         }}
       />
-      <ModalWrapper
-        visible={isModalVisible}
-        onRequestClose={handleRequestClose}>
-        <Brew
-          onRequestClose={(log) => {
-            if (log) {
-              setLog([log, ...logs]);
-            }
-            setModalVisible(false);
-          }}
-        />
-      </ModalWrapper>
+      <CreateLogModal
+        isVisible={modalVisible.createLog.visible}
+        onRequestClose={(log) => {
+          console.log('close');
+          if (log) {
+            setLog([log, ...logs]);
+          }
+          handleRequestClose();
+        }}
+      />
       <HoverButton
         buttonType={'hover'}
         label={'Brew'}

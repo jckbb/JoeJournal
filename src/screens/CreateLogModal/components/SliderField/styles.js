@@ -9,7 +9,6 @@ export default StyleSheet.create({
     marginTop: 20,
   },
   slider: {
-    marginTop: 15,
     width: '100%',
     height: 50,
   },
