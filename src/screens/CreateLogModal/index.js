@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {View} from 'react-native';
 
 import ModalWrapper from '../../common/components/ModalWrapper';
@@ -13,10 +13,6 @@ import styles from './styles';
 const CreateLogModal = (props) => {
   const [brewData, setBrewData] = useState({});
   const [showEvaluateForm, setShowEvaluateForm] = useState(false);
-
-  useEffect(() => {
-    return () => {};
-  }, []);
 
   const handleEvaluateComplete = (state) => {
     const evaluateRecord = createRecord(state);
