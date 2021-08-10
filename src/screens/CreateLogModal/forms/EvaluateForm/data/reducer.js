@@ -24,7 +24,6 @@ export const initialState = {
 const formReducer = (state, action) => {
   switch (action.type) {
     case actionTypes.UPDATE_EVALUATE_FORM_FIELD:
-      console.log(action.field, state);
       return {
         ...state,
         [action.field]: {

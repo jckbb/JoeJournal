@@ -47,7 +47,6 @@ const Home = () => {
   };
 
   const handleRequestClose = () => {
-    console.log(initialModalVisibility);
     setModalVisible(initialModalVisibility);
   };
 
@@ -62,12 +61,12 @@ const Home = () => {
           showModal('logDetails');
         }}>
         <View style={styles.date}>
-          <Text style={styles.dateText}>{fromTimestampToDate(data.createdAt)}</Text>
+          <Text style={styles.dateText}>{`${data.evaluate.overall}/10`}</Text>
         </View>
         <View>
           <Text style={styles.logText}>{data.region}</Text>
           <Text style={styles.logText}>{data.roaster}</Text>
-          <Text style={styles.timeText}>{fromTimestampToTimeOfDay(data.createdAt)}</Text>
+          <Text style={styles.timeText}>{`${fromTimestampToDate(data.createdAt)} ${fromTimestampToTimeOfDay(data.createdAt)}`}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -94,7 +93,6 @@ const Home = () => {
       <CreateLogModal
         isVisible={modalVisible.createLog.visible}
         onRequestClose={(log) => {
-          console.log('close');
           if (log) {
             setLog([log, ...logs]);
           }

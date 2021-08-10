@@ -178,97 +178,101 @@ const BrewForm = (props) => {
   };
 
   return (
-    <ScrollView style={styles.brew} contentContainerStyle={styles.brewContent}>
-      <FormWrapper submitLabel={'Next'} onSubmit={handleFormComplete}>
-        <FormTitle label={'Create Brew'} />
-        <TextField
-          hasTopRoom
-          error={showFormErrors && state.roaster.hasError}
-          label={'Roaster Name'}
-          placeholder={'Enter roaster'}
-          value={state.roaster.value}
-          onChangeText={(text) => {
-            dispatch(updateField('roaster', text));
-          }}
-        />
-        <TextField
-          hasTopRoom
-          error={showFormErrors && state.region.hasError}
-          label={'Region Name'}
-          placeholder={'Enter region'}
-          value={state.region.value}
-          onChangeText={(text) => {
-            dispatch(updateField('region', text));
-          }}
-        />
-        <ButtonField
-          hasTopRoom
-          error={showFormErrors && state.brewMethod.hasError}
-          label={'Brew Method'}
-          value={state.brewMethod.value}
-          placeholder={'Select brew method'}
-          onPress={() => {
-            setOptions({
-              type: 'brewMethod',
-              data: brewModelData,
-              names: brewModelByName,
-            });
-            setBottomDrawerVisible(true);
-          }}
-        />
-        <ButtonField
-          hasTopRoom
-          error={showFormErrors && state.grinder.hasError}
-          label={'Grinder'}
-          value={state.grinder.value}
-          placeholder={'Select grinder'}
-          onPress={() => {
-            setOptions({
-              type: 'grinder',
-              data: grinderModelData,
-              names: grinderModelByName,
-            });
-            setBottomDrawerVisible(true);
-          }}
-        />
-        <SliderField
-          hasTopRoom
-          shouldHideSlider={!state.grinder.value}
-          label={'Dial'}
-          value={state.dial.value}
-          minDial={0}
-          maxDial={40}
-          step={2}
-          onValueChange={(value) => {
-            dispatch(updateField('dial', value));
-          }}
-        />
-        <View style={styles.formRow}>
-          <NumberField
+    <>
+      <ScrollView
+        style={styles.brew}
+        contentContainerStyle={styles.brewContent}>
+        <FormWrapper submitLabel={'Next'} onSubmit={handleFormComplete}>
+          <FormTitle label={'Create Brew'} />
+          <TextField
             hasTopRoom
-            error={showFormErrors && state.coffeeAmount.hasError}
-            label={'Coffee Amount'}
-            placeholder={'15g'}
-            unit={unitType.gram}
-            value={state.coffeeAmount.value}
-            onChangeNumber={(value) => {
-              dispatch(updateField('coffeeAmount', value));
+            error={showFormErrors && state.roaster.hasError}
+            label={'Roaster Name'}
+            placeholder={'Enter roaster'}
+            value={state.roaster.value}
+            onChangeText={(text) => {
+              dispatch(updateField('roaster', text));
             }}
           />
-          <NumberField
+          <TextField
             hasTopRoom
-            error={showFormErrors && state.waterTemperature.hasError}
-            label={'Water Temperature'}
-            placeholder={'90°C'}
-            unit={unitType.celsius}
-            value={state.waterTemperature.value}
-            onChangeNumber={(value) => {
-              dispatch(updateField('waterTemperature', value));
+            error={showFormErrors && state.region.hasError}
+            label={'Region Name'}
+            placeholder={'Enter region'}
+            value={state.region.value}
+            onChangeText={(text) => {
+              dispatch(updateField('region', text));
             }}
           />
-        </View>
-        {renderBrewSplits(state.brewSplits)}
-      </FormWrapper>
+          <ButtonField
+            hasTopRoom
+            error={showFormErrors && state.brewMethod.hasError}
+            label={'Brew Method'}
+            value={state.brewMethod.value}
+            placeholder={'Select brew method'}
+            onPress={() => {
+              setOptions({
+                type: 'brewMethod',
+                data: brewModelData,
+                names: brewModelByName,
+              });
+              setBottomDrawerVisible(true);
+            }}
+          />
+          <ButtonField
+            hasTopRoom
+            error={showFormErrors && state.grinder.hasError}
+            label={'Grinder'}
+            value={state.grinder.value}
+            placeholder={'Select grinder'}
+            onPress={() => {
+              setOptions({
+                type: 'grinder',
+                data: grinderModelData,
+                names: grinderModelByName,
+              });
+              setBottomDrawerVisible(true);
+            }}
+          />
+          <SliderField
+            hasTopRoom
+            shouldHideSlider={!state.grinder.value}
+            label={'Dial'}
+            value={state.dial.value}
+            minDial={0}
+            maxDial={40}
+            step={2}
+            onValueChange={(value) => {
+              dispatch(updateField('dial', value));
+            }}
+          />
+          <View style={styles.formRow}>
+            <NumberField
+              hasTopRoom
+              error={showFormErrors && state.coffeeAmount.hasError}
+              label={'Coffee Amount'}
+              placeholder={'15g'}
+              unit={unitType.gram}
+              value={state.coffeeAmount.value}
+              onChangeNumber={(value) => {
+                dispatch(updateField('coffeeAmount', value));
+              }}
+            />
+            <NumberField
+              hasTopRoom
+              error={showFormErrors && state.waterTemperature.hasError}
+              label={'Water Temperature'}
+              placeholder={'90°C'}
+              unit={unitType.celsius}
+              value={state.waterTemperature.value}
+              onChangeNumber={(value) => {
+                dispatch(updateField('waterTemperature', value));
+              }}
+            />
+          </View>
+          {renderBrewSplits(state.brewSplits)}
+        </FormWrapper>
+      </ScrollView>
       <BottomDrawer
         isVisible={isBottomDrawerVisible}
         onDrawerStateChange={(changedState) => {
@@ -285,7 +289,7 @@ const BrewForm = (props) => {
           }}
         />
       </BottomDrawer>
-    </ScrollView>
+    </>
   );
 };
 

@@ -20,3 +20,31 @@ export const brewModelData = {
 };
 
 export const brewModelByName = ['harioV60'];
+
+export const evaluateScale = {
+  aroma: {
+    name: 'Aroma',
+    from: 'Low',
+    to: 'High',
+  },
+  acidity: {
+    name: 'Acidity',
+    from: 'Low',
+    to: 'High',
+  },
+  sweetness: {
+    name: 'Sweetness',
+    from: 'Low',
+    to: 'High',
+  },
+  body: {
+    name: 'Body',
+    from: 'Light',
+    to: 'Heavy',
+  },
+  finish: {
+    name: 'Finish',
+    from: 'Short',
+    to: 'Long',
+  },
+};

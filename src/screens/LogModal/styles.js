@@ -2,17 +2,23 @@ import {StyleSheet} from 'react-native';
 import {BLACK, IVORY_WHITE, WHITE} from '../../common/res/colors';
 
 export default StyleSheet.create({
-  log: {
-    flex: 1,
+  log: {},
+  content: {
+    paddingBottom: 40,
+    paddingTop: 30,
+    paddingLeft: 25,
     backgroundColor: IVORY_WHITE,
-    marginTop: 40,
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
-    paddingLeft: 25,
-    paddingTop: 30,
+    marginTop: 20,
   },
   row: {
     flexDirection: 'row',
+  },
+  sectionTitleText: {
+    fontSize: 25,
+    fontWeight: '500',
+    marginBottom: 8,
   },
   title: {
     fontSize: 30,
@@ -27,11 +33,12 @@ export default StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 0.3,
   },
+  detail: {
+    justifyContent: 'space-between',
+    marginRight: 25,
+  },
   section: {
     marginBottom: 24,
-  },
-  detail: {
-    marginTop: 5,
   },
   column: {
     flex: 1,
@@ -41,7 +48,6 @@ export default StyleSheet.create({
     flexDirection: 'row',
   },
   brewSplitsHeader: {
-    marginTop: 24,
     flexDirection: 'row',
   },
   labelText: {
@@ -50,6 +56,11 @@ export default StyleSheet.create({
     fontSize: 20,
     fontWeight: '400',
     letterSpacing: 0.1,
+  },
+  grade: {
+    marginRight: 30,
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   header: {
     flexDirection: 'row',

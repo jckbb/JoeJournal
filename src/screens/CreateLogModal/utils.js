@@ -1,11 +1,13 @@
 export const createRecord = (data, totals) => {
-  let record = {
-    brewSplits: [],
-  };
+  let record = {};
 
   for (const key of Object.keys(data)) {
     switch (key) {
       case 'brewSplits':
+        record = {
+          ...record,
+          brewSplits: [],
+        };
         data[key].forEach((field, __) => {
           const brewSplit = {
             duration: field.duration.value,
@@ -29,8 +31,5 @@ export const createRecord = (data, totals) => {
     }
   }
 
-  return {
-    ...record,
-    ...totals,
-  };
+  return record;
 };
