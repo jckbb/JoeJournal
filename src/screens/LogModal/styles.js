@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {BLACK, IVORY_WHITE, WHITE} from '../../common/res/colors';
+import {BLACK, IVORY_WHITE, PRIMARY_COLOR, WHITE} from '../../common/res/colors';
 
 export default StyleSheet.create({
   log: {},
@@ -26,6 +26,28 @@ export default StyleSheet.create({
     marginTop: 20,
     marginLeft: 20,
     color: WHITE,
+  },
+  gradeHighlight: {
+    backgroundColor: PRIMARY_COLOR,
+  },
+  gradeEmpty: {
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  formerGradeIncrementBlock: {
+    borderTopRightRadius: 7,
+    borderBottomRightRadius: 7,
+  },
+  initialGradeIncrementBlock: {
+    borderTopLeftRadius: 7,
+    borderBottomLeftRadius: 7,
+  },
+  gradeSpacer: {
+    marginLeft: 2,
+  },
+  gradeIncrementBlock: {
+    height: 30,
+    width: 40,
+    borderRadius: 2,
   },
   detailText: {
     color: BLACK,

@@ -105,11 +105,11 @@ const LogModal = (props) => {
               <View
                 key={index}
                 style={[
-                  index === value ? {backgroundColor: 'red'} : {backgroundColor: 'rgba(0, 0, 0, 0.1)'},
-                  {height: 30, width: 40, borderRadius: 2},
-                  index !== 0 && {marginLeft: 2},
-                  index === 0 && {borderTopLeftRadius: 7, borderBottomLeftRadius: 7},
-                  index === length - 1 && {borderTopRightRadius: 7, borderBottomRightRadius: 7},
+                  index === value ? styles.gradeHighlight : styles.gradeEmpty,
+                  styles.gradeIncrementBlock,
+                  index !== 0 && styles.gradeSpacer,
+                  index === 0 && styles.initialGradeIncrementBlock,
+                  index === length - 1 && styles.formerGradeIncrementBlock,
                 ]}
               />
             );
@@ -171,7 +171,7 @@ const LogModal = (props) => {
                 {renderBrewTotals()}
               </>,
             )}
-            {renderEvaluate()}
+            {props.data.evaluate && renderEvaluate()}
           </View>
         </ScrollView>
       </ModalWrapper>
