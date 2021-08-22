@@ -4,7 +4,7 @@ export const grinderModelData = {
     name: 'Encore',
     brand: 'Baratza',
     maxDial: 40,
-    step: 2,
+    step: 1,
   },
 };
 
