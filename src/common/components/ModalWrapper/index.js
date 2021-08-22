@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, Modal} from 'react-native';
 
-import HoverButton from '../HoverButton';
 import styles from './styles';
 
 const ModalWrapper = ({children, ...props}) => {
@@ -10,10 +9,6 @@ const ModalWrapper = ({children, ...props}) => {
   useEffect(() => {
     setModalVisible(props.visible);
   }, [props.visible]);
-
-  const handleClosePress = () => {
-    props.onRequestClose();
-  };
 
   return (
     <Modal

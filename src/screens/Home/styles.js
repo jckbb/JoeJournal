@@ -29,20 +29,29 @@ export default StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 30,
   },
-  timeText: {
+  dateTimeText: {
     color: BLACK,
-    fontSize: 20,
-    fontWeight: '400',
+    fontSize: 18,
+    fontWeight: '500',
     letterSpacing: 0.1,
+    opacity: 0.6,
   },
   divider: {
     height: 1,
     borderRadius: 0.5,
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
   },
-  logText: {
-    fontSize: 20,
+  logItemHeaderText: {
+    textTransform: 'capitalize',
+    fontSize: 24,
     fontWeight: '700',
+    color: BLACK,
+  },
+  logItemSubtitleText: {
+    textTransform: 'capitalize',
+    fontSize: 20,
+    fontWeight: '600',
+    color: BLACK,
   },
   logList: {
     flex: 1,
