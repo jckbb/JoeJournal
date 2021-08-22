@@ -19,8 +19,6 @@ const HoverButton = (props) => {
     switch (type) {
       case 'hover':
         return styles.hoverLabel;
-      case 'close':
-        return styles.closeLabel;
       default:
         return styles.hoverButton;
     }
