@@ -1,9 +1,13 @@
 export const fromTimestampToDate = (timestamp) => {
   const date = new Date(timestamp);
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
+  let month = date.getMonth() + 1;
+  let day = date.getDate();
+  const year = date.getFullYear();
 
-  return `${month}/${day}`;
+  month = month < 10 ? `0${month}` : month;
+  day = day < 10 ? `0${day}` : day;
+
+  return `${month}-${day}-${year}`;
 };
 
 export const fromTimestampToTimeOfDay = (timestamp) => {
