@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {StatusBar, TouchableOpacity, Text, View, FlatList} from 'react-native';
-import HoverButton from '../../common/components/HoverButton';
+import HoverButton from './components/HoverButton';
 import {getLogs} from '../../storage/utils';
 import CreateLogModal from '../CreateLogModal';
 import LogModal from '../LogModal';
@@ -61,12 +61,12 @@ const Home = () => {
           showModal('logDetails');
         }}>
         <View style={styles.date}>
-          <Text style={styles.dateText}>{`${data.evaluate.overall}/10`}</Text>
+          <Text style={styles.dateText}>{data.evaluate ? `${data.evaluate.overall}/10` : '--'}</Text>
         </View>
         <View>
-          <Text style={styles.logText}>{data.region}</Text>
-          <Text style={styles.logText}>{data.roaster}</Text>
-          <Text style={styles.timeText}>{`${fromTimestampToDate(data.createdAt)} ${fromTimestampToTimeOfDay(data.createdAt)}`}</Text>
+          <Text style={styles.logItemHeaderText}>{data.region}</Text>
+          <Text style={styles.logItemSubtitleText}>{data.roaster}</Text>
+          <Text style={styles.dateTimeText}>{`${fromTimestampToTimeOfDay(data.createdAt)} ${fromTimestampToDate(data.createdAt)}`}</Text>
         </View>
       </TouchableOpacity>
     );
