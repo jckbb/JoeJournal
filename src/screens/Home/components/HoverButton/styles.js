@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {BLACK, PRIMARY_COLOR, WHITE} from '../../../../common/res/colors';
+import {IVORY_WHITE, WHITE} from '../../../../common/res/colors';
 
 const DIMENSION = 75;
 
@@ -9,7 +9,7 @@ export default StyleSheet.create({
     height: DIMENSION,
     minWidth: DIMENSION,
     borderRadius: DIMENSION / 2,
-    backgroundColor: PRIMARY_COLOR,
+    backgroundColor: IVORY_WHITE,
     justifyContent: 'center',
     alignItems: 'center',
     bottom: 25,
