@@ -21,10 +21,9 @@ export default StyleSheet.create({
     marginBottom: 8,
   },
   title: {
-    fontSize: 30,
-    fontWeight: '600',
-    marginTop: 20,
-    marginLeft: 20,
+    fontSize: 28,
+    fontWeight: '700',
+    lineHeight: 45,
     color: WHITE,
   },
   gradeHighlight: {
@@ -87,7 +86,8 @@ export default StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    marginRight: 20,
+    alignItems: 'center',
+    marginTop: 20,
+    marginHorizontal: 20,
   },
 });

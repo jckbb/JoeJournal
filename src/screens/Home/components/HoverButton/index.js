@@ -1,5 +1,6 @@
 import React from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
+import {EditIcon} from '../../../../common/res/svgs';
 
 import styles from './styles';
 
@@ -28,7 +29,8 @@ const HoverButton = (props) => {
     <TouchableOpacity
       style={buttonStyling(props.buttonType)}
       onPress={props.onPress}>
-      <Text style={labelStyling(props.buttonType)}>{props.label}</Text>
+      {/* <Text style={labelStyling(props.buttonType)}>{props.label}</Text> */}
+      <EditIcon />
     </TouchableOpacity>
   );
 };

@@ -40,7 +40,7 @@ export default StyleSheet.create({
   },
   header: {
     marginRight: 20,
-    marginTop: 30,
+    marginTop: 20,
     alignItems: 'flex-end',
   },
 });
