@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {WHITE} from '../../res/colors';
 
-const DIMENSION = 45;
+const DIMENSION = 50;
 
 export default StyleSheet.create({
   iconButton: {
@@ -9,7 +9,7 @@ export default StyleSheet.create({
     height: DIMENSION,
     width: DIMENSION,
     backgroundColor: WHITE,
-    borderRadius: DIMENSION / 2,
+    borderRadius: 7,
     justifyContent: 'center',
     alignItems: 'center',
   },

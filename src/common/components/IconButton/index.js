@@ -4,9 +4,7 @@ import styles from './styles';
 
 const IconButton = ({children, ...props}) => {
   return (
-    <TouchableOpacity
-      style={[styles.iconButton, props.selected && styles.borderHighlight]}
-      onPress={props.onPress}>
+    <TouchableOpacity style={styles.iconButton} onPress={props.onPress}>
       {children}
     </TouchableOpacity>
   );

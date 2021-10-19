@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {WHITE} from '../../../../common/res/colors';
+import {BLACK, PRIMARY_COLOR_800, WHITE} from '../../res/colors';
 
 export default StyleSheet.create({
   textbox: {
@@ -19,5 +19,12 @@ export default StyleSheet.create({
   },
   topSpacing: {
     marginTop: 20,
+  },
+  border: {
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.6)',
+  },
+  darkText: {
+    color: BLACK,
   },
 });
