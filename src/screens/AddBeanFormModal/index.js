@@ -13,7 +13,7 @@ import reducer, {initialState} from './data/useForm';
 import {updateField} from './data/actions';
 import styles from './styles';
 
-const CreateCoffeeModal = (props) => {
+const AddBeanFormModal = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleSubmit = async () => {
@@ -76,4 +76,4 @@ const CreateCoffeeModal = (props) => {
   );
 };
 
-export default CreateCoffeeModal;
+export default AddBeanFormModal;
