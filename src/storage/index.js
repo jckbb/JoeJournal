@@ -1,9 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const keyTypes = {
-  LOGS: 'logs',
-  LAST_LOG: 'lastLog',
-  BREW_FORM: 'brewForm',
+  BEAN: 'bean',
 };
 
 export const createMultipleStorageItems = async (pairSetData) => {
@@ -16,7 +14,7 @@ export const createMultipleStorageItems = async (pairSetData) => {
 
 export const createStorageItem = async (key, data) => {
   try {
-    return await AsyncStorage.setItem(key, JSON.stringify(data));
+    return await AsyncStorage.setItem(key, data);
   } catch (error) {
     throw error;
   }

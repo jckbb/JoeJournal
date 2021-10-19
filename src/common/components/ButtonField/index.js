@@ -8,12 +8,12 @@ const ButtonField = (props) => {
   const textStyling = !props.value ? styles.placeholder : styles.fieldText;
 
   return (
-    <View style={[props.hasTopRoom && styles.topSpacing]}>
+    <View style={[styles.container, props.hasTopRoom && styles.topSpacing]}>
       <Text style={styles.label}>{props.label}</Text>
-      <TouchableOpacity
-        style={[styles.fieldBox, styles.fieldButton]}
-        onPress={props.onPress}>
-        <Text style={[textStyling, props.error && styles.error]}>
+      <TouchableOpacity style={styles.fieldBox} onPress={props.onPress}>
+        <Text
+          numberOfLines={1}
+          style={[textStyling, props.error && styles.error]}>
           {content}
         </Text>
       </TouchableOpacity>

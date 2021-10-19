@@ -1,9 +1,10 @@
 import {StyleSheet} from 'react-native';
-import {WHITE, BLACK} from '../../../../common/res/colors';
+import {WHITE, BLACK} from '../../res/colors';
 
 export default StyleSheet.create({
-  fieldButton: {
-    justifyContent: 'center',
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
   },
   error: {
     color: 'red',
@@ -16,9 +17,10 @@ export default StyleSheet.create({
     fontSize: 20,
     fontWeight: '500',
     borderRadius: 7,
+    paddingHorizontal: 8,
+    backgroundColor: WHITE,
     height: 50,
-    paddingLeft: 8,
-    backgroundColor: '#ffffff',
+    justifyContent: 'center',
   },
   label: {
     fontSize: 18,

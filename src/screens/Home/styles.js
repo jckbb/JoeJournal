@@ -1,60 +1,27 @@
 import {StyleSheet} from 'react-native';
-import {BLACK, IVORY_WHITE, PRIMARY_COLOR} from '../../common/res/colors';
+import {PRIMARY_COLOR_700, PRIMARY_COLOR_800} from '../../common/res/colors';
 
 export default StyleSheet.create({
   home: {
-    marginTop: 0,
     flex: 1,
-    paddingTop: 35,
-    backgroundColor: IVORY_WHITE,
+    paddingHorizontal: '15%',
   },
-  date: {
-    height: 65,
-    width: 65,
-    borderRadius: 32.5,
-    backgroundColor: PRIMARY_COLOR,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
-  },
-  dateText: {
-    color: IVORY_WHITE,
-    fontWeight: '700',
-    fontSize: 20,
-  },
-  logButton: {
+  form: {
     flex: 1,
+    top: '15%',
+  },
+  row: {
     flexDirection: 'row',
-    alignItems: 'center',
-    paddingTop: 20,
-    paddingBottom: 30,
   },
-  dateTimeText: {
-    color: BLACK,
-    fontSize: 18,
-    fontWeight: '500',
-    letterSpacing: 0.1,
-    opacity: 0.6,
+  drawerDivider: {
+    backgroundColor: PRIMARY_COLOR_700,
+    height: 2,
+    borderRadius: 1,
   },
-  divider: {
-    height: 1,
-    borderRadius: 0.5,
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  logItemHeaderText: {
-    textTransform: 'capitalize',
-    fontSize: 24,
+  drawerItemText: {
+    fontSize: 22,
+    marginLeft: 20,
     fontWeight: '700',
-    color: BLACK,
-  },
-  logItemSubtitleText: {
-    textTransform: 'capitalize',
-    fontSize: 20,
-    fontWeight: '600',
-    color: BLACK,
-  },
-  logList: {
-    flex: 1,
-    paddingHorizontal: 20,
+    color: PRIMARY_COLOR_800,
   },
 });

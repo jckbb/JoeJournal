@@ -1,109 +1,175 @@
-import React, {useEffect, useState} from 'react';
-import {StatusBar, TouchableOpacity, Text, View, FlatList} from 'react-native';
-import HoverButton from './components/HoverButton';
-import {getLogs} from '../../storage/utils';
-import CreateLogModal from '../CreateLogModal';
-import LogModal from '../LogModal';
-import {
-  fromTimestampToTimeOfDay,
-  fromTimestampToDate,
-} from '../../common/utils/time';
+import React, {useReducer, useState, useEffect} from 'react';
+import {TouchableOpacity, StatusBar, View, FlatList, Text} from 'react-native';
 
+import ButtonField from '../../common/components/ButtonField';
+import IconButton from '../../common/components/IconButton';
+import SubmitForm from '../../common/components/SubmitForm';
+import Title from '../../common/components/Title';
+import BottomDrawer, {drawerState} from '../../common/components/BottomDrawer';
+import CreateCoffeeModal from '../CreateCoffeeModal';
+
+import {PlusSvg} from '../../common/res/svgs';
+import {getBeans, wipeStorage} from '../../storage/utils';
+
+import reducer, {initialState} from './data/useForm';
+import {updateField} from './data/actions';
 import styles from './styles';
 
-const initialModalVisibility = {
-  logDetails: {
-    visible: false,
-  },
-  createLog: {
-    visible: false,
-  },
-};
-
 const Home = () => {
-  const [modalVisible, setModalVisible] = useState(initialModalVisibility);
-  const [selectedLog, setSelectedLog] = useState(null);
-  const [logs, setLog] = useState([]);
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const [showBottomDrawer, setBottomDrawer] = useState(false);
+  const [isCoffeeModalVisible, setCoffeeModalVisible] = useState(false);
+  const [optionType, setOptionType] = useState('');
+  const [setupOptions, setSetupOptions] = useState({
+    coffee: ['burundi'],
+    method: ['Pour over'],
+    grinder: ['Baratza Encore'],
+  });
 
   useEffect(() => {
-    fetchLogs();
+    fetchCoffeeBeans();
   }, []);
 
-  const fetchLogs = async () => {
-    setLog(await getLogs());
-  };
-
-  const handleBrewPress = () => {
-    showModal('createLog');
-  };
-
-  const showModal = (type) => {
-    setModalVisible({
-      ...modalVisible,
-      [type]: {
-        visible: true,
-      },
+  const fetchCoffeeBeans = async () => {
+    await getBeans().then(response => {
+      setSetupOptions(prev => ({
+        ...prev,
+        coffee: response,
+      }));
     });
   };
 
-  const handleRequestClose = () => {
-    setModalVisible(initialModalVisibility);
+  const handleChangeCoffeePress = () => {
+    if (setupOptions['coffee'].length <= 0) return;
+
+    setBottomDrawer(true);
+    setOptionType('coffee');
   };
 
-  const renderItem = ({item, index}) => {
-    const data = item;
-
-    return (
-      <TouchableOpacity
-        style={styles.logButton}
-        onPress={() => {
-          setSelectedLog(data);
-          showModal('logDetails');
-        }}>
-        <View style={styles.date}>
-          <Text style={styles.dateText}>{data.evaluate ? `${data.evaluate.overall}/10` : '--'}</Text>
-        </View>
-        <View>
-          <Text style={styles.logItemHeaderText}>{data.region}</Text>
-          <Text style={styles.logItemSubtitleText}>{data.roaster}</Text>
-          <Text style={styles.dateTimeText}>{`${fromTimestampToTimeOfDay(data.createdAt)} ${fromTimestampToDate(data.createdAt)}`}</Text>
-        </View>
-      </TouchableOpacity>
-    );
+  const handleChangeMethodPress = () => {
+    setBottomDrawer(true);
+    setOptionType('method');
   };
+
+  const handleChangeGrinderPress = () => {
+    setBottomDrawer(true);
+    setOptionType('grinder');
+  };
+
+  const handleCreateCoffeePress = () => {
+    setCoffeeModalVisible(true);
+  };
+
+  // temp
+  const handleWipe = async () => {
+    await wipeStorage();
+  };
+
+  const handleDrawerStateChange = state => {
+    if (state === drawerState.Closed) {
+      handleDrawerClose();
+    }
+  };
+
+  const handleDrawerClose = () => {
+    setBottomDrawer(false);
+    setOptionType('');
+  };
+
+  const handleSelectedDrawerItem = (data) => {
+    handleDrawerClose();
+    dispatch(updateField(optionType, data));
+  };
+
+  const renderFieldContainer = field => <View style={styles.row}>{field}</View>;
 
   return (
     <View style={styles.home}>
       <StatusBar hidden />
-      <FlatList
-        style={styles.logList}
-        data={logs}
-        renderItem={renderItem}
-        keyExtractor={(__, index) => index.toString()}
-        ItemSeparatorComponent={() => <View style={styles.divider} />}
-      />
-      <LogModal
-        data={selectedLog}
-        isVisible={modalVisible.logDetails.visible}
-        onRequestClose={() => {
-          handleRequestClose();
-          setSelectedLog(null);
+      <Title>{'Setup'}</Title>
+      <View style={styles.form}>
+        {renderFieldContainer(
+          <>
+            <ButtonField
+              label={'Coffee'}
+              placeholder={'Burundi'}
+              value={
+                !state.coffee
+                  ? ''
+                  : `${state.coffee.roaster} - ${state.coffee.origin}`
+              }
+              onPress={handleChangeCoffeePress}
+            />
+            <View style={{marginLeft: 5, alignSelf: 'flex-end'}}>
+              <IconButton onPress={handleCreateCoffeePress}>
+                <PlusSvg />
+              </IconButton>
+            </View>
+          </>,
+        )}
+        {renderFieldContainer(
+          <ButtonField
+            hasTopRoom
+            label={'Method'}
+            placeholder={'Pour over'}
+            value={state.method}
+            onPress={handleChangeMethodPress}
+          />,
+        )}
+        {renderFieldContainer(
+          <ButtonField
+            hasTopRoom
+            label={'Grinder'}
+            placeholder={'Baratza Encore'}
+            value={state.grinder}
+            onPress={handleChangeGrinderPress}
+          />,
+        )}
+        <View style={{alignItems: 'center', top: 50}}>
+          <SubmitForm
+            nextArrow
+            label={'Continue'}
+            onPress={() => {
+              handleWipe();
+            }}
+          />
+        </View>
+      </View>
+      <CreateCoffeeModal
+        visible={isCoffeeModalVisible}
+        onClose={() => {
+          setCoffeeModalVisible(false);
         }}
       />
-      <CreateLogModal
-        isVisible={modalVisible.createLog.visible}
-        onRequestClose={(log) => {
-          if (log) {
-            setLog([log, ...logs]);
-          }
-          handleRequestClose();
-        }}
-      />
-      <HoverButton
-        buttonType={'hover'}
-        label={'Brew'}
-        onPress={handleBrewPress}
-      />
+      <BottomDrawer
+        isVisible={showBottomDrawer}
+        onDrawerStateChange={handleDrawerStateChange}>
+        <FlatList
+          data={setupOptions[optionType]}
+          renderItem={({item, index}) => {
+            let content = null;
+            switch (optionType) {
+              case 'coffee':
+                content = <Text style={styles.drawerItemText}>{`${item.roaster} - ${item.origin}`}</Text>;
+                break;
+              default:
+                content = <Text>{item}</Text>;
+                break;
+            }
+
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  handleSelectedDrawerItem(item);
+                }}>
+                {content}
+              </TouchableOpacity>
+            );
+          }}
+          ItemSeparatorComponent={() => <View style={styles.divider} />}
+          keyExtractor={(__, index) => index.toString()}
+        />
+      </BottomDrawer>
     </View>
   );
 };
