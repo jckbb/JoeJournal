@@ -42,6 +42,7 @@ const AddBeanFormModal = props => {
       <View style={styles.form}>
         <Title dark>{TITLE}</Title>
         <TextField
+          hasTopRoom
           dark
           border
           error={state.origin.hasError}
