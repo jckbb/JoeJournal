@@ -15,7 +15,7 @@ import reducer, {initialState} from './data/formReducer';
 import {updateField} from './data/actions';
 import styles from './styles';
 
-const Home = () => {
+const Home = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [showFormErrors, setFormErrors] = useState(false);
   const [showBottomDrawer, setBottomDrawer] = useState(false);
@@ -78,7 +78,7 @@ const Home = () => {
     if (!isFormValid) {
       setFormErrors(true);
     } else {
-
+      props.onNavigateTo('prep');
     }
   };
 

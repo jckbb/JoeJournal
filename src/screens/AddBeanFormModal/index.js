@@ -58,7 +58,6 @@ const AddBeanFormModal = props => {
           value={state.origin.value}
           placeholder={originField.PLACEHOLDER}
           onChangeText={value => {
-            console.log('onChangeText', value);
             dispatch(updateField('origin', value));
           }}
         />
