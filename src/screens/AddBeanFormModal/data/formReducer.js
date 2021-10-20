@@ -2,11 +2,11 @@ import {actionTypes} from './ActionTypes';
 
 export const initialState = {
   origin: {
-    hasError: false,
+    hasError: true,
     value: '',
   },
   roaster: {
-    hasError: false,
+    hasError: true,
     value: '',
   },
   notes: {
@@ -21,16 +21,8 @@ const reducer = (state, action) => {
       return {
         ...state,
         [action.field]: {
-          ...state[action.field],
           value: action.payload,
-        },
-      };
-    case actionTypes.UPDATE_ERROR:
-      return {
-        ...state,
-        [action.field]: {
-          ...state[action.field],
-          hasError: action.hasError,
+          hasError: action.error,
         },
       };
     default:

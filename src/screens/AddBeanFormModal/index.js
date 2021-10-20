@@ -1,4 +1,4 @@
-import React, {useReducer} from 'react';
+import React, {useReducer, useState} from 'react';
 import {View} from 'react-native';
 
 import ModalWrapper from '../../common/components/ModalWrapper';
@@ -9,39 +9,56 @@ import TextListField from '../../common/components/TextListField';
 
 import {setBean} from '../../storage/utils';
 
-import reducer, {initialState} from './data/useForm';
+import reducer, {initialState} from './data/formReducer';
+import {convertToUsableData} from './utils';
 import {updateField} from './data/actions';
+import {
+  SUBMIT,
+  TITLE,
+  originField,
+  roasterField,
+  noteField,
+} from './res/strings';
 import styles from './styles';
 
-const CreateCoffeeModal = (props) => {
+const AddBeanFormModal = props => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [showFormErrors, setFormErrors] = useState(false);
 
   const handleSubmit = async () => {
-    // - validate
-    // - submit
-    // const {origin, roaster, notes} = state;
-    // const noteList = convertStringToArray(notes.value);
-    const dummyData = {
-      origin: 'Gutamala',
-      roaster: 'States Coffee',
-      notes: ['fruit', 'chocolate', 'honey'],
-    };
+    let isFormValid = true;
 
-    await setBean(dummyData);
+    for (const field in state) {
+      if (state[field].hasError) {
+        isFormValid = false;
+      }
+    }
+
+    if (!isFormValid) {
+      setFormErrors(true);
+    } else {
+      const beanData = convertToUsableData(state);
+
+      await setBean(beanData).then(() => {
+        props.onClose(beanData);
+      });
+    }
   };
 
   return (
     <ModalWrapper visible={props.visible} onCloseRequest={props.onClose}>
       <View style={styles.form}>
-        <Title dark>{'Add Bean'}</Title>
+        <Title dark>{TITLE}</Title>
         <TextField
+          hasTopRoom
           dark
           border
-          error={state.origin.hasError}
-          label={'Origin'}
+          error={showFormErrors && state.origin.hasError}
+          label={originField.LABEL}
           value={state.origin.value}
-          placeholder={'Guatemala'}
+          placeholder={originField.PLACEHOLDER}
           onChangeText={value => {
+            console.log('onChangeText', value);
             dispatch(updateField('origin', value));
           }}
         />
@@ -49,10 +66,10 @@ const CreateCoffeeModal = (props) => {
           hasTopRoom
           dark
           border
-          error={state.roaster.hasError}
-          label={'Roaster'}
+          error={showFormErrors && state.roaster.hasError}
+          label={roasterField.LABEL}
           value={state.roaster.value}
-          placeholder={'Lineage'}
+          placeholder={roasterField.PLACEHOLDER}
           onChangeText={value => {
             dispatch(updateField('roaster', value));
           }}
@@ -61,19 +78,19 @@ const CreateCoffeeModal = (props) => {
           hasTopRoom
           dark
           border
-          label={'Notes ( Optional )'}
+          label={noteField.LABEL}
           value={state.notes.value}
-          placeholder={'fruit, chocolate, floral'}
+          placeholder={noteField.PLACEHOLDER}
           onChangeText={value => {
             dispatch(updateField('notes', value));
           }}
         />
         <View style={styles.submit}>
-          <SubmitForm dark label={'Add'} onPress={handleSubmit} />
+          <SubmitForm dark label={SUBMIT} onPress={handleSubmit} />
         </View>
       </View>
     </ModalWrapper>
   );
 };
 
-export default CreateCoffeeModal;
+export default AddBeanFormModal;
