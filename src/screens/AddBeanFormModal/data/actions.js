@@ -3,11 +3,6 @@ import {actionTypes} from './ActionTypes';
 export const updateField = (name, data) => ({
   type: actionTypes.UPDATE_FIELD,
   field: name,
+  error: data.length <= 0,
   payload: data,
-});
-
-export const updateFieldError = (name, error) => ({
-  type: actionTypes.UPDATE_FIELD,
-  field: name,
-  hasError: error,
 });

@@ -1,4 +1,4 @@
-import React, {useReducer} from 'react';
+import React, {useReducer, useState} from 'react';
 import {View} from 'react-native';
 
 import ModalWrapper from '../../common/components/ModalWrapper';
@@ -9,7 +9,8 @@ import TextListField from '../../common/components/TextListField';
 
 import {setBean} from '../../storage/utils';
 
-import reducer, {initialState} from './data/useForm';
+import reducer, {initialState} from './data/formReducer';
+import {convertToUsableData} from './utils';
 import {updateField} from './data/actions';
 import {
   SUBMIT,
@@ -22,19 +23,26 @@ import styles from './styles';
 
 const AddBeanFormModal = props => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [showFormErrors, setFormErrors] = useState(false);
 
   const handleSubmit = async () => {
-    // - validate
-    // - submit
-    // const {origin, roaster, notes} = state;
-    // const noteList = convertStringToArray(notes.value);
-    const dummyData = {
-      origin: 'Gutamala',
-      roaster: 'States Coffee',
-      notes: ['fruit', 'chocolate', 'honey'],
-    };
+    let isFormValid = true;
 
-    await setBean(dummyData);
+    for (const field in state) {
+      if (state[field].hasError) {
+        isFormValid = false;
+      }
+    }
+
+    if (!isFormValid) {
+      setFormErrors(true);
+    } else {
+      const beanData = convertToUsableData(state);
+
+      await setBean(beanData).then(() => {
+        props.onClose(beanData);
+      });
+    }
   };
 
   return (
@@ -45,11 +53,12 @@ const AddBeanFormModal = props => {
           hasTopRoom
           dark
           border
-          error={state.origin.hasError}
+          error={showFormErrors && state.origin.hasError}
           label={originField.LABEL}
           value={state.origin.value}
           placeholder={originField.PLACEHOLDER}
           onChangeText={value => {
+            console.log('onChangeText', value);
             dispatch(updateField('origin', value));
           }}
         />
@@ -57,7 +66,7 @@ const AddBeanFormModal = props => {
           hasTopRoom
           dark
           border
-          error={state.roaster.hasError}
+          error={showFormErrors && state.roaster.hasError}
           label={roasterField.LABEL}
           value={state.roaster.value}
           placeholder={roasterField.PLACEHOLDER}
