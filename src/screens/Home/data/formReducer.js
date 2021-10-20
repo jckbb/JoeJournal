@@ -1,9 +1,18 @@
 import actionTypes from './actionTypes';
 
 export const initialState = {
-  coffee: {},
-  method: '',
-  grinder: '',
+  coffee: {
+    value: null,
+    hasError: true,
+  },
+  method: {
+    value: '',
+    hasError: true,
+  },
+  grinder: {
+    value: '',
+    hasError: true,
+  },
 };
 
 const reducer = (state, action) => {
@@ -11,7 +20,10 @@ const reducer = (state, action) => {
     case actionTypes.UPDATE_FIELD:
       return {
         ...state,
-        [action.field]: action.payload,
+        [action.field]: {
+          hasError: action.error,
+          value: action.payload,
+        },
       };
     default:
       return state;

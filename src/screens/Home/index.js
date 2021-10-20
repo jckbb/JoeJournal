@@ -6,22 +6,23 @@ import IconButton from '../../common/components/IconButton';
 import SubmitForm from '../../common/components/SubmitForm';
 import Title from '../../common/components/Title';
 import BottomDrawer, {drawerState} from '../../common/components/BottomDrawer';
-import CreateCoffeeModal from '../CreateCoffeeModal';
+import AddBeanFormModal from '../AddBeanFormModal';
 
 import {PlusSvg} from '../../common/res/svgs';
 import {getBeans, wipeStorage} from '../../storage/utils';
 
-import reducer, {initialState} from './data/useForm';
+import reducer, {initialState} from './data/formReducer';
 import {updateField} from './data/actions';
 import styles from './styles';
 
 const Home = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [showFormErrors, setFormErrors] = useState(false);
   const [showBottomDrawer, setBottomDrawer] = useState(false);
   const [isCoffeeModalVisible, setCoffeeModalVisible] = useState(false);
   const [optionType, setOptionType] = useState('');
   const [setupOptions, setSetupOptions] = useState({
-    coffee: ['burundi'],
+    coffee: [],
     method: ['Pour over'],
     grinder: ['Baratza Encore'],
   });
@@ -65,6 +66,22 @@ const Home = () => {
     await wipeStorage();
   };
 
+  const handleSubmit = () => {
+    let isFormValid = true;
+
+    for (const field in state) {
+      if (state[field].hasError) {
+        isFormValid = false;
+      }
+    }
+
+    if (!isFormValid) {
+      setFormErrors(true);
+    } else {
+
+    }
+  };
+
   const handleDrawerStateChange = state => {
     if (state === drawerState.Closed) {
       handleDrawerClose();
@@ -92,11 +109,12 @@ const Home = () => {
           <>
             <ButtonField
               label={'Coffee'}
+              error={showFormErrors && state.coffee.hasError}
               placeholder={'Burundi'}
               value={
-                !state.coffee
-                  ? ''
-                  : `${state.coffee.roaster} - ${state.coffee.origin}`
+                state.coffee.value
+                  ? `${state.coffee.value.roaster} - ${state.coffee.value.origin}`
+                  : ''
               }
               onPress={handleChangeCoffeePress}
             />
@@ -110,34 +128,37 @@ const Home = () => {
         {renderFieldContainer(
           <ButtonField
             hasTopRoom
+            error={showFormErrors && state.method.hasError}
             label={'Method'}
             placeholder={'Pour over'}
-            value={state.method}
+            value={state.method.value}
             onPress={handleChangeMethodPress}
           />,
         )}
         {renderFieldContainer(
           <ButtonField
             hasTopRoom
+            error={showFormErrors && state.grinder.hasError}
             label={'Grinder'}
             placeholder={'Baratza Encore'}
-            value={state.grinder}
+            value={state.grinder.value}
             onPress={handleChangeGrinderPress}
           />,
         )}
         <View style={{alignItems: 'center', top: 50}}>
-          <SubmitForm
-            nextArrow
-            label={'Continue'}
-            onPress={() => {
-              handleWipe();
-            }}
-          />
+          <SubmitForm nextArrow label={'Continue'} onPress={handleSubmit} />
         </View>
       </View>
-      <CreateCoffeeModal
+      <AddBeanFormModal
         visible={isCoffeeModalVisible}
-        onClose={() => {
+        onClose={(data) => {
+          if (data) {
+            // update bean list
+            setSetupOptions(prev => ({
+              ...prev,
+              coffee: [...prev.coffee, data],
+            }));
+          }
           setCoffeeModalVisible(false);
         }}
       />
@@ -148,12 +169,13 @@ const Home = () => {
           data={setupOptions[optionType]}
           renderItem={({item, index}) => {
             let content = null;
+
             switch (optionType) {
               case 'coffee':
-                content = <Text style={styles.drawerItemText}>{`${item.roaster} - ${item.origin}`}</Text>;
+                content = `${item.roaster} - ${item.origin}`;
                 break;
               default:
-                content = <Text>{item}</Text>;
+                content = item;
                 break;
             }
 
@@ -162,7 +184,7 @@ const Home = () => {
                 onPress={() => {
                   handleSelectedDrawerItem(item);
                 }}>
-                {content}
+                <Text style={styles.drawerItemText}>{content}</Text>
               </TouchableOpacity>
             );
           }}
