@@ -1,10 +1,11 @@
 import React, {useReducer, useState} from 'react';
-import {View, Text, StatusBar} from 'react-native';
+import {View, StatusBar} from 'react-native';
 
 import NumberField from '../../common/components/NumberField';
 import SliderField from '../../common/components/SliderField';
 import SubmitForm from '../../common/components/SubmitForm';
 import Title from '../../common/components/Title';
+import Step from '../../common/components/Step';
 
 import {unitType} from '../../common/res/strings';
 import reducer, {initialState} from './data/formReducer';
@@ -35,9 +36,7 @@ const PrepForm = (props) => {
   return (
     <View>
       <StatusBar hidden />
-      <View style={styles.step}>
-        <Text style={styles.stepText}>{'1 of 2'}</Text>
-      </View>
+      <Step totalSteps={2} currentStep={1} />
       <View style={styles.form}>
         <Title>{'Prep'}</Title>
         <SliderField
