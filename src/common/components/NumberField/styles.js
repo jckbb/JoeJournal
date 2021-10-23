@@ -2,6 +2,12 @@ import {StyleSheet} from 'react-native';
 import {WHITE} from '../../res/colors';
 
 export default StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  leftSpacing: {
+    marginLeft: 20,
+  },
   textbox: {
     fontSize: 20,
     fontWeight: '500',

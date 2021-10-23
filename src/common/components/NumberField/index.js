@@ -9,7 +9,12 @@ const NumberField = ({label, ...props}) => {
   };
 
   return (
-    <View style={[props.hasTopRoom && styles.topSpacing]}>
+    <View
+      style={[
+        styles.container,
+        props.hasTopRoom && styles.topSpacing,
+        props.hasLeftRoom && styles.leftSpacing,
+      ]}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
         placeholderTextColor={props.error && 'red'}

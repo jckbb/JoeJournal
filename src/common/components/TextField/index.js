@@ -18,6 +18,9 @@ const TextField = (props) => {
         placeholder={props.placeholder}
         value={props.value ? props.value : ''}
         onChangeText={props.onChangeText}
+        blurOnSubmit
+        multiline={true}
+        numberOfLines={props.lineCount ? props.lineCount : 1}
       />
     </View>
   );
