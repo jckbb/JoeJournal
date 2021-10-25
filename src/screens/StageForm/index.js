@@ -1,5 +1,11 @@
 import React, {useReducer, useState} from 'react';
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {
+  StatusBar,
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 
 import {PlusSvg} from '../../common/res/svgs';
 import {unitType} from '../../common/res/strings';
@@ -99,6 +105,7 @@ const StageForm = (props) => {
 
   return (
     <View style={styles.stageForm}>
+      <StatusBar hidden />
       <Step totalSteps={2} currentStep={2} />
       <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
         <Title>{TITLE}</Title>
