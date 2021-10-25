@@ -1,14 +1,16 @@
 import {StyleSheet} from 'react-native';
-import {BLACK, PRIMARY_COLOR_800, WHITE} from '../../res/colors';
+import {BLACK, WHITE} from '../../res/colors';
 
 export default StyleSheet.create({
   textbox: {
     fontSize: 20,
     fontWeight: '500',
     borderRadius: 7,
-    height: 50,
+    minHeight: 50,
     paddingLeft: 8,
     backgroundColor: WHITE,
+    textAlignVertical: 'top',
+    flexWrap: 'wrap',
   },
   label: {
     fontSize: 18,
