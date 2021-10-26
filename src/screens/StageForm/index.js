@@ -49,7 +49,9 @@ const StageForm = (props) => {
       return;
     }
 
-    console.log(convertFormDataToRecord(state.stage));
+    const record = convertFormDataToRecord(state.stage);
+    props.onStageComplete(record);
+    props.onNavigateTo('brew');
   };
 
   const handleRemoveStage = () => {

@@ -10,6 +10,7 @@ import Step from '../../common/components/Step';
 import {unitType} from '../../common/res/strings';
 import reducer, {initialState} from './data/formReducer';
 import {updateField} from './data/actions';
+import {convertFormDataToRecord} from './utils';
 import styles from './styles';
 
 const PrepForm = (props) => {
@@ -29,16 +30,18 @@ const PrepForm = (props) => {
       setFormErrors(true);
     } else {
       // continue
+      const record = convertFormDataToRecord(state);
+      props.onPrepComplete(record);
       props.onNavigateTo('stage');
     }
   };
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <StatusBar hidden />
       <Step totalSteps={2} currentStep={1} />
+      <Title>{'Prep'}</Title>
       <View style={styles.form}>
-        <Title>{'Prep'}</Title>
         <SliderField
           hasTopRoom
           label={'Dial Grinder'}

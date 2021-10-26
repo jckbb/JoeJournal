@@ -6,11 +6,11 @@ export const initialState = {
     hasError: false,
   },
   waterTemperature: {
-    value: 0,
+    value: undefined,
     hasError: true,
   },
   coffeeAmount: {
-    value: 0,
+    value: undefined,
     hasError: true,
   },
 };

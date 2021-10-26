@@ -1,7 +1,8 @@
 export const grinderModelData = {
   encore_baratza: {
     displayName: 'Encore Baratza',
-    name: 'Encore',
+    name: 'encore_baratza',
+    model: 'Encore',
     brand: 'Baratza',
     maxDial: 40,
     step: 1,
@@ -9,6 +10,12 @@ export const grinderModelData = {
 };
 
 export const grinderModelByName = ['encore_baratza'];
+
+export const methodData = {
+  pour_over: {
+    displayName: 'Pour Over',
+  },
+};
 
 export const brewModelData = {
   harioV60: {
