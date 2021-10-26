@@ -3,9 +3,8 @@ import {PRIMARY_COLOR_900, WHITE} from '../../res/colors';
 
 export default StyleSheet.create({
   title: {
-    marginTop: 30,
-    fontSize: 50,
-    fontWeight: '700',
+    fontSize: 75,
+    letterSpacing: 1,
     color: WHITE,
   },
   darkTitle: {
