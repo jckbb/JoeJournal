@@ -2,7 +2,7 @@ import {actionTypes} from './actions';
 
 export const initialState = {
   dial: {
-    value: 0,
+    value: 1,
     hasError: false,
   },
   waterTemperature: {
@@ -10,6 +10,10 @@ export const initialState = {
     hasError: true,
   },
   coffeeAmount: {
+    value: undefined,
+    hasError: true,
+  },
+  totalWaterAmount: {
     value: undefined,
     hasError: true,
   },
