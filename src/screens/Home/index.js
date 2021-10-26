@@ -98,8 +98,8 @@ const Home = (props) => {
 
       const logIdExists = await checkSetupIdExists(setupId);
       const navigateId = logIdExists ? 'brew' : 'prep';
-      props.onNavigateTo(navigateId);
       props.onSetupComplete(setupId, setupRecord);
+      props.onNavigateTo(navigateId);
     }
   };
 
