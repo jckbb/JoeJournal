@@ -9,11 +9,31 @@ import BottomDrawer, {drawerState} from '../../common/components/BottomDrawer';
 import AddBeanFormModal from '../AddBeanFormModal';
 
 import {PlusSvg} from '../../common/res/svgs';
-import {getBeans, wipeStorage} from '../../storage/utils';
+import {
+  methodData,
+  methodByName,
+  grinderData,
+  grinderByName,
+} from '../../common/res/strings';
+import {getBeans, checkSetupIdExists} from '../../storage/utils';
 
 import reducer, {initialState} from './data/formReducer';
 import {updateField} from './data/actions';
+import {convertFormDataToRecord} from './utils';
+import {
+  TITLE,
+  SUBMIT,
+  beanField,
+  methodField,
+  grinderField,
+} from './res/strings';
 import styles from './styles';
+
+const fieldType = {
+  BEAN: 'bean',
+  METHOD: 'method',
+  GRINDER: 'grinder',
+};
 
 const Home = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -22,9 +42,9 @@ const Home = (props) => {
   const [isCoffeeModalVisible, setCoffeeModalVisible] = useState(false);
   const [optionType, setOptionType] = useState('');
   const [setupOptions, setSetupOptions] = useState({
-    coffee: [],
-    method: ['Pour over'],
-    grinder: ['Baratza Encore'],
+    bean: [],
+    method: methodByName,
+    grinder: grinderByName,
   });
 
   useEffect(() => {
@@ -35,38 +55,33 @@ const Home = (props) => {
     await getBeans().then(response => {
       setSetupOptions(prev => ({
         ...prev,
-        coffee: response,
+        bean: response,
       }));
     });
   };
 
   const handleChangeCoffeePress = () => {
-    if (setupOptions['coffee'].length <= 0) return;
+    if (setupOptions[fieldType.BEAN].length <= 0) return;
 
     setBottomDrawer(true);
-    setOptionType('coffee');
+    setOptionType(fieldType.BEAN);
   };
 
   const handleChangeMethodPress = () => {
     setBottomDrawer(true);
-    setOptionType('method');
+    setOptionType(fieldType.METHOD);
   };
 
   const handleChangeGrinderPress = () => {
     setBottomDrawer(true);
-    setOptionType('grinder');
+    setOptionType(fieldType.GRINDER);
   };
 
   const handleCreateCoffeePress = () => {
     setCoffeeModalVisible(true);
   };
 
-  // temp
-  const handleWipe = async () => {
-    await wipeStorage();
-  };
-
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let isFormValid = true;
 
     for (const field in state) {
@@ -78,7 +93,13 @@ const Home = (props) => {
     if (!isFormValid) {
       setFormErrors(true);
     } else {
-      props.onNavigateTo('prep');
+      const setupRecord = convertFormDataToRecord(state);
+      const setupId = `${state.bean.value.roaster}_${state.bean.value.origin}_${state.method.value}_${state.grinder.value}`;
+
+      const logIdExists = await checkSetupIdExists(setupId);
+      const navigateId = logIdExists ? 'brew' : 'prep';
+      props.onNavigateTo(navigateId);
+      props.onSetupComplete(setupId, setupRecord);
     }
   };
 
@@ -95,6 +116,7 @@ const Home = (props) => {
 
   const handleSelectedDrawerItem = (data) => {
     handleDrawerClose();
+
     dispatch(updateField(optionType, data));
   };
 
@@ -103,17 +125,17 @@ const Home = (props) => {
   return (
     <View style={styles.home}>
       <StatusBar hidden />
-      <Title>{'Setup'}</Title>
+      <Title>{TITLE}</Title>
       <View style={styles.form}>
         {renderFieldContainer(
           <>
             <ButtonField
-              label={'Coffee'}
-              error={showFormErrors && state.coffee.hasError}
-              placeholder={'Burundi'}
+              label={beanField.LABEL}
+              error={showFormErrors && state.bean.hasError}
+              placeholder={beanField.PLACEHOLDER}
               value={
-                state.coffee.value
-                  ? `${state.coffee.value.roaster} - ${state.coffee.value.origin}`
+                state.bean.value
+                  ? `${state.bean.value.roaster} - ${state.bean.value.origin}`
                   : ''
               }
               onPress={handleChangeCoffeePress}
@@ -129,9 +151,13 @@ const Home = (props) => {
           <ButtonField
             hasTopRoom
             error={showFormErrors && state.method.hasError}
-            label={'Method'}
-            placeholder={'Pour over'}
-            value={state.method.value}
+            label={methodField.LABEL}
+            placeholder={methodField.PLACEHOLDER}
+            value={
+              state.method.value !== undefined
+                ? methodData[state.method.value].displayName
+                : ''
+            }
             onPress={handleChangeMethodPress}
           />,
         )}
@@ -139,14 +165,18 @@ const Home = (props) => {
           <ButtonField
             hasTopRoom
             error={showFormErrors && state.grinder.hasError}
-            label={'Grinder'}
-            placeholder={'Baratza Encore'}
-            value={state.grinder.value}
+            label={grinderField.LABEL}
+            placeholder={grinderField.PLACEHOLDER}
+            value={
+              state.grinder.value !== undefined
+                ? grinderData[state.grinder.value].displayName
+                : ''
+            }
             onPress={handleChangeGrinderPress}
           />,
         )}
         <View style={{alignItems: 'center', top: 50}}>
-          <SubmitForm nextArrow label={'Continue'} onPress={handleSubmit} />
+          <SubmitForm nextArrow label={SUBMIT} onPress={handleSubmit} />
         </View>
       </View>
       <AddBeanFormModal
@@ -156,7 +186,7 @@ const Home = (props) => {
             // update bean list
             setSetupOptions(prev => ({
               ...prev,
-              coffee: [...prev.coffee, data],
+              bean: [...prev.bean, data],
             }));
           }
           setCoffeeModalVisible(false);
@@ -171,8 +201,14 @@ const Home = (props) => {
             let content = null;
 
             switch (optionType) {
-              case 'coffee':
+              case fieldType.BEAN:
                 content = `${item.roaster} - ${item.origin}`;
+                break;
+              case fieldType.METHOD:
+                content = methodData[item].displayName;
+                break;
+              case fieldType.GRINDER:
+                content = grinderData[item].displayName;
                 break;
               default:
                 content = item;

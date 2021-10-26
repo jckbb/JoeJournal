@@ -5,6 +5,6 @@ export const actionTypes = {
 export const updateField = (name, data) => ({
   type: actionTypes.UPDATE_FIELD,
   field: name,
-  error: data.length <= 0,
+  error: data === undefined || data.length <= 0,
   payload: data,
 });

@@ -1,16 +1,16 @@
 import actionTypes from './actionTypes';
 
 export const initialState = {
-  coffee: {
+  bean: {
     value: null,
     hasError: true,
   },
   method: {
-    value: '',
+    value: undefined,
     hasError: true,
   },
   grinder: {
-    value: '',
+    value: undefined,
     hasError: true,
   },
 };

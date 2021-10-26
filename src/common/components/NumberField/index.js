@@ -13,7 +13,7 @@ const NumberField = ({label, ...props}) => {
   return (
     <View
       style={[
-        styles.container,
+        // styles.container,
         props.hasTopRoom && styles.topSpacing,
         props.hasLeftRoom && styles.leftSpacing,
       ]}>

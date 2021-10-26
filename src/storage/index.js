@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const keyTypes = {
   BEAN: 'bean',
+  LOG: 'log',
 };
 
 export const createMultipleStorageItems = async (pairSetData) => {
