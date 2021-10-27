@@ -98,8 +98,8 @@ const Home = (props) => {
 
       const logIdExists = await checkSetupIdExists(setupId);
       const navigateId = logIdExists ? 'brew' : 'prep';
-      props.onNavigateTo(navigateId);
       props.onSetupComplete(setupId, setupRecord);
+      props.onNavigateTo(navigateId);
     }
   };
 
@@ -130,6 +130,7 @@ const Home = (props) => {
         {renderFieldContainer(
           <>
             <ButtonField
+              hasTopRoom
               label={beanField.LABEL}
               error={showFormErrors && state.bean.hasError}
               placeholder={beanField.PLACEHOLDER}

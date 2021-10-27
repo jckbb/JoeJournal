@@ -8,7 +8,6 @@ export default StyleSheet.create({
   },
   form: {
     flex: 1,
-    top: '15%',
   },
   row: {
     flexDirection: 'row',

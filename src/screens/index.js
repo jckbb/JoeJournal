@@ -15,12 +15,7 @@ const Root = () => {
 
   useEffect(() => {
     // handleWipe();
-    handleBeans();
   },[]);
-
-  const handleBeans = async () => {
-    await getBeans();
-  };
 
   const handleWipe = async () => {
     await wipeStorage();
@@ -60,6 +55,7 @@ const Root = () => {
       case 'prep':
         return (
           <PrepForm
+            data={state}
             onPrepComplete={handlePrepComplete}
             onNavigateTo={handleNavigateTo}
           />
@@ -67,6 +63,7 @@ const Root = () => {
       case 'stage':
         return (
           <StageForm
+            data={state}
             onStageComplete={handleStageComplete}
             onNavigateTo={handleNavigateTo}
           />

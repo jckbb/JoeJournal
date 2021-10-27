@@ -35,3 +35,17 @@ export const convertFormDataToRecord = (stages) => {
 
   return result;
 };
+
+export const parseTimeToString = (seconds) => {
+  let result = `${seconds}s`;
+
+  if (seconds > 59) {
+    const remainingSeconds = seconds % 60;
+    const minutes = Math.floor(seconds / 60);
+    result = `${minutes < 10 ? `0${minutes}` : minutes}:${
+      remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds
+    }min`;
+  }
+
+  return result;
+};

@@ -1,7 +1,9 @@
 import {StyleSheet} from 'react-native';
 import {
+  PRIMARY_COLOR_500,
   SECONDARY_COLOR_500,
   SECONDARY_COLOR_600,
+  WHITE,
 } from '../../common/res/colors';
 
 export const darkRed = SECONDARY_COLOR_600;
@@ -41,7 +43,7 @@ export default StyleSheet.create({
   stageTabs: {
     flexWrap: 'wrap',
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: 10,
   },
   tabSidePadding: {
     marginRight: 5,
@@ -50,5 +52,11 @@ export default StyleSheet.create({
   stageForm: {
     flex: 1,
     marginHorizontal: '10%',
+  },
+  totalText: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: PRIMARY_COLOR_500,
+    letterSpacing: 0.5,
   },
 });
