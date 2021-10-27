@@ -130,6 +130,7 @@ const Home = (props) => {
         {renderFieldContainer(
           <>
             <ButtonField
+              hasTopRoom
               label={beanField.LABEL}
               error={showFormErrors && state.bean.hasError}
               placeholder={beanField.PLACEHOLDER}
