@@ -1,20 +1,50 @@
-import React, {useEffect, useReducer, useState} from 'react';
+import React, {useRef, useEffect, useReducer, useState} from 'react';
+import {BackHandler} from 'react-native';
 
 import Home from './Home';
 import PrepForm from './PrepForm';
 import StageForm from './StageForm';
 import BrewDetails from './BrewDetails';
 
-import {setLog, wipeStorage, getBeans} from '../storage/utils';
+import {setLog, wipeStorage} from '../storage/utils';
 import reducer, {initialState} from '../common/data/reducer';
 import {updateSetup, updatePrep, updateStage} from '../common/data/actions';
 
 const Root = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [screen, setScreen] = useState('');
+  const screenRef = useRef('');
 
   useEffect(() => {
-    // handleWipe();
+    screenRef.current = screen;
+  }, [screen]);
+
+  const backAction = () => {
+    switch (screenRef.current) {
+      case 'home':
+        BackHandler.exitApp();
+        break;
+      case 'brew':
+      case 'prep':
+        console.log('go home');
+        setScreen('home');
+        break;
+      case 'stage':
+        setScreen('prep');
+        break;
+      default:
+        BackHandler.exitApp();
+        break;
+    }
+    return true;
+  };
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', backAction);
+    };
   },[]);
 
   const handleWipe = async () => {
