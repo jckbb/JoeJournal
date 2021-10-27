@@ -1,4 +1,4 @@
-import React, {useReducer, useState} from 'react';
+import React, {useEffect, useReducer, useState} from 'react';
 import {
   StatusBar,
   View,
@@ -31,12 +31,37 @@ import {
   pourTimeField,
   descriptionField,
 } from './res/strings';
-import {stageFormValidation, convertFormDataToRecord} from './utils.js';
+import {parseTimeToString, stageFormValidation, convertFormDataToRecord} from './utils.js';
 import styles, {darkRed} from './styles';
 
 const StageForm = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [showFormErrors, setFormErrors] = useState(false);
+  const [totalWaterAmount, setTotalWaterAmount] = useState(props.data.prep.totalWaterAmount);
+  const [totalTime, setTotalTime] = useState(0);
+
+  useEffect(() => {
+    let totalWater = 0;
+    let totalTime = 0;
+    for (const stageId in state.stage) {
+      const stageData = state.stage[stageId];
+
+      if (stageData.waterAmount.value !== undefined) {
+        totalWater += stageData.waterAmount.value;
+      }
+
+      if (stageData.pourDuration.value !== undefined) {
+        totalTime += stageData.pourDuration.value;
+      }
+
+      if (stageData.waitDuration.value !== undefined) {
+        totalTime += stageData.waitDuration.value;
+      }
+    }
+
+    setTotalTime(totalTime);
+    setTotalWaterAmount(totalWater);
+  }, [state.stage]);
 
   const handleSubmit = () => {
     const isStageFormValid = stageFormValidation(
@@ -105,12 +130,26 @@ const StageForm = (props) => {
     </TouchableOpacity>
   );
 
+  const renderTotals = () => (
+    <View style={[styles.row, {flexWrap: 'wrap', marginTop: 20}]}>
+      <Text style={styles.totalText}>
+        {`Time: ${parseTimeToString(totalTime)}`}
+      </Text>
+      <Text
+        style={[
+          styles.totalText,
+          {marginLeft: 8},
+        ]}>{`Water: ${totalWaterAmount}g`}</Text>
+    </View>
+  );
+
   return (
     <View style={styles.stageForm}>
       <StatusBar hidden />
       <Step totalSteps={2} currentStep={2} />
       <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
         <Title>{TITLE}</Title>
+        {renderTotals()}
         <View style={[styles.row, styles.stageTabs]}>
           {state.stageByIndex.map(renderStageTab)}
           <IconButton onPress={handleAddStagePress}>

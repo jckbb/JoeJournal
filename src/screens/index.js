@@ -63,6 +63,7 @@ const Root = () => {
       case 'stage':
         return (
           <StageForm
+            data={state}
             onStageComplete={handleStageComplete}
             onNavigateTo={handleNavigateTo}
           />
