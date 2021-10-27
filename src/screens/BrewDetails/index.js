@@ -1,105 +1,179 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {
+  Dimensions,
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 
-import {InfoSvg} from '../../common/res/svgs';
+import {InfoSvg, TimerSvg, WaterSvg} from '../../common/res/svgs';
 
 import Title from '../../common/components/Title';
 import BottomDrawer, {drawerState} from '../../common/components/BottomDrawer';
 
 import {getLog} from '../../storage/utils';
+import {unitType} from '../../common/res/strings';
+import {PRIMARY_COLOR_900} from '../../common/res/colors';
 
 import styles from './styles';
+
+const {width: screenWidth} = Dimensions.get('screen');
+
+const GRID_CARD_DIMENSION = screenWidth / 2 - 20;
 
 const BrewDetails = (props) => {
   const [brewData, setBrewData] = useState(null);
   const [isBottomDrawerVisible, setBottomDrawerVisible] = useState(false);
-  const [selectedStageDetail, setStageDetail] = useState(null);
+  const [selectedStage, setSelectedStage] = useState(null);
 
   useEffect(() => {
     fetchLog();
   }, []);
 
   useEffect(() => {
-    if(!selectedStageDetail) return;
+    if (!selectedStage) return;
 
     setBottomDrawerVisible(true);
-  }, [selectedStageDetail]);
+  }, [selectedStage]);
 
   const fetchLog = async () => {
     const data = await getLog(props.id);
+
     setBrewData(data);
   };
 
   const handleBottomDrawerClose = () => {
-    console.log('handleBottomDrawerClose');
     setBottomDrawerVisible(false);
-    setStageDetail(null);
+    setSelectedStage(null);
   };
 
   const renderDetail = (label, value) => (
     <View style={[styles.row, styles.detail]}>
-      <Text>{label}</Text>
-      <Text>{value}</Text>
+      <Text style={styles.fieldText}>{label}</Text>
+      <Text style={styles.detailText}>{value}</Text>
     </View>
   );
 
   const renderCard = (hasSpace, header, children) => (
     <View style={[styles.card, hasSpace && {marginTop: 20}]}>
-      <Text>{header}</Text>
+      <Text style={styles.headerText}>{header}</Text>
       {children}
     </View>
   );
 
-  const renderDescriptionDetail = (label, value) => (
-    <View style={[styles.row, styles.detail]}>
-      <Text>{label}</Text>
-      <TouchableOpacity
-        onPress={() => {
-          setStageDetail(value);
-        }}>
-        <InfoSvg />
-      </TouchableOpacity>
+  const renderStage = (stageNumber, stageData, index) =>
+    renderSquareCard(
+      <View key={index} style={{padding: 10}}>
+        <View style={[styles.row, {marginBottom: 20, alignItems: 'center', justifyContent: 'space-between'}]}>
+          <Text style={styles.subHeaderText}>{`Stage ${stageNumber}`}</Text>
+          <TouchableOpacity
+            onPress={() => {
+              setSelectedStage({...stageData, index: stageNumber});
+            }}>
+            <InfoSvg />
+          </TouchableOpacity>
+        </View>
+        <View style={[styles.row, {justifyContent: 'space-between'}]}>
+          <View style={styles.row}>
+            <WaterSvg fill={PRIMARY_COLOR_900} />
+            <Text
+              style={
+                styles.detailText
+              }>{`${stageData.waterAmount}${unitType.gram}`}</Text>
+          </View>
+          <View style={styles.row}>
+            <TimerSvg fill={PRIMARY_COLOR_900} />
+            <Text
+              style={
+                styles.detailText
+              }>{`${stageData.pourDuration}${unitType.seconds}`}</Text>
+          </View>
+        </View>
+        <View
+          style={[
+            styles.row,
+            {justifyContent: 'space-between', marginTop: 15},
+          ]}>
+          <Text style={styles.detailText}>{'Hold'}</Text>
+          <View style={styles.row}>
+            <TimerSvg fill={PRIMARY_COLOR_900} />
+            <Text
+              style={
+                styles.detailText
+              }>{`${stageData.waitDuration}${unitType.seconds}`}</Text>
+          </View>
+        </View>
+      </View>
+    );
+
+  const renderSquareCard = (children) => (
+    <View
+      style={[
+        styles.squareCard,
+        {width: GRID_CARD_DIMENSION, height: GRID_CARD_DIMENSION},
+      ]}>
+      {children}
     </View>
   );
 
-  const renderStage = (stageNumber, stageData) => (
-    <View style={{marginTop: 10}}>
-      <Text>{`stage ${stageNumber}`}</Text>
-      {renderDetail('Water Poured Amount', stageData.waterAmount)}
-      {renderDetail('Pour Duration', stageData.pourDuration)}
-      {renderDetail('Wait duration', stageData.waitDuration)}
-      {renderDescriptionDetail('description', stageData)}
-    </View>
-  );
-
-  return (
-    <View style={styles.brewDetails}>
-      <ScrollView style={styles.brewDetails}>
-        <Title>{'Brew'}</Title>
-        {renderCard(false, 'Prep', [
-          renderDetail('Grinder Dial', brewData.dial),
-          renderDetail('Coffee Amount', brewData.coffeeAmount),
-          renderDetail('Water Amount', '250g'),
-          renderDetail('Water Temperature', brewData.waterTemperature),
-        ])}
-        {renderCard(
-          true,
-          'Stages',
-          brewData.stages.map((item, index) => renderStage(index + 1, item)),
-        )}
-      </ScrollView>
-      <BottomDrawer
-        isVisible={isBottomDrawerVisible}
-        onDrawerStateChange={(changedState) => {
-          console.log(changedState);
-          if (drawerState.Closed === changedState) {
-            console.log('closed');
-            handleBottomDrawerClose();
-          }
-        }}>
-        {selectedStageDetail && <Text>{selectedStageDetail.description}</Text>}
-      </BottomDrawer>
-    </View>
+  return brewData && (
+      <View style={styles.brewDetails}>
+        <ScrollView
+          style={styles.brewDetails}
+          contentContainerStyle={{paddingBottom: 20}}>
+          <View style={{marginLeft: '5%'}}>
+            <Title>{'Brew'}</Title>
+          </View>
+          {renderCard(false, 'Prep', [
+            renderDetail(
+              'Water Amount',
+              `${brewData.totalWaterAmount}${unitType.gram}`,
+            ),
+            renderDetail(
+              'Water Temperature',
+              `${brewData.waterTemperature}${unitType.celsius}`,
+            ),
+            <View style={styles.spacer} />,
+            renderDetail('Grinder Dial', brewData.dial),
+            renderDetail(
+              'Coffee Amount',
+              `${brewData.coffeeAmount}${unitType.gram}`,
+            ),
+          ])}
+          <View
+            style={{
+              marginTop: 10,
+              marginLeft: 10,
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+            }}>
+            {brewData.stages.map((item, index) =>
+              renderStage(index + 1, item, index),
+            )}
+          </View>
+        </ScrollView>
+        <BottomDrawer
+          isVisible={isBottomDrawerVisible}
+          onDrawerStateChange={(changedState) => {
+            if (drawerState.Closed === changedState) {
+              handleBottomDrawerClose();
+            }
+          }}>
+          {selectedStage && (
+            <View>
+              <Text
+                style={[
+                  styles.headerText,
+                  {alignSelf: 'center'},
+                ]}>{`Stage ${selectedStage.index}`}</Text>
+              <Text style={styles.descriptionText}>
+                {selectedStage.description}
+              </Text>
+            </View>
+          )}
+        </BottomDrawer>
+      </View>
   );
 };
 
