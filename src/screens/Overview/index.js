@@ -11,7 +11,7 @@ const Overview = (props) => {
   const [questionIndex, setQuestionIndex] = useState(0);
 
   const handleComplete = () => {
-    props.onNavigateTo('home');
+    props.onNavigateTo('setup');
   };
 
   const renderQuestionSection = (item, index) => (
