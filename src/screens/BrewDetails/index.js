@@ -17,6 +17,7 @@ import {unitType} from '../../common/res/strings';
 import {PRIMARY_COLOR_900} from '../../common/res/colors';
 
 import styles from './styles';
+import PrimaryButton from '../../common/components/PrimaryButton';
 
 const {width: screenWidth} = Dimensions.get('screen');
 
@@ -121,9 +122,18 @@ const BrewDetails = (props) => {
       <View style={styles.brewDetails}>
         <ScrollView
           style={styles.brewDetails}
-          contentContainerStyle={{paddingBottom: 20}}>
+          contentContainerStyle={{paddingBottom: 100}}>
           <View style={{marginLeft: '5%'}}>
             <Title>{'Brew'}</Title>
+          </View>
+          <View style={{marginBottom: 10, marginHorizontal: 15}}>
+            <PrimaryButton
+              center
+              onPress={() => {
+                props.onNavigateTo('overview');
+              }}>
+              {'Overview'}
+            </PrimaryButton>
           </View>
           {renderCard(false, 'Prep', [
             renderDetail(
