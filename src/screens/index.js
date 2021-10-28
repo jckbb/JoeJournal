@@ -1,7 +1,7 @@
 import React, {useRef, useEffect, useReducer, useState} from 'react';
 import {BackHandler} from 'react-native';
 
-import Home from './Home';
+import Setup from './Setup';
 import PrepForm from './PrepForm';
 import StageForm from './StageForm';
 import BrewDetails from './BrewDetails';
@@ -22,13 +22,13 @@ const Root = () => {
 
   const backAction = () => {
     switch (screenRef.current) {
-      case 'home':
+      case 'setup':
         BackHandler.exitApp();
         break;
       case 'brew':
       case 'prep':
       case 'overview':
-        setScreen('home');
+        setScreen('setup');
         break;
       case 'stage':
         setScreen('prep');
@@ -76,9 +76,9 @@ const Root = () => {
 
   const renderScreen = (type) => {
     switch (type) {
-      case 'home':
+      case 'setup':
         return (
-          <Home
+          <Setup
             onNavigateTo={handleNavigateTo}
             onSetupComplete={handleSetupComplete}
           />
@@ -105,7 +105,7 @@ const Root = () => {
         return <Overview onNavigateTo={handleNavigateTo} />;
       default:
         return (
-          <Home
+          <Setup
             onSetupComplete={handleSetupComplete}
             onNavigateTo={handleNavigateTo}
           />
