@@ -19,28 +19,23 @@ import {getBeans, checkSetupIdExists} from '../../storage/utils';
 
 import reducer, {initialState} from './data/formReducer';
 import {updateField} from './data/actions';
-import {convertFormDataToRecord} from './utils';
-import {
-  TITLE,
-  SUBMIT,
-  beanField,
-  methodField,
-  grinderField,
-} from './res/strings';
+import {convertFormDataToRecord, drawerListItemContent} from './utils';
+import {TITLE, beanField, methodField, grinderField} from './res/strings';
 import styles from './styles';
 
-const fieldType = {
+export const fieldType = {
   BEAN: 'bean',
   METHOD: 'method',
   GRINDER: 'grinder',
 };
 
-const Home = (props) => {
+const Setup = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [showFormErrors, setFormErrors] = useState(false);
   const [showBottomDrawer, setBottomDrawer] = useState(false);
   const [isCoffeeModalVisible, setCoffeeModalVisible] = useState(false);
   const [optionType, setOptionType] = useState('');
+  const [brewIdExist, setBrewIdExist] = useState(false);
   const [setupOptions, setSetupOptions] = useState({
     bean: [],
     method: methodByName,
@@ -50,6 +45,19 @@ const Home = (props) => {
   useEffect(() => {
     fetchCoffeeBeans();
   }, []);
+
+  useEffect(() => {
+    const {bean, method, grinder} = state;
+    if (bean.value && method.value && grinder.value) {
+      const setupId = `${bean.value.roaster}_${bean.value.origin}_${method.value}_${grinder.value}`;
+      handleFormFilled(setupId);
+    }
+  }, [state]);
+
+  const handleFormFilled = async (id) => {
+    const exists = await checkSetupIdExists(id);
+    setBrewIdExist(exists);
+  };
 
   const fetchCoffeeBeans = async () => {
     await getBeans().then(response => {
@@ -96,8 +104,7 @@ const Home = (props) => {
       const setupRecord = convertFormDataToRecord(state);
       const setupId = `${state.bean.value.roaster}_${state.bean.value.origin}_${state.method.value}_${state.grinder.value}`;
 
-      const logIdExists = await checkSetupIdExists(setupId);
-      const navigateId = logIdExists ? 'brew' : 'prep';
+      const navigateId = brewIdExist ? 'brew' : 'prep';
       props.onSetupComplete(setupId, setupRecord);
       props.onNavigateTo(navigateId);
     }
@@ -118,6 +125,17 @@ const Home = (props) => {
     handleDrawerClose();
 
     dispatch(updateField(optionType, data));
+  };
+
+  const handleBeanModalClose = (data) => {
+    if (data) {
+      // update bean list
+      setSetupOptions(prev => ({
+        ...prev,
+        bean: [...prev.bean, data],
+      }));
+    }
+    setCoffeeModalVisible(false);
   };
 
   const renderFieldContainer = field => <View style={styles.row}>{field}</View>;
@@ -177,21 +195,16 @@ const Home = (props) => {
           />,
         )}
         <View style={{alignItems: 'center', top: 50}}>
-          <SubmitForm nextArrow label={SUBMIT} onPress={handleSubmit} />
+          <SubmitForm
+            nextArrow
+            label={brewIdExist ? 'Brew' : 'Create'}
+            onPress={handleSubmit}
+          />
         </View>
       </View>
       <AddBeanFormModal
         visible={isCoffeeModalVisible}
-        onClose={(data) => {
-          if (data) {
-            // update bean list
-            setSetupOptions(prev => ({
-              ...prev,
-              bean: [...prev.bean, data],
-            }));
-          }
-          setCoffeeModalVisible(false);
-        }}
+        onClose={handleBeanModalClose}
       />
       <BottomDrawer
         isVisible={showBottomDrawer}
@@ -199,22 +212,7 @@ const Home = (props) => {
         <FlatList
           data={setupOptions[optionType]}
           renderItem={({item, index}) => {
-            let content = null;
-
-            switch (optionType) {
-              case fieldType.BEAN:
-                content = `${item.roaster} - ${item.origin}`;
-                break;
-              case fieldType.METHOD:
-                content = methodData[item].displayName;
-                break;
-              case fieldType.GRINDER:
-                content = grinderData[item].displayName;
-                break;
-              default:
-                content = item;
-                break;
-            }
+            const content = drawerListItemContent(item, optionType);
 
             return (
               <TouchableOpacity
@@ -233,4 +231,4 @@ const Home = (props) => {
   );
 };
 
-export default Home;
+export default Setup;
