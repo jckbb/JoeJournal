@@ -1,20 +1,16 @@
 import React from 'react';
-import {TouchableOpacity, View, Text} from 'react-native';
-import { PRIMARY_COLOR_500 } from '../../res/colors';
-
-import {ArrowRightSvg} from '../../res/svgs';
+import {TouchableOpacity, Text} from 'react-native';
 
 import styles from './styles';
 
 const PrimaryButton = ({children, ...props}) => {
+  console.log(props.disabled);
   return (
     <TouchableOpacity
-      style={[styles.button, props.center && styles.center]}
+      disabled={props.disabled}
+      style={[styles.button, props.disabled && {opacity: 0.8}]}
       onPress={props.onPress}>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Text style={styles.buttonText}>{children}</Text>
-        <ArrowRightSvg height={35} width={35} fill={PRIMARY_COLOR_500} />
-      </View>
+      <Text style={styles.buttonText}>{children}</Text>
     </TouchableOpacity>
   );
 };
