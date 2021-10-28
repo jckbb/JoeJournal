@@ -6,16 +6,16 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    flex: 1,
     backgroundColor: SECONDARY_COLOR_400,
     borderRadius: 7,
-    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 20,
   },
   buttonText: {
-    fontSize: 35,
+    fontSize: 25,
     marginRight: 5,
     color: PRIMARY_COLOR_500,
-    fontWeight: '700',
     letterSpacing: 0.5,
   },
 });
