@@ -3,7 +3,7 @@ import {TouchableOpacity, StatusBar, View, FlatList, Text} from 'react-native';
 
 import ButtonField from '../../common/components/ButtonField';
 import IconButton from '../../common/components/IconButton';
-import SubmitForm from '../../common/components/SubmitForm';
+import PrimaryButton from '../../common/components/PrimaryButton';
 import Title from '../../common/components/Title';
 import BottomDrawer, {drawerState} from '../../common/components/BottomDrawer';
 import AddBeanFormModal from '../AddBeanFormModal';
@@ -194,12 +194,10 @@ const Setup = (props) => {
             onPress={handleChangeGrinderPress}
           />,
         )}
-        <View style={{alignItems: 'center', top: 50}}>
-          <SubmitForm
-            nextArrow
-            label={brewIdExist ? 'Brew' : 'Create'}
-            onPress={handleSubmit}
-          />
+        <View style={{marginTop: 30}}>
+          <PrimaryButton disabled={!brewIdExist} onPress={handleSubmit}>
+            {brewIdExist ? 'Brew' : 'Create'}
+          </PrimaryButton>
         </View>
       </View>
       <AddBeanFormModal
