@@ -5,6 +5,7 @@ import Home from './Home';
 import PrepForm from './PrepForm';
 import StageForm from './StageForm';
 import BrewDetails from './BrewDetails';
+import Overview from './Overview';
 
 import {setLog, wipeStorage} from '../storage/utils';
 import reducer, {initialState} from '../common/data/reducer';
@@ -26,7 +27,7 @@ const Root = () => {
         break;
       case 'brew':
       case 'prep':
-        console.log('go home');
+      case 'overview':
         setScreen('home');
         break;
       case 'stage':
@@ -100,6 +101,8 @@ const Root = () => {
         );
       case 'brew':
         return <BrewDetails id={state.logId} onNavigateTo={handleNavigateTo} />;
+      case 'overview':
+        return <Overview onNavigateTo={handleNavigateTo} />;
       default:
         return (
           <Home
