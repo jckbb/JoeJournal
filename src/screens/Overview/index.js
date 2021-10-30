@@ -40,8 +40,9 @@ const Overview = (props) => {
 
   return (
     <View style={styles.overview}>
-      <Title>{'Overview'}</Title>
+      <Title dark>{'Evaluate'}</Title>
       <Step
+        dark
         totalSteps={overviewQuestions.length}
         currentStep={questionIndex + 1}
       />
