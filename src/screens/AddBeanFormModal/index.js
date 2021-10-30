@@ -41,7 +41,7 @@ const AddBeanFormModal = props => {
       const beanData = convertToUsableData(state);
 
       await setBean(beanData).then(() => {
-        props.onClose(beanData);
+        props.onComplete(beanData);
       });
     }
   };

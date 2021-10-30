@@ -129,7 +129,11 @@ const Setup = (props) => {
     dispatch(updateField(optionType, data));
   };
 
-  const handleBeanModalClose = (data) => {
+  const handleBeanModalClose = () => {
+    setCoffeeModalVisible(false);
+  };
+
+  const handleBeanModalComplete = (data) => {
     if (data) {
       // update bean list
       setSetupOptions(prev => ({
@@ -205,6 +209,7 @@ const Setup = (props) => {
       <AddBeanFormModal
         visible={isCoffeeModalVisible}
         onClose={handleBeanModalClose}
+        onComplete={handleBeanModalComplete}
       />
       <BottomDrawer
         isVisible={showBottomDrawer}

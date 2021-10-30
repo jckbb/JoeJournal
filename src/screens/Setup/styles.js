@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {
-  PRIMARY_COLOR_700,
+  PRIMARY_COLOR_600,
   PRIMARY_COLOR_800,
   PRIMARY_COLOR_900,
 } from '../../common/res/colors';
@@ -17,9 +17,11 @@ export default StyleSheet.create({
   row: {
     flexDirection: 'row',
   },
-  drawerDivider: {
-    backgroundColor: PRIMARY_COLOR_700,
-    height: 2,
+  divider: {
+    backgroundColor: PRIMARY_COLOR_600,
+    marginHorizontal: 20,
+    height: 1,
+    marginVertical: 8,
     borderRadius: 1,
   },
   drawerItemText: {
