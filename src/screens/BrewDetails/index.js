@@ -66,14 +66,24 @@ const BrewDetails = (props) => {
   const renderStage = (stageNumber, stageData, index) =>
     renderSquareCard(
       <View key={index} style={{padding: 10}}>
-        <View style={[styles.row, {marginBottom: 20, alignItems: 'center', justifyContent: 'space-between'}]}>
+        <View
+          style={[
+            styles.row,
+            {
+              marginBottom: 20,
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            },
+          ]}>
           <Text style={styles.subHeaderText}>{`Stage ${stageNumber}`}</Text>
-          <TouchableOpacity
-            onPress={() => {
-              setSelectedStage({...stageData, index: stageNumber});
-            }}>
-            <InfoSvg />
-          </TouchableOpacity>
+          {stageData.description.length > 0 && (
+            <TouchableOpacity
+              onPress={() => {
+                setSelectedStage({...stageData, index: stageNumber});
+              }}>
+              <InfoSvg />
+            </TouchableOpacity>
+          )}
         </View>
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
           <View style={styles.row}>
@@ -105,9 +115,8 @@ const BrewDetails = (props) => {
               }>{`${stageData.waitDuration}${unitType.seconds}`}</Text>
           </View>
         </View>
-      </View>
+      </View>,
     );
-
   const renderSquareCard = (children) => (
     <View
       style={[
