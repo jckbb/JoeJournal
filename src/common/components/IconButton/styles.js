@@ -1,5 +1,4 @@
 import {StyleSheet} from 'react-native';
-import {WHITE} from '../../res/colors';
 
 const DIMENSION = 50;
 
@@ -8,8 +7,8 @@ export default StyleSheet.create({
     alignSelf: 'center',
     height: DIMENSION,
     width: DIMENSION,
-    backgroundColor: WHITE,
-    borderRadius: 7,
+    // backgroundColor: WHITE,
+    // borderRadius: 7,
     justifyContent: 'center',
     alignItems: 'center',
   },

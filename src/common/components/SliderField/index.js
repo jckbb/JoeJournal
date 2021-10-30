@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Animated, View, Text} from 'react-native';
 import Slider from '@react-native-community/slider';
-import {WHITE} from '../../res/colors';
+import {PRIMARY_COLOR_700, WHITE} from '../../res/colors';
 import styles, {minTrackerTint, maxTrackerTint} from './styles';
 
 const SliderField = ({label, ...props}) => {
@@ -54,7 +54,7 @@ const SliderField = ({label, ...props}) => {
             step={props.step}
             minimumTrackTintColor={minTrackerTint}
             maximumTrackTintColor={maxTrackerTint}
-            thumbTintColor={WHITE}
+            thumbTintColor={PRIMARY_COLOR_700}
             value={props.value}
             onValueChange={(value) => {
               setSliderValue(value);

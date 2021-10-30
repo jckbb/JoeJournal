@@ -1,6 +1,11 @@
 import {StyleSheet} from 'react-native';
-import {PRIMARY_COLOR_700, PRIMARY_COLOR_800} from '../../common/res/colors';
+import {
+  PRIMARY_COLOR_700,
+  PRIMARY_COLOR_800,
+  PRIMARY_COLOR_900,
+} from '../../common/res/colors';
 
+export const iconColor = PRIMARY_COLOR_900;
 export default StyleSheet.create({
   home: {
     flex: 1,

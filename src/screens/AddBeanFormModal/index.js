@@ -20,6 +20,7 @@ import {
   noteField,
 } from './res/strings';
 import styles from './styles';
+import ModalButton from '../../common/components/ModalButton';
 
 const AddBeanFormModal = props => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -85,7 +86,9 @@ const AddBeanFormModal = props => {
           }}
         />
         <View style={styles.submit}>
-          <SubmitForm dark label={SUBMIT} onPress={handleSubmit} />
+          <ModalButton disabled={false} onPress={handleSubmit}>
+            {SUBMIT}
+          </ModalButton>
         </View>
       </View>
     </ModalWrapper>

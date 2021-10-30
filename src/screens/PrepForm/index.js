@@ -3,7 +3,7 @@ import {ScrollView, View, Text, StatusBar} from 'react-native';
 
 import NumberField from '../../common/components/NumberField';
 import SliderField from '../../common/components/SliderField';
-import SubmitForm from '../../common/components/SubmitForm';
+import PrimaryButton from '../../common/components/PrimaryButton';
 import Title from '../../common/components/Title';
 import Step from '../../common/components/Step';
 
@@ -55,10 +55,10 @@ const PrepForm = (props) => {
   return (
     <View style={{flex: 1}}>
       <StatusBar hidden />
-      <Step totalSteps={2} currentStep={1} />
+      <Step dark totalSteps={2} currentStep={1} />
       <ScrollView style={{flex: 1}}>
         <View style={{marginLeft: '10%'}}>
-          <Title>{TITLE}</Title>
+          <Title dark>{TITLE}</Title>
         </View>
         <View style={styles.form}>
           <SliderField
@@ -108,8 +108,8 @@ const PrepForm = (props) => {
             />
             <Text style={styles.ratioText}>{'to 1'}</Text>
           </View>
-          <View style={{alignItems: 'center', marginTop: 30}}>
-            <SubmitForm nextArrow label={'Continue'} onPress={handleSubmit} />
+          <View style={{marginTop: 30}}>
+            <PrimaryButton onPress={handleSubmit}>{'Continue'}</PrimaryButton>
           </View>
         </View>
       </ScrollView>

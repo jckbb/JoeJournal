@@ -1,8 +1,12 @@
 import {StyleSheet} from 'react-native';
-import {WHITE} from '../../res/colors';
+import {
+  PRIMARY_COLOR_700,
+  PRIMARY_COLOR_600,
+  PRIMARY_COLOR_900,
+} from '../../res/colors';
 
-export const maxTrackerTint = 'rgba(255, 255, 255, 0.6)';
-export const minTrackerTint = WHITE;
+export const maxTrackerTint = PRIMARY_COLOR_600;
+export const minTrackerTint = PRIMARY_COLOR_700;
 
 export default StyleSheet.create({
   topSpacing: {
@@ -16,13 +20,12 @@ export default StyleSheet.create({
     height: 50,
   },
   trackerText: {
-    color: WHITE,
+    color: PRIMARY_COLOR_900,
     fontWeight: '700',
     fontSize: 18,
   },
   floatTracker: {
     alignItems: 'center',
-    // backgroundColor:'yellow',
     top: 25,
     position: 'absolute',
   },
@@ -30,7 +33,7 @@ export default StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     letterSpacing: 0.2,
-    color: WHITE,
+    color: PRIMARY_COLOR_700,
     marginBottom: 3,
   },
   bounds: {
@@ -39,7 +42,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
   },
   boundsText: {
-    color: maxTrackerTint,
+    color: PRIMARY_COLOR_700,
     fontSize: 16,
     fontWeight: '600',
   },

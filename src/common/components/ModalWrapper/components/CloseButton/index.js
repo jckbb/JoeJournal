@@ -1,12 +1,14 @@
 import React from 'react';
-import {TouchableOpacity, Text} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 
-import styles from './styles';
+import {CloseSvg} from '../../../../res/svgs';
+
+import styles, {iconColor} from './styles';
 
 const CloseButton = (props) => {
   return (
     <TouchableOpacity style={styles.button} onPress={props.onPress}>
-      <Text style={styles.buttonText}>{'close'}</Text>
+      <CloseSvg fill={iconColor} />
     </TouchableOpacity>
   );
 };

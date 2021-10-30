@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {WHITE} from '../../res/colors';
+import {PRIMARY_COLOR_700, WHITE} from '../../res/colors';
 
 export default StyleSheet.create({
   step: {
@@ -10,5 +10,8 @@ export default StyleSheet.create({
     color: WHITE,
     fontSize: 20,
     fontWeight: '700',
+  },
+  dark: {
+    color: PRIMARY_COLOR_700,
   },
 });

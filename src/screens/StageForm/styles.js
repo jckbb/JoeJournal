@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {
-  PRIMARY_COLOR_500,
-  SECONDARY_COLOR_500,
+  PRIMARY_COLOR_700,
+  SECONDARY_COLOR_300,
   SECONDARY_COLOR_600,
   WHITE,
 } from '../../common/res/colors';
@@ -26,17 +26,17 @@ export default StyleSheet.create({
     height: 52,
     width: 52,
     borderRadius: 7,
-    borderColor: SECONDARY_COLOR_600,
-    borderWidth: 1.5,
+    backgroundColor: SECONDARY_COLOR_300,
     justifyContent: 'center',
     alignItems: 'center',
   },
   selectedTab: {
-    borderColor: SECONDARY_COLOR_500,
+    height: 50,
+    width: 50,
     backgroundColor: SECONDARY_COLOR_600,
   },
   tabText: {
-    color: 'white',
+    color: WHITE,
     fontWeight: '700',
     fontSize: 20,
   },
@@ -56,7 +56,7 @@ export default StyleSheet.create({
   totalText: {
     fontSize: 22,
     fontWeight: '700',
-    color: PRIMARY_COLOR_500,
+    color: PRIMARY_COLOR_700,
     letterSpacing: 0.5,
   },
 });

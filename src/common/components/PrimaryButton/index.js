@@ -4,7 +4,6 @@ import {TouchableOpacity, Text} from 'react-native';
 import styles from './styles';
 
 const PrimaryButton = ({children, ...props}) => {
-  console.log(props.disabled);
   return (
     <TouchableOpacity
       disabled={props.disabled}

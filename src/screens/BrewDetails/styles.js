@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {PRIMARY_COLOR_500, PRIMARY_COLOR_900} from '../../common/res/colors';
+import {PRIMARY_COLOR_500, PRIMARY_COLOR_600, PRIMARY_COLOR_900, WHITE} from '../../common/res/colors';
 
 export default StyleSheet.create({
   brewDetails: {
@@ -9,13 +9,17 @@ export default StyleSheet.create({
     flexDirection: 'row',
   },
   card: {
-    backgroundColor: PRIMARY_COLOR_500,
+    backgroundColor: WHITE,
+    borderWidth: 1,
+    borderColor: PRIMARY_COLOR_600,
     borderRadius: 7,
     padding: 20,
     marginHorizontal: 15,
   },
   squareCard: {
-    backgroundColor: PRIMARY_COLOR_500,
+    backgroundColor: WHITE,
+    borderWidth: 1,
+    borderColor: PRIMARY_COLOR_600,
     borderRadius: 7,
     margin: 5,
     padding: 8,
