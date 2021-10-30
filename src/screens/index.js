@@ -61,7 +61,6 @@ const Root = () => {
   };
 
   const handleStageComplete = async (data) => {
-    // TODO add to storage
     await setLog(state.logId, {
       ...state.setup,
       ...state.prep,
