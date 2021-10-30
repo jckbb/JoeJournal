@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {PRIMARY_COLOR_500} from '../../common/res/colors';
+import {PRIMARY_COLOR_700} from '../../common/res/colors';
 
 export default StyleSheet.create({
   form: {
@@ -14,7 +14,7 @@ export default StyleSheet.create({
     alignItems: 'flex-end',
   },
   ratioText: {
-    color: PRIMARY_COLOR_500,
+    color: PRIMARY_COLOR_700,
     fontSize: 25,
     fontWeight: '700',
     letterSpacing: 0.2,

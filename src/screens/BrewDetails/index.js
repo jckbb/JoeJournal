@@ -122,9 +122,9 @@ const BrewDetails = (props) => {
       <View style={styles.brewDetails}>
         <ScrollView
           style={styles.brewDetails}
-          contentContainerStyle={{paddingBottom: 100}}>
-          <View style={{marginLeft: '5%'}}>
-            <Title>{'Brew'}</Title>
+          contentContainerStyle={{paddingBottom: 35}}>
+          <View style={{marginBottom: 30, marginLeft: '5%'}}>
+            <Title dark>{'Brew'}</Title>
           </View>
           <View style={{marginBottom: 10, marginHorizontal: 15}}>
             <PrimaryButton
@@ -132,7 +132,7 @@ const BrewDetails = (props) => {
               onPress={() => {
                 props.onNavigateTo('overview');
               }}>
-              {'Overview'}
+              {'Evaluate Brew'}
             </PrimaryButton>
           </View>
           {renderCard(false, 'Prep', [

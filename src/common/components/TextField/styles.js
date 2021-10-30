@@ -1,22 +1,16 @@
 import {StyleSheet} from 'react-native';
-import {BLACK, WHITE} from '../../res/colors';
+import {BLACK, PRIMARY_COLOR_700} from '../../res/colors';
+import {FIELD_BOX, FIELD_BOX_HEIGHT, FIELD_LABEL_TEXT} from '../../res/themes';
 
 export default StyleSheet.create({
   textbox: {
-    fontSize: 20,
-    fontWeight: '500',
-    borderRadius: 7,
-    minHeight: 50,
+    ...FIELD_BOX,
+    minHeight: FIELD_BOX_HEIGHT,
     paddingLeft: 8,
-    backgroundColor: WHITE,
     textAlignVertical: 'top',
-    flexWrap: 'wrap',
   },
   label: {
-    fontSize: 18,
-    fontWeight: '500',
-    letterSpacing: 0.2,
-    color: WHITE,
+    ...FIELD_LABEL_TEXT,
     marginBottom: 3,
   },
   topSpacing: {
@@ -24,7 +18,7 @@ export default StyleSheet.create({
   },
   border: {
     borderWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0.6)',
+    borderColor: PRIMARY_COLOR_700,
   },
   darkText: {
     color: BLACK,

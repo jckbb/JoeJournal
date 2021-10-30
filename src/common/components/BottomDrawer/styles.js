@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {PRIMARY_COLOR_400} from '../../res/colors';
+import {PRIMARY_COLOR_300, PRIMARY_COLOR_600} from '../../res/colors';
 
 export default StyleSheet.create({
   chin: {
@@ -12,7 +12,11 @@ export default StyleSheet.create({
     alignSelf: 'center',
   },
   bottomDrawer: {
-    backgroundColor: PRIMARY_COLOR_400,
+    backgroundColor: PRIMARY_COLOR_300,
+    borderColor: PRIMARY_COLOR_600,
+    borderTopWidth: 2,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
     borderRadius: 25,
     position: 'absolute',
   },

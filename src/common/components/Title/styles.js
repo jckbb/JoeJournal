@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {PRIMARY_COLOR_900, WHITE} from '../../res/colors';
+import {PRIMARY_COLOR_800, WHITE} from '../../res/colors';
 
 export default StyleSheet.create({
   title: {
@@ -8,6 +8,6 @@ export default StyleSheet.create({
     color: WHITE,
   },
   darkTitle: {
-    color: PRIMARY_COLOR_900,
+    color: PRIMARY_COLOR_800,
   },
 });

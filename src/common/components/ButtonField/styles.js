@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
-import {WHITE, BLACK} from '../../res/colors';
+import {BLACK, PRIMARY_COLOR_800} from '../../res/colors';
+import {FIELD_BOX, FIELD_BOX_HEIGHT, FIELD_LABEL_TEXT} from '../../res/themes';
 
 export default StyleSheet.create({
   container: {
@@ -14,19 +15,13 @@ export default StyleSheet.create({
     marginTop: 20,
   },
   fieldBox: {
-    fontSize: 20,
-    fontWeight: '500',
-    borderRadius: 7,
+    ...FIELD_BOX,
+    height: FIELD_BOX_HEIGHT,
     paddingHorizontal: 8,
-    backgroundColor: WHITE,
-    height: 50,
     justifyContent: 'center',
   },
   label: {
-    fontSize: 18,
-    fontWeight: '500',
-    letterSpacing: 0.2,
-    color: WHITE,
+    ...FIELD_LABEL_TEXT,
     marginBottom: 3,
   },
   placeholder: {

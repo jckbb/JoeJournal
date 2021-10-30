@@ -5,7 +5,7 @@ import styles from './styles';
 
 const Step = (props) => (
   <View style={styles.step}>
-    <Text style={styles.stepText}>
+    <Text style={[styles.stepText, props.dark && styles.dark]}>
       {`${props.currentStep} of ${props.totalSteps}`}
     </Text>
   </View>

@@ -7,12 +7,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {PlusSvg} from '../../common/res/svgs';
+import {PlusSvg, TimerSvg, WaterSvg} from '../../common/res/svgs';
 import {unitType} from '../../common/res/strings';
 
 import Title from '../../common/components/Title';
 import NumberField from '../../common/components/NumberField';
-import SubmitForm from '../../common/components/SubmitForm';
+import PrimaryButton from '../../common/components/PrimaryButton';
 import TextField from '../../common/components/TextField';
 import Step from '../../common/components/Step';
 import IconButton from '../../common/components/IconButton';
@@ -33,6 +33,7 @@ import {
 } from './res/strings';
 import {parseTimeToString, stageFormValidation, convertFormDataToRecord} from './utils.js';
 import styles, {darkRed} from './styles';
+import { PRIMARY_COLOR_700 } from '../../common/res/colors';
 
 const StageForm = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -131,24 +132,31 @@ const StageForm = (props) => {
   );
 
   const renderTotals = () => (
-    <View style={[styles.row, {flexWrap: 'wrap', marginTop: 20}]}>
-      <Text style={styles.totalText}>
-        {`Time: ${parseTimeToString(totalTime)}`}
-      </Text>
-      <Text
-        style={[
-          styles.totalText,
-          {marginLeft: 8},
-        ]}>{`Water: ${totalWaterAmount}g`}</Text>
+    <View
+      style={[
+        styles.row,
+        {flexWrap: 'wrap', justifyContent: 'center', marginTop: 20},
+      ]}>
+      <View style={[styles.row, {alignItems:'center'}]}>
+        <TimerSvg fill={PRIMARY_COLOR_700} />
+        <Text style={styles.totalText}>{parseTimeToString(totalTime)}</Text>
+      </View>
+      <View style={[styles.row, {alignItems:'center', marginLeft: 8}]}>
+        <WaterSvg fill={PRIMARY_COLOR_700} />
+        <Text
+          style={
+            styles.totalText
+          }>{`${totalWaterAmount}${unitType.gram}`}</Text>
+      </View>
     </View>
   );
 
   return (
     <View style={styles.stageForm}>
       <StatusBar hidden />
-      <Step totalSteps={2} currentStep={2} />
+      <Step dark totalSteps={2} currentStep={2} />
       <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
-        <Title>{TITLE}</Title>
+        <Title dark>{TITLE}</Title>
         {renderTotals()}
         <View style={[styles.row, styles.stageTabs]}>
           {state.stageByIndex.map(renderStageTab)}
@@ -223,8 +231,8 @@ const StageForm = (props) => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{alignItems: 'center', marginTop: 20}}>
-          <SubmitForm label={'Complete'} onPress={handleSubmit} />
+        <View style={{marginVertical: 20}}>
+          <PrimaryButton onPress={handleSubmit}>{'Complete'}</PrimaryButton>
         </View>
       </ScrollView>
     </View>

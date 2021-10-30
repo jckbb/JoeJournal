@@ -6,12 +6,10 @@ import styles from './styles';
 const TextListField = (props) => {
   return (
     <View style={[props.hasTopRoom && styles.topSpacing]}>
-      <Text style={[styles.label, props.dark && styles.darkText]}>
-        {props.label}
-      </Text>
+      <Text style={styles.label}>{props.label}</Text>
       <TextInput
         placeholderTextColor={props.error && 'red'}
-        style={[styles.textbox, props.border && styles.border]}
+        style={styles.textbox}
         placeholder={props.placeholder}
         value={props.value ? props.value : ''}
         onChangeText={(text) => {

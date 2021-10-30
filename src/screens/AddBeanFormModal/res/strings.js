@@ -1,12 +1,12 @@
 export const TITLE = 'New Bean';
 
 export const originField = {
-  LABEL: 'Origin',
+  LABEL: 'Origin*',
   PLACEHOLDER: 'Guatamala',
 };
 
 export const roasterField = {
-  LABEL: 'Roaster',
+  LABEL: 'Roaster*',
   PLACEHOLDER: 'Lineage',
 };
 

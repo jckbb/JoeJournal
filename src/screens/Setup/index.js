@@ -21,7 +21,7 @@ import reducer, {initialState} from './data/formReducer';
 import {updateField} from './data/actions';
 import {convertFormDataToRecord, drawerListItemContent} from './utils';
 import {TITLE, beanField, methodField, grinderField} from './res/strings';
-import styles from './styles';
+import styles, {iconColor} from './styles';
 
 export const fieldType = {
   BEAN: 'bean',
@@ -32,6 +32,7 @@ export const fieldType = {
 const Setup = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [showFormErrors, setFormErrors] = useState(false);
+  const [isFormComplete, setFormComplete] = useState(false);
   const [showBottomDrawer, setBottomDrawer] = useState(false);
   const [isCoffeeModalVisible, setCoffeeModalVisible] = useState(false);
   const [optionType, setOptionType] = useState('');
@@ -51,6 +52,7 @@ const Setup = (props) => {
     if (bean.value && method.value && grinder.value) {
       const setupId = `${bean.value.roaster}_${bean.value.origin}_${method.value}_${grinder.value}`;
       handleFormFilled(setupId);
+      setFormComplete(true);
     }
   }, [state]);
 
@@ -143,7 +145,7 @@ const Setup = (props) => {
   return (
     <View style={styles.home}>
       <StatusBar hidden />
-      <Title>{TITLE}</Title>
+      <Title dark>{TITLE}</Title>
       <View style={styles.form}>
         {renderFieldContainer(
           <>
@@ -161,7 +163,7 @@ const Setup = (props) => {
             />
             <View style={{marginLeft: 5, alignSelf: 'flex-end'}}>
               <IconButton onPress={handleCreateCoffeePress}>
-                <PlusSvg />
+                <PlusSvg fill={iconColor} />
               </IconButton>
             </View>
           </>,
@@ -195,7 +197,7 @@ const Setup = (props) => {
           />,
         )}
         <View style={{marginTop: 30}}>
-          <PrimaryButton disabled={!brewIdExist} onPress={handleSubmit}>
+          <PrimaryButton disabled={!isFormComplete} onPress={handleSubmit}>
             {brewIdExist ? 'Brew' : 'Create'}
           </PrimaryButton>
         </View>
