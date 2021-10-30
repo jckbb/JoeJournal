@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {
-  SECONDARY_COLOR_900,
+  PRIMARY_COLOR_900,
   PRIMARY_COLOR_500,
   SECONDARY_COLOR_600,
   SECONDARY_COLOR_100,
@@ -18,7 +18,7 @@ export default StyleSheet.create({
     fontSize: 25,
     fontWeight: '700',
     letterSpacing: 0.2,
-    color: PRIMARY_COLOR_500,
+    color: PRIMARY_COLOR_900,
   },
   option: {
     backgroundColor: SECONDARY_COLOR_600,
