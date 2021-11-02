@@ -5,9 +5,9 @@ import Setup from './Setup';
 import PrepForm from './PrepForm';
 import StageForm from './StageForm';
 import BrewDetails from './BrewDetails';
-import Overview from './Overview';
+import Evaluate from './Evaluate';
 
-import {setLog, wipeStorage} from '../storage/utils';
+import {setLog, wipeStorage, changeLogIncrementDial} from '../storage/utils';
 import reducer, {initialState} from '../common/data/reducer';
 import {updateSetup, updatePrep, updateStage} from '../common/data/actions';
 
@@ -27,7 +27,7 @@ const Root = () => {
         break;
       case 'brew':
       case 'prep':
-      case 'overview':
+      case 'evaluate':
         setScreen('setup');
         break;
       case 'stage':
@@ -73,6 +73,10 @@ const Root = () => {
     setScreen(type);
   };
 
+  const handleChangeDial = async (value) => {
+    await changeLogIncrementDial(state.logId, value);
+  };
+
   const renderScreen = (type) => {
     switch (type) {
       case 'setup':
@@ -100,8 +104,13 @@ const Root = () => {
         );
       case 'brew':
         return <BrewDetails id={state.logId} onNavigateTo={handleNavigateTo} />;
-      case 'overview':
-        return <Overview onNavigateTo={handleNavigateTo} />;
+      case 'evaluate':
+        return (
+          <Evaluate
+            onChangeDial={handleChangeDial}
+            onNavigateTo={handleNavigateTo}
+          />
+        );
       default:
         return (
           <Setup
