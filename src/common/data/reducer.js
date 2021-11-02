@@ -4,7 +4,7 @@ export const initialState = {
   setup: {},
   prep: {},
   stage: [],
-  logId: '',
+  brewId: '',
 };
 
 const reducer = (state, action) => {
@@ -18,7 +18,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         setup: action.payload,
-        logId: action.id,
+        brewId: action.id,
       };
     case actionTypes.UPDATE_PREP:
       return {

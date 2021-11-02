@@ -7,7 +7,7 @@ import StageForm from './StageForm';
 import BrewDetails from './BrewDetails';
 import Evaluate from './Evaluate';
 
-import {setLog, wipeStorage, changeLogIncrementDial} from '../storage/utils';
+import {setBrew, wipeStorage, changeBrewIncrementDial} from '../storage/utils';
 import reducer, {initialState} from '../common/data/reducer';
 import {updateSetup, updatePrep, updateStage} from '../common/data/actions';
 
@@ -61,7 +61,7 @@ const Root = () => {
   };
 
   const handleStageComplete = async (data) => {
-    await setLog(state.logId, {
+    await setBrew(state.brewId, {
       ...state.setup,
       ...state.prep,
       stages: data,
@@ -74,7 +74,7 @@ const Root = () => {
   };
 
   const handleChangeDial = async (value) => {
-    await changeLogIncrementDial(state.logId, value);
+    await changeBrewIncrementDial(state.brewId, value);
   };
 
   const renderScreen = (type) => {
@@ -103,7 +103,9 @@ const Root = () => {
           />
         );
       case 'brew':
-        return <BrewDetails id={state.logId} onNavigateTo={handleNavigateTo} />;
+        return (
+          <BrewDetails id={state.brewId} onNavigateTo={handleNavigateTo} />
+        );
       case 'evaluate':
         return (
           <Evaluate
