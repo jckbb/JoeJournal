@@ -33,34 +33,34 @@ export const getBeans = async () => {
   return JSON.parse(jsonResponse);
 };
 
-export const setLog = async (id, data) => {
-  const logsData = await getLogs();
-  const jsonLogsData = JSON.stringify({
-    ...logsData,
+export const setBrew = async (id, data) => {
+  const brewsData = await getBrews();
+  const jsonBrewsData = JSON.stringify({
+    ...brewsData,
     [id]: data,
   });
 
-  await createStorageItem(keyTypes.LOG, jsonLogsData).catch((error) => {
+  await createStorageItem(keyTypes.BREW, jsonBrewsData).catch((error) => {
     console.log(error);
   });
 };
 
-export const getLogs = async () => {
-  const jsonResponse = await readStorageItem(keyTypes.LOG);
+export const getBrews = async () => {
+  const jsonResponse = await readStorageItem(keyTypes.BREW);
 
   if (!jsonResponse) return null;
 
   return JSON.parse(jsonResponse);
 };
 
-export const getLog = async (id) => { // id - bean_method_grinder
-  const jsonResponse = await readStorageItem(keyTypes.LOG);
+export const getBrew = async (id) => { // id - bean_method_grinder
+  const jsonResponse = await readStorageItem(keyTypes.BREW);
 
   if (!jsonResponse) return null;
 
-  const logData = JSON.parse(jsonResponse);
+  const brewData = JSON.parse(jsonResponse);
 
-  return logData[id];
+  return brewData[id];
 };
 
 export const getPreviousBrewForm = async () => {
@@ -75,13 +75,13 @@ export const wipeStorage = async () => {
   await deleteAllStorage();
 };
 
-export const changeLogIncrementDial = async (id, increment) => {
-  const logs = await getLogs();
-  const log = {...logs[id]};
+export const changeBrewIncrementDial = async (id, increment) => {
+  const brews = await getBrews();
+  const brew = {...brews[id]};
 
-  log.dial = log.dial + increment;
-  logs[id] = log;
+  brew.dial = brew.dial + increment;
+  brews[id] = brew;
 
-  const jsonLogs = JSON.stringify(logs);
+  const jsonLogs = JSON.stringify(brews);
   await createStorageItem(keyTypes, jsonLogs);
 };

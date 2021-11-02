@@ -12,7 +12,7 @@ import {InfoSvg, TimerSvg, WaterSvg} from '../../common/res/svgs';
 import Title from '../../common/components/Title';
 import BottomDrawer, {drawerState} from '../../common/components/BottomDrawer';
 
-import {getLog} from '../../storage/utils';
+import {getBrew} from '../../storage/utils';
 import {unitType} from '../../common/res/strings';
 import {PRIMARY_COLOR_900} from '../../common/res/colors';
 
@@ -39,7 +39,7 @@ const BrewDetails = (props) => {
   }, [selectedStage]);
 
   const fetchLog = async () => {
-    const data = await getLog(props.id);
+    const data = await getBrew(props.id);
 
     setBrewData(data);
   };
