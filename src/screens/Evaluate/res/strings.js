@@ -15,7 +15,7 @@ export const summary = [
         value: 1,
       },
       {
-        answer: 'Keep it',
+        answer: 'Don\'t change',
         value: 0,
       },
     ],

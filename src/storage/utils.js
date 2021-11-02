@@ -6,13 +6,13 @@ import {
 } from './index';
 
 export const checkSetupIdExists = async (id) => {
-  const jsonResponse = await readStorageItem(keyTypes.LOG, id);
+  const jsonResponse = await readStorageItem(keyTypes.BREW, id);
 
   if (!jsonResponse) return false;
 
-  const logs = JSON.parse(jsonResponse);
+  const brews = JSON.parse(jsonResponse);
 
-  return logs[id] !== undefined;
+  return brews[id] !== undefined;
 };
 
 export const setBean = async (data) => {
