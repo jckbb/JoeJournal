@@ -85,3 +85,35 @@ export const changeBrewIncrementDial = async (id, increment) => {
   const jsonLogs = JSON.stringify(brews);
   await createStorageItem(keyTypes, jsonLogs);
 };
+
+const getBrewLogData = async () => {
+  const jsonBrewLogs = await readStorageItem(keyTypes.LOG);
+
+  if (!jsonBrewLogs) return null;
+
+  return JSON.parse(jsonBrewLogs);
+};
+
+export const logChange = async (id, prevIncrement, currIncrement) => {
+  console.log('brewid', id);
+  const brewLogData = await getBrewLogData();
+  const logs = brewLogData ? brewLogData[id] : [];
+
+  const timestamp = new Date().getTime();
+  const log = {
+    createdAt: timestamp,
+    dial: {
+      previous: prevIncrement,
+      current: currIncrement,
+    },
+  };
+
+  const freshLogs = [...logs, log];
+
+  const jsonBrewLogData = JSON.stringify({
+    ...brewLogData,
+    [id]: freshLogs,
+  });
+  console.log(typeof jsonBrewLogData, jsonBrewLogData);
+  await createStorageItem(keyTypes.LOG, jsonBrewLogData);
+};
