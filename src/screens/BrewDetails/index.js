@@ -139,7 +139,7 @@ const BrewDetails = (props) => {
             <PrimaryButton
               center
               onPress={() => {
-                props.onNavigateTo('overview');
+                props.onNavigateTo('evaluate');
               }}>
               {'Evaluate Brew'}
             </PrimaryButton>
