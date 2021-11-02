@@ -1,15 +1,13 @@
 import {StyleSheet} from 'react-native';
-import {
-  PRIMARY_COLOR_900,
-  PRIMARY_COLOR_500,
-  SECONDARY_COLOR_600,
-  SECONDARY_COLOR_100,
-} from '../../common/res/colors';
+import {SECONDARY_COLOR_700, PRIMARY_COLOR_900, PRIMARY_COLOR_700} from '../../common/res/colors';
 
 export default StyleSheet.create({
   overview: {
     flex: 1,
     marginHorizontal: 20,
+  },
+  options: {
+    marginBottom: 10,
   },
   question: {
     padding: 10,
@@ -21,13 +19,14 @@ export default StyleSheet.create({
     color: PRIMARY_COLOR_900,
   },
   option: {
-    backgroundColor: SECONDARY_COLOR_600,
-    borderRadius: 7,
     padding: 10,
-    marginTop: 8,
+    marginTop: 16,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: PRIMARY_COLOR_700,
   },
   optionText: {
-    color: SECONDARY_COLOR_100,
+    color: PRIMARY_COLOR_900,
     fontSize: 20,
   },
 });
