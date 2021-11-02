@@ -2,7 +2,6 @@ import {
   keyTypes,
   deleteAllStorage,
   readStorageItem,
-  createMultipleStorageItems,
   createStorageItem,
 } from './index';
 
@@ -41,8 +40,6 @@ export const setLog = async (id, data) => {
     [id]: data,
   });
 
-  console.log('json logs:', jsonLogsData);
-
   await createStorageItem(keyTypes.LOG, jsonLogsData).catch((error) => {
     console.log(error);
   });
@@ -76,4 +73,15 @@ export const getPreviousBrewForm = async () => {
 
 export const wipeStorage = async () => {
   await deleteAllStorage();
+};
+
+export const changeLogIncrementDial = async (id, increment) => {
+  const logs = await getLogs();
+  const log = {...logs[id]};
+
+  log.dial = log.dial + increment;
+  logs[id] = log;
+
+  const jsonLogs = JSON.stringify(logs);
+  await createStorageItem(keyTypes, jsonLogs);
 };
