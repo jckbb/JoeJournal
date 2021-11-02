@@ -65,7 +65,7 @@ const BrewDetails = (props) => {
 
   const renderStage = (stageNumber, stageData, index) =>
     renderSquareCard(
-      <View key={index} style={{padding: 10}}>
+      <View style={{padding: 10}}>
         <View
           style={[
             styles.row,
@@ -116,9 +116,12 @@ const BrewDetails = (props) => {
           </View>
         </View>
       </View>,
+      index,
     );
-  const renderSquareCard = (children) => (
+
+  const renderSquareCard = (children, index) => (
     <View
+      key={index}
       style={[
         styles.squareCard,
         {width: GRID_CARD_DIMENSION, height: GRID_CARD_DIMENSION},
@@ -127,73 +130,69 @@ const BrewDetails = (props) => {
     </View>
   );
 
-  return brewData && (
-      <View style={styles.brewDetails}>
-        <ScrollView
-          style={styles.brewDetails}
-          contentContainerStyle={{paddingBottom: 35}}>
-          <View style={{marginBottom: 30, marginLeft: '5%'}}>
-            <Title dark>{'Brew'}</Title>
-          </View>
-          <View style={{marginBottom: 10, marginHorizontal: 15}}>
-            <PrimaryButton
-              center
-              onPress={() => {
-                props.onNavigateTo('evaluate');
-              }}>
-              {'Evaluate Brew'}
-            </PrimaryButton>
-          </View>
-          {renderCard(false, 'Prep', [
-            renderDetail(
-              'Water Amount',
-              `${brewData.totalWaterAmount}${unitType.gram}`,
-            ),
-            renderDetail(
-              'Water Temperature',
-              `${brewData.waterTemperature}${unitType.celsius}`,
-            ),
-            <View style={styles.spacer} />,
-            renderDetail('Grinder Dial', brewData.dial),
-            renderDetail(
-              'Coffee Amount',
-              `${brewData.coffeeAmount}${unitType.gram}`,
-            ),
-          ])}
-          <View
-            style={{
-              marginTop: 10,
-              marginLeft: 10,
-              flexDirection: 'row',
-              flexWrap: 'wrap',
+  const renderBrewDetails = () => (
+    <View style={styles.brewDetails}>
+      <ScrollView
+        style={styles.brewDetails}
+        contentContainerStyle={{paddingBottom: 35}}>
+        <View style={styles.title}>
+          <Title dark>{'Brew'}</Title>
+        </View>
+        <View style={{marginBottom: 10, marginHorizontal: 15}}>
+          <PrimaryButton
+            center
+            onPress={() => {
+              props.onNavigateTo('evaluate');
             }}>
-            {brewData.stages.map((item, index) =>
-              renderStage(index + 1, item, index),
-            )}
-          </View>
-        </ScrollView>
-        <BottomDrawer
-          isVisible={isBottomDrawerVisible}
-          onDrawerStateChange={(changedState) => {
-            if (drawerState.Closed === changedState) {
-              handleBottomDrawerClose();
-            }
-          }}>
-          {selectedStage && (
-            <View>
-              <Text
-                style={[
-                  styles.headerText,
-                  {alignSelf: 'center'},
-                ]}>{`Stage ${selectedStage.index}`}</Text>
-              <Text style={styles.descriptionText}>
-                {selectedStage.description}
-              </Text>
-            </View>
+            {'Evaluate'}
+          </PrimaryButton>
+        </View>
+        {renderCard(false, 'Prep', [
+          renderDetail(
+            'Water Amount',
+            `${brewData.totalWaterAmount}${unitType.gram}`,
+          ),
+          renderDetail(
+            'Water Temperature',
+            `${brewData.waterTemperature}${unitType.celsius}`,
+          ),
+          <View style={styles.spacer} />,
+          renderDetail('Grinder Dial', brewData.dial),
+          renderDetail(
+            'Coffee Amount',
+            `${brewData.coffeeAmount}${unitType.gram}`,
+          ),
+        ])}
+        <View style={styles.grid}>
+          {brewData.stages.map((item, index) =>
+            renderStage(index + 1, item, index),
           )}
-        </BottomDrawer>
-      </View>
+        </View>
+      </ScrollView>
+      <BottomDrawer
+        isVisible={isBottomDrawerVisible}
+        onDrawerStateChange={(changedState) => {
+          if (drawerState.Closed === changedState) {
+            handleBottomDrawerClose();
+          }
+        }}>
+        {selectedStage && (
+          <View>
+            <Text
+              style={[
+                styles.headerText,
+                {alignSelf: 'center'},
+              ]}>{`Stage ${selectedStage.index}`}</Text>
+            <Text style={styles.descriptionText}>
+              {selectedStage.description}
+            </Text>
+          </View>
+        )}
+      </BottomDrawer>
+    </View>
   );
+
+  return brewData && renderBrewDetails();
 };
 
 export default BrewDetails;
