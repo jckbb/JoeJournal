@@ -18,7 +18,7 @@ import {updateBrew} from '../common/data/actions';
 
 const Root = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [screen, setScreen] = useState('');
+  const [screen, setScreen] = useState('setup');
   const [multiStepFormData, setMutliStepFormData] = useState({});
   const screenRef = useRef('');
 
@@ -31,7 +31,7 @@ const Root = () => {
       case 'brew':
       case 'prep':
       case 'evaluate':
-        setScreen('');
+        setScreen('setup');
         break;
       case 'stage':
         setScreen('prep');
@@ -135,13 +135,15 @@ const Root = () => {
             onNavigateTo={handleNavigateTo}
           />
         );
-      default:
+      case 'setup':
         return (
           <Setup
             onChangeBrew={handleChangeBrew}
             onComplete={handleSetupComplete}
           />
         );
+      default:
+        return null;
     }
   };
 

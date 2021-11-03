@@ -13,7 +13,7 @@ const Evaluate = (props) => {
   const [showResults, setResults] = useState(false);
 
   const handleComplete = () => {
-    props.onNavigateTo('');
+    props.onNavigateTo('setup');
   };
 
   const handleAnwserSelected = (item) => {
