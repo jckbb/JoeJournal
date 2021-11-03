@@ -15,11 +15,15 @@ import {
   grinderData,
   grinderByName,
 } from '../../common/res/strings';
-import {getBeans, checkSetupIdExists} from '../../storage/utils';
+import {getBrew, getBeans, checkSetupIdExists} from '../../storage/utils';
 
 import reducer, {initialState} from './data/formReducer';
 import {updateField} from './data/actions';
-import {convertFormDataToRecord, drawerListItemContent} from './utils';
+import {
+  createBrewId,
+  convertFormDataToRecord,
+  drawerListItemContent,
+} from './utils';
 import {TITLE, beanField, methodField, grinderField} from './res/strings';
 import styles, {iconColor} from './styles';
 
@@ -36,7 +40,7 @@ const Setup = (props) => {
   const [showBottomDrawer, setBottomDrawer] = useState(false);
   const [isCoffeeModalVisible, setCoffeeModalVisible] = useState(false);
   const [optionType, setOptionType] = useState('');
-  const [brewIdExist, setBrewIdExist] = useState(false);
+  const [brewExists, setBrewExists] = useState(false);
   const [setupOptions, setSetupOptions] = useState({
     bean: [],
     method: methodByName,
@@ -50,15 +54,19 @@ const Setup = (props) => {
   useEffect(() => {
     const {bean, method, grinder} = state;
     if (bean.value && method.value && grinder.value) {
-      const setupId = `${bean.value.roaster}_${bean.value.origin}_${method.value}_${grinder.value}`;
-      handleFormFilled(setupId);
+      const brewId = createBrewId(state);
+      checkForBrew(brewId);
       setFormComplete(true);
     }
   }, [state]);
 
-  const handleFormFilled = async (id) => {
-    const exists = await checkSetupIdExists(id);
-    setBrewIdExist(exists);
+  const checkForBrew = async (id) => {
+    const brewData = await getBrew(id);
+    const exists = brewData && true;
+
+    props.onChangeBrew(id, brewData);
+
+    setBrewExists(exists);
   };
 
   const fetchCoffeeBeans = async () => {
@@ -103,12 +111,10 @@ const Setup = (props) => {
     if (!isFormValid) {
       setFormErrors(true);
     } else {
-      const setupRecord = convertFormDataToRecord(state);
-      const setupId = `${state.bean.value.roaster}_${state.bean.value.origin}_${state.method.value}_${state.grinder.value}`;
+      const navigateId = brewExists ? 'brew' : 'prep';
+      const setupRecord = brewExists ? null : convertFormDataToRecord(state);
 
-      const navigateId = brewIdExist ? 'brew' : 'prep';
-      props.onSetupComplete(setupId, setupRecord);
-      props.onNavigateTo(navigateId);
+      props.onComplete(navigateId, setupRecord);
     }
   };
 
@@ -202,7 +208,7 @@ const Setup = (props) => {
         )}
         <View style={{marginTop: 30}}>
           <PrimaryButton disabled={!isFormComplete} onPress={handleSubmit}>
-            {brewIdExist ? 'Brew' : 'Create'}
+            {brewExists ? 'Brew' : 'Create'}
           </PrimaryButton>
         </View>
       </View>

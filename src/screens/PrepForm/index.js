@@ -47,8 +47,7 @@ const PrepForm = (props) => {
     } else {
       // continue
       const record = convertFormDataToRecord(state);
-      props.onPrepComplete(record);
-      props.onNavigateTo('stage');
+      props.onComplete('stage', record);
     }
   };
 
