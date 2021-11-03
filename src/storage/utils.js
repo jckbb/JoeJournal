@@ -82,6 +82,47 @@ export const changeBrewIncrementDial = async (id, increment) => {
   brew.dial = brew.dial + increment;
   brews[id] = brew;
 
-  const jsonLogs = JSON.stringify(brews);
-  await createStorageItem(keyTypes, jsonLogs);
+  const jsonBrew = JSON.stringify(brews);
+  await createStorageItem(keyTypes.BREW, jsonBrew);
+};
+
+const getBrewLogData = async () => {
+  const jsonBrewLogs = await readStorageItem(keyTypes.LOG);
+
+  if (!jsonBrewLogs) return null;
+
+  return JSON.parse(jsonBrewLogs);
+};
+
+export const getLogs = async (id) => {
+  const brewLogs = await getBrewLogData();
+
+  if (!brewLogs || !brewLogs[id]) return [];
+
+  return brewLogs[id];
+};
+
+export const logChange = async (id, prevIncrement, currIncrement) => {
+  const brewLogData = await getBrewLogData();
+
+  const logs = brewLogData ? brewLogData[id] : [];
+
+  const timestamp = new Date().getTime();
+  const log = {
+    createdAt: timestamp,
+    dial: {
+      previous: prevIncrement,
+      current: currIncrement,
+    },
+  };
+
+  const freshLogs = [...logs, log];
+  const freshBrewLogData = {
+    ...brewLogData,
+    [id]: freshLogs,
+  };
+
+  const jsonBrewLogData = JSON.stringify(freshBrewLogData);
+
+  await createStorageItem(keyTypes.LOG, jsonBrewLogData);
 };

@@ -31,9 +31,13 @@ import {
   pourTimeField,
   descriptionField,
 } from './res/strings';
-import {parseTimeToString, stageFormValidation, convertFormDataToRecord} from './utils.js';
+import {
+  parseTimeToString,
+  stageFormValidation,
+  convertFormDataToRecord,
+} from './utils.js';
 import styles, {darkRed} from './styles';
-import { PRIMARY_COLOR_700 } from '../../common/res/colors';
+import {PRIMARY_COLOR_700} from '../../common/res/colors';
 
 const StageForm = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -76,8 +80,7 @@ const StageForm = (props) => {
     }
 
     const record = convertFormDataToRecord(state.stage);
-    props.onStageComplete(record);
-    props.onNavigateTo('brew');
+    props.onComplete('brew', record);
   };
 
   const handleRemoveStage = () => {
