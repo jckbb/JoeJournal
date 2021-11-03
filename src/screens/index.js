@@ -7,13 +7,19 @@ import StageForm from './StageForm';
 import BrewDetails from './BrewDetails';
 import Evaluate from './Evaluate';
 
-import {setBrew, wipeStorage, changeBrewIncrementDial} from '../storage/utils';
+import {
+  logChange,
+  setBrew,
+  wipeStorage,
+  changeBrewIncrementDial,
+} from '../storage/utils';
 import reducer, {initialState} from '../common/data/reducer';
-import {updateSetup, updatePrep, updateStage} from '../common/data/actions';
+import {updateBrew} from '../common/data/actions';
 
 const Root = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [screen, setScreen] = useState('');
+  const [multiStepFormData, setMutliStepFormData] = useState({});
   const screenRef = useRef('');
 
   useEffect(() => {
@@ -22,13 +28,10 @@ const Root = () => {
 
   const backAction = () => {
     switch (screenRef.current) {
-      case 'setup':
-        BackHandler.exitApp();
-        break;
       case 'brew':
       case 'prep':
       case 'evaluate':
-        setScreen('setup');
+        setScreen('');
         break;
       case 'stage':
         setScreen('prep');
@@ -52,59 +55,78 @@ const Root = () => {
     await wipeStorage();
   };
 
-  const handleSetupComplete = (id, data) => {
-    dispatch(updateSetup(id, data));
-  };
-
-  const handlePrepComplete = (data) => {
-    dispatch(updatePrep(data));
-  };
-
-  const handleStageComplete = async (data) => {
-    await setBrew(state.brewId, {
-      ...state.setup,
-      ...state.prep,
-      stages: data,
-    });
-    dispatch(updateStage(data));
-  };
-
   const handleNavigateTo = (type) => {
     setScreen(type);
   };
 
   const handleChangeDial = async (value) => {
+    await logChange(
+      state.brewId,
+      state.brewData.dial,
+      state.brewData.dial + value,
+    );
     await changeBrewIncrementDial(state.brewId, value);
+  };
+
+  const handleChangeBrew = (id, data) => {
+    dispatch(updateBrew(id, data));
+  };
+
+  const handleSetupComplete = (nextScreen, data) => {
+    if (data) {
+      setMutliStepFormData((prev) => ({
+        ...prev,
+        setup: data,
+      }));
+    }
+
+    handleNavigateTo(nextScreen);
+  };
+
+  const handlePrepComplete = (nextScreen, data) => {
+    if (data) {
+      setMutliStepFormData((prev) => ({
+        ...prev,
+        [screen]: data,
+      }));
+    }
+
+    handleNavigateTo(nextScreen);
+  };
+
+  const handleStageComplete = async (nextScreen, data) => {
+    const brewData = {
+      ...multiStepFormData.setup,
+      ...multiStepFormData.prep,
+      stages: data,
+    };
+
+    await setBrew(state.brewId, brewData);
+
+    dispatch(updateBrew(state.brewId, brewData));
+    setMutliStepFormData({});
+    handleNavigateTo(nextScreen);
   };
 
   const renderScreen = (type) => {
     switch (type) {
-      case 'setup':
-        return (
-          <Setup
-            onNavigateTo={handleNavigateTo}
-            onSetupComplete={handleSetupComplete}
-          />
-        );
       case 'prep':
         return (
-          <PrepForm
-            data={state}
-            onPrepComplete={handlePrepComplete}
-            onNavigateTo={handleNavigateTo}
-          />
+          <PrepForm data={multiStepFormData} onComplete={handlePrepComplete} />
         );
       case 'stage':
         return (
           <StageForm
-            data={state}
-            onStageComplete={handleStageComplete}
-            onNavigateTo={handleNavigateTo}
+            data={multiStepFormData}
+            onComplete={handleStageComplete}
           />
         );
       case 'brew':
         return (
-          <BrewDetails id={state.brewId} onNavigateTo={handleNavigateTo} />
+          <BrewDetails
+            data={{id: state.brewId, ...state.brewData}}
+            onNavigateTo={handleNavigateTo}
+          />
         );
       case 'evaluate':
         return (
@@ -116,8 +138,8 @@ const Root = () => {
       default:
         return (
           <Setup
-            onSetupComplete={handleSetupComplete}
-            onNavigateTo={handleNavigateTo}
+            onChangeBrew={handleChangeBrew}
+            onComplete={handleSetupComplete}
           />
         );
     }

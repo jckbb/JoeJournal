@@ -11,8 +11,8 @@ import {InfoSvg, TimerSvg, WaterSvg} from '../../common/res/svgs';
 
 import Title from '../../common/components/Title';
 import BottomDrawer, {drawerState} from '../../common/components/BottomDrawer';
+import LogModal from '../../screens/LogModal';
 
-import {getBrew} from '../../storage/utils';
 import {unitType} from '../../common/res/strings';
 import {PRIMARY_COLOR_900} from '../../common/res/colors';
 
@@ -24,13 +24,10 @@ const {width: screenWidth} = Dimensions.get('screen');
 const GRID_CARD_DIMENSION = screenWidth / 2 - 20;
 
 const BrewDetails = (props) => {
-  const [brewData, setBrewData] = useState(null);
+  const [brewData, setBrewData] = useState(props.data);
+  const [showLogModal, setShowLogModal] = useState(false);
   const [isBottomDrawerVisible, setBottomDrawerVisible] = useState(false);
   const [selectedStage, setSelectedStage] = useState(null);
-
-  useEffect(() => {
-    fetchLog();
-  }, []);
 
   useEffect(() => {
     if (!selectedStage) return;
@@ -38,26 +35,24 @@ const BrewDetails = (props) => {
     setBottomDrawerVisible(true);
   }, [selectedStage]);
 
-  const fetchLog = async () => {
-    const data = await getBrew(props.id);
-
-    setBrewData(data);
-  };
-
   const handleBottomDrawerClose = () => {
     setBottomDrawerVisible(false);
     setSelectedStage(null);
   };
 
-  const renderDetail = (label, value) => (
-    <View style={[styles.row, styles.detail]}>
+  const handleShowLogModal = () => {
+    setShowLogModal(true);
+  };
+
+  const renderDetail = (label, value, index) => (
+    <View key={index} style={[styles.row, styles.detail]}>
       <Text style={styles.fieldText}>{label}</Text>
       <Text style={styles.detailText}>{value}</Text>
     </View>
   );
 
-  const renderCard = (hasSpace, header, children) => (
-    <View style={[styles.card, hasSpace && {marginTop: 20}]}>
+  const renderCard = (hasSpace, header, children, index) => (
+    <View key={index} style={[styles.card, hasSpace && {marginTop: 20}]}>
       <Text style={styles.headerText}>{header}</Text>
       {children}
     </View>
@@ -151,24 +146,35 @@ const BrewDetails = (props) => {
           renderDetail(
             'Water Amount',
             `${brewData.totalWaterAmount}${unitType.gram}`,
+            0,
           ),
           renderDetail(
             'Water Temperature',
             `${brewData.waterTemperature}${unitType.celsius}`,
+            1,
           ),
           <View style={styles.spacer} />,
-          renderDetail('Grinder Dial', brewData.dial),
+          renderDetail('Grinder Dial', brewData.dial, 2),
           renderDetail(
             'Coffee Amount',
             `${brewData.coffeeAmount}${unitType.gram}`,
+            3,
           ),
-        ])}
+        ], 0)}
         <View style={styles.grid}>
           {brewData.stages.map((item, index) =>
             renderStage(index + 1, item, index),
           )}
         </View>
+        <PrimaryButton onPress={handleShowLogModal}>{'Log'}</PrimaryButton>
       </ScrollView>
+      <LogModal
+        isVisible={showLogModal}
+        brewId={props.data.id}
+        onClose={() => {
+          setShowLogModal(false);
+        }}
+      />
       <BottomDrawer
         isVisible={isBottomDrawerVisible}
         onDrawerStateChange={(changedState) => {

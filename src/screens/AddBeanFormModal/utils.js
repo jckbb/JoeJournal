@@ -11,8 +11,6 @@ export const convertToUsableData = (data) => {
 
   for (const field in data) {
     if (field === 'notes') {
-      console.log(field, data[field]);
-      console.log(field, data[field].value.split(', '));
       result = {
         ...result,
         [field]: data[field].value.split(', '),
