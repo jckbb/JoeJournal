@@ -6,6 +6,9 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   button: {
+    flex: 1,
+    minHeight: 70,
+    height: 70,
     backgroundColor: SECONDARY_COLOR_400,
     borderRadius: 7,
     justifyContent: 'center',
@@ -14,6 +17,7 @@ export default StyleSheet.create({
   },
   buttonText: {
     fontSize: 25,
+    lineHeight: 30,
     marginRight: 5,
     color: PRIMARY_COLOR_500,
     letterSpacing: 0.5,

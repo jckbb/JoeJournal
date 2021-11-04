@@ -5,11 +5,12 @@ import ModalWrapper from '../../common/components/ModalWrapper';
 import Title from '../../common/components/Title';
 
 import {getLogs} from '../../storage/utils';
-
+import {getDateFromTimestamp} from './utils';
 import styles from './styles';
 
 const LogModal = (props) => {
   const [logList, setLogList] = useState(null);
+
   useEffect(() => {
     fetchLogs(props.brewId);
   }, []);
@@ -20,20 +21,36 @@ const LogModal = (props) => {
     setLogList(logs);
   };
 
-  const renderLogItem = ({item, index}) => (
-    <View style={styles.logItem}>
-      <Text style={styles.timeText}>{new Date(item.createdAt).toISOString()}</Text>
-      <View style={[styles.row, {marginTop: 8, alignItems: 'flex-end'}]}>
-        <Text style={styles.fieldText}>{'Grinder Dial'}</Text>
-        <Text style={styles.previousText}>{item.dial.previous}</Text>
-        <Text style={styles.currentText}>{item.dial.current}</Text>
+  const renderLogItem = ({item, index}) => {
+    const difference = item.dial.current - item.dial.previous;
+    const differenceType = difference > 0 ? '+' : '-';
+
+    return (
+      <View style={styles.logItem}>
+        <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+          <Text style={styles.timeText}>
+            {getDateFromTimestamp(item.createdAt)}
+          </Text>
+          <Text style={styles.timeText}>{'10:30am'}</Text>
+        </View>
+        <View style={[styles.row, styles.logChange]}>
+          <Text style={styles.fieldText}>{'Grinder Dial'}</Text>
+          <View style={styles.row}>
+            <Text style={[styles.fieldText, {fontWeight: '700'}]}>
+              {item.dial.current}
+            </Text>
+            <Text style={[styles.currentText, {marginHorizontal: 8}]}>
+              {`${differenceType}${difference}`}
+            </Text>
+          </View>
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   const renderEmpty = () => (
-    <View>
-      <Text>{'Nothing Logged Yet'}</Text>
+    <View style={styles.empty}>
+      <Text style={styles.emptyText}>{'Nothing Logged Yet'}</Text>
     </View>
   );
 
@@ -46,13 +63,14 @@ const LogModal = (props) => {
         data={logList}
         renderItem={renderLogItem}
         ItemSeparatorComponent={() => <View style={styles.divider} />}
+        keyExtractor={(__, index) => index.toString()}
       />
     );
 
   return (
     <ModalWrapper visible={props.isVisible} onCloseRequest={props.onClose}>
       <View style={{marginLeft: 15}}>
-        <Title dark>{'Log'}</Title>
+        <Title dark>{'History'}</Title>
       </View>
       {logList && renderList()}
     </ModalWrapper>
