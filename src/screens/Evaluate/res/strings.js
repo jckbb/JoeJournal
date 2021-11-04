@@ -1,3 +1,5 @@
+export const TITLE = 'Survey';
+
 export const summary = [
   {
     question: 'Next brew dial grinder by?',

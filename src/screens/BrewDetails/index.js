@@ -1,23 +1,26 @@
 import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
+  TouchableOpacity,
   View,
   Text,
   ScrollView,
-  TouchableOpacity,
 } from 'react-native';
 
-import {InfoSvg, TimerSvg, WaterSvg} from '../../common/res/svgs';
+import {unitType} from '../../common/res/strings';
+import {HistorySvg} from '../../common/res/svgs';
 
 import Title from '../../common/components/Title';
 import BottomDrawer, {drawerState} from '../../common/components/BottomDrawer';
 import LogModal from '../../screens/LogModal';
+import PrimaryButton from '../../common/components/PrimaryButton';
 
-import {unitType} from '../../common/res/strings';
-import {PRIMARY_COLOR_900} from '../../common/res/colors';
+import Detail from './components/Detail';
+import Stage from './components/Stage';
 
 import styles from './styles';
-import PrimaryButton from '../../common/components/PrimaryButton';
+import {PRIMARY_COLOR_800} from '../../common/res/colors';
+import {EVALUATE_BUTTON, TITLE} from './res/strings';
 
 const {width: screenWidth} = Dimensions.get('screen');
 
@@ -44,129 +47,60 @@ const BrewDetails = (props) => {
     setShowLogModal(true);
   };
 
-  const renderDetail = (label, value, index) => (
-    <View key={index} style={[styles.row, styles.detail]}>
-      <Text style={styles.fieldText}>{label}</Text>
-      <Text style={styles.detailText}>{value}</Text>
-    </View>
-  );
+  const handleShowStageDescription = (data, index) => {
+    setSelectedStage({description: data.description, index: index});
+  };
 
-  const renderCard = (hasSpace, header, children, index) => (
-    <View key={index} style={[styles.card, hasSpace && {marginTop: 20}]}>
-      <Text style={styles.headerText}>{header}</Text>
-      {children}
-    </View>
-  );
-
-  const renderStage = (stageNumber, stageData, index) =>
-    renderSquareCard(
-      <View style={{padding: 10}}>
-        <View
-          style={[
-            styles.row,
-            {
-              marginBottom: 20,
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            },
-          ]}>
-          <Text style={styles.subHeaderText}>{`Stage ${stageNumber}`}</Text>
-          {stageData.description.length > 0 && (
-            <TouchableOpacity
-              onPress={() => {
-                setSelectedStage({...stageData, index: stageNumber});
-              }}>
-              <InfoSvg />
-            </TouchableOpacity>
-          )}
-        </View>
-        <View style={[styles.row, {justifyContent: 'space-between'}]}>
-          <View style={styles.row}>
-            <WaterSvg fill={PRIMARY_COLOR_900} />
-            <Text
-              style={
-                styles.detailText
-              }>{`${stageData.waterAmount}${unitType.gram}`}</Text>
-          </View>
-          <View style={styles.row}>
-            <TimerSvg fill={PRIMARY_COLOR_900} />
-            <Text
-              style={
-                styles.detailText
-              }>{`${stageData.pourDuration}${unitType.seconds}`}</Text>
-          </View>
-        </View>
-        <View
-          style={[
-            styles.row,
-            {justifyContent: 'space-between', marginTop: 15},
-          ]}>
-          <Text style={styles.detailText}>{'Hold'}</Text>
-          <View style={styles.row}>
-            <TimerSvg fill={PRIMARY_COLOR_900} />
-            <Text
-              style={
-                styles.detailText
-              }>{`${stageData.waitDuration}${unitType.seconds}`}</Text>
-          </View>
-        </View>
-      </View>,
-      index,
-    );
-
-  const renderSquareCard = (children, index) => (
-    <View
-      key={index}
-      style={[
-        styles.squareCard,
-        {width: GRID_CARD_DIMENSION, height: GRID_CARD_DIMENSION},
-      ]}>
-      {children}
-    </View>
-  );
-
-  const renderBrewDetails = () => (
+  return (
     <View style={styles.brewDetails}>
       <ScrollView
         style={styles.brewDetails}
         contentContainerStyle={{paddingBottom: 35}}>
         <View style={styles.title}>
-          <Title dark>{'Brew'}</Title>
+          <Title dark>{TITLE}</Title>
         </View>
-        <View style={{marginBottom: 10, marginHorizontal: 15}}>
+        <View style={styles.buttonSet}>
           <PrimaryButton
             center
             onPress={() => {
               props.onNavigateTo('evaluate');
             }}>
-            {'Evaluate'}
+            {EVALUATE_BUTTON}
           </PrimaryButton>
+          <TouchableOpacity
+            style={styles.historyButton}
+            onPress={handleShowLogModal}>
+            <HistorySvg fill={PRIMARY_COLOR_800} height={45} width={45} />
+          </TouchableOpacity>
         </View>
-        {renderCard(false, 'Prep', [
-          renderDetail(
-            'Water Amount',
-            `${brewData.totalWaterAmount}${unitType.gram}`,
-            0,
-          ),
-          renderDetail(
-            'Water Temperature',
-            `${brewData.waterTemperature}${unitType.celsius}`,
-            1,
-          ),
-          <View style={styles.spacer} />,
-          renderDetail('Grinder Dial', brewData.dial, 2),
-          renderDetail(
-            'Coffee Amount',
-            `${brewData.coffeeAmount}${unitType.gram}`,
-            3,
-          ),
-        ], 0)}
+        <View style={styles.card}>
+          <Text style={styles.headerText}>{'Prep'}</Text>
+          <Detail
+            label={'Water Amount'}
+            value={`${brewData.totalWaterAmount}${unitType.gram}`}
+          />
+          <Detail
+            label={'Water Temperature'}
+            value={`${brewData.waterTemperature}${unitType.celsius}`}
+          />
+          <View style={styles.spacer} />
+          <Detail label={'Grinder Dial'} value={brewData.dial} />
+          <Detail
+            label={'Coffee Amount'}
+            value={`${brewData.coffeeAmount}${unitType.gram}`}
+          />
+        </View>
         <View style={styles.grid}>
-          {brewData.stages.map((item, index) =>
-            renderStage(index + 1, item, index),
-          )}
+          {brewData.stages.map((item, index) => (
+            <Stage
+              key={index}
+              stageIndex={index + 1}
+              dimension={GRID_CARD_DIMENSION}
+              data={item}
+              onRequestDescription={handleShowStageDescription}
+            />
+          ))}
         </View>
-        <PrimaryButton onPress={handleShowLogModal}>{'Log'}</PrimaryButton>
       </ScrollView>
       <LogModal
         isVisible={showLogModal}
@@ -197,8 +131,6 @@ const BrewDetails = (props) => {
       </BottomDrawer>
     </View>
   );
-
-  return brewData && renderBrewDetails();
 };
 
 export default BrewDetails;

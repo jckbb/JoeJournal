@@ -4,7 +4,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import Title from '../../common/components/Title';
 import Step from '../../common/components/Step';
 
-import {summary, evaluationQuestions} from './res/strings';
+import {summary, evaluationQuestions, TITLE} from './res/strings';
 import styles from './styles';
 
 const Evaluate = (props) => {
@@ -43,7 +43,7 @@ const Evaluate = (props) => {
     const data = evaluationQuestions[questionIndex];
     return (
       <View style={styles.overview}>
-        <Title dark>{'Evaluate'}</Title>
+        <Title dark>{TITLE}</Title>
         <Step
           dark
           totalSteps={evaluationQuestions.length}
@@ -73,7 +73,7 @@ const Evaluate = (props) => {
 
             if (index === 0) {
               option = {
-                answer: `Recommended: ${evaluation > 0 ? `+${evaluation}` : evaluation}`,
+                answer: `Recommended: ${evaluation > 0 ? `+${evaluation}` : 'Don\'t change'}`,
                 value: evaluation,
               };
             }
