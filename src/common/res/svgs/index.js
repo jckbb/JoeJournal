@@ -6,3 +6,4 @@ export {default as InfoSvg} from './Info.svg';
 export {default as WaterSvg} from './Water.svg';
 export {default as TimerSvg} from './Timer.svg';
 export {default as HistorySvg} from './History.svg';
+export {default as CheckmarkSvg} from './Checkmark.svg';

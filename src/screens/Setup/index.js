@@ -15,7 +15,7 @@ import {
   grinderData,
   grinderByName,
 } from '../../common/res/strings';
-import {getBrew, getBeans, checkSetupIdExists} from '../../storage/utils';
+import {getBrew, getBeans} from '../../storage/utils';
 
 import reducer, {initialState} from './data/formReducer';
 import {updateField} from './data/actions';
@@ -55,6 +55,7 @@ const Setup = (props) => {
     const {bean, method, grinder} = state;
     if (bean.value && method.value && grinder.value) {
       const brewId = createBrewId(state);
+      console.log(brewId);
       checkForBrew(brewId);
       setFormComplete(true);
     }

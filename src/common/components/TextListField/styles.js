@@ -6,6 +6,8 @@ export default StyleSheet.create({
     ...FIELD_BOX,
     height: FIELD_BOX_HEIGHT,
     paddingLeft: 8,
+    paddingRight: 40,
+    textTransform: 'capitalize',
   },
   label: {
     ...FIELD_LABEL_TEXT,
@@ -17,5 +19,12 @@ export default StyleSheet.create({
   border: {
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.6)',
+  },
+  doneButton: {
+    position: 'absolute',
+    justifyContent: 'center',
+    top: 0,
+    bottom: 0,
+    right: 5,
   },
 });

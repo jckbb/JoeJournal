@@ -11,9 +11,24 @@ export const convertToUsableData = (data) => {
 
   for (const field in data) {
     if (field === 'notes') {
+      let noteList = [];
+      const notes = data[field].value;
+      const list = notes.split(',');
+
+      for (let i = 0; i < list.length; i++) {
+        let note = list[i];
+        note = note.replace(/^\s/g, '');
+        note = note.replace(/\s$/g, '');
+
+        if (note.length > 0) {
+          console.log(note.length);
+          noteList = [...noteList, note];
+        }
+      }
+
       result = {
         ...result,
-        [field]: data[field].value.split(', '),
+        [field]: noteList,
       };
     } else {
       result = {
