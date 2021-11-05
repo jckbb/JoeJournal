@@ -2,7 +2,6 @@ import React, {useReducer, useState} from 'react';
 import {View} from 'react-native';
 
 import ModalWrapper from '../../common/components/ModalWrapper';
-import SubmitForm from '../../common/components/SubmitForm';
 import TextField from '../../common/components/TextField';
 import Title from '../../common/components/Title';
 import TextListField from '../../common/components/TextListField';
@@ -11,7 +10,7 @@ import {setBean} from '../../storage/utils';
 
 import reducer, {initialState} from './data/formReducer';
 import {convertToUsableData} from './utils';
-import {updateField} from './data/actions';
+import {updateField, clearAllFields} from './data/actions';
 import {
   SUBMIT,
   TITLE,
@@ -39,15 +38,20 @@ const AddBeanFormModal = props => {
       setFormErrors(true);
     } else {
       const beanData = convertToUsableData(state);
-
+      dispatch(clearAllFields());
       await setBean(beanData).then(() => {
         props.onComplete(beanData);
       });
     }
   };
 
+  const handleCloseRequest = () => {
+    dispatch(clearAllFields());
+    props.onClose();
+  };
+
   return (
-    <ModalWrapper visible={props.visible} onCloseRequest={props.onClose}>
+    <ModalWrapper visible={props.visible} onCloseRequest={handleCloseRequest}>
       <View style={styles.form}>
         <Title dark>{TITLE}</Title>
         <TextField

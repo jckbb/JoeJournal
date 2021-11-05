@@ -33,4 +33,4 @@ export const drawerListItemContent = (optionData, selectedOption) => {
 };
 
 export const createBrewId = ({bean, method, grinder}) =>
-  `${bean.value.roaster}_${bean.value.origin}_${method.value}_${grinder.value}`;
+  `${bean.value.roaster.toLowerCase()}_${bean.value.origin.toLowerCase()}_${method.value.toLowerCase()}_${grinder.value.toLowerCase()}`;
