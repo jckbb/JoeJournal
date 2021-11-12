@@ -6,6 +6,10 @@ import {
   WHITE,
 } from './colors';
 
+export const PRIMARY_HEADER = {
+  
+};
+
 export const FIELD_BOX_HEIGHT = 50;
 
 export const FIELD_BOX = {

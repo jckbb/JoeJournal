@@ -13,10 +13,6 @@ export const initialState = {
     value: undefined,
     hasError: true,
   },
-  totalWaterAmount: {
-    value: undefined,
-    hasError: true,
-  },
 };
 
 const reducer = (state, action) => {
@@ -28,6 +24,22 @@ const reducer = (state, action) => {
           ...state[action.field],
           value: action.payload,
           hasError: action.error,
+        },
+      };
+    case actionTypes.UPDATE_FORM:
+      return {
+        ...state,
+        dial: {
+          value: action.payload.dial,
+          hasError: false,
+        },
+        waterTemperature: {
+          value: action.payload.waterTemperature,
+          hasError: false,
+        },
+        coffeeAmount: {
+          value: action.payload.coffeeAmount,
+          hasError: false,
         },
       };
     default:

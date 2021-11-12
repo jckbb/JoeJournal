@@ -2,9 +2,12 @@ import {StyleSheet} from 'react-native';
 import {PRIMARY_COLOR_700} from '../../common/res/colors';
 
 export default StyleSheet.create({
+  prepForm: {
+    flex: 1,
+  },
   form: {
     flex: 1,
-    marginHorizontal: '10%',
+    paddingHorizontal: '20%',
   },
   row: {
     flexDirection: 'row',

@@ -44,11 +44,6 @@ const Evaluate = (props) => {
     return (
       <View style={styles.overview}>
         <Title dark>{TITLE}</Title>
-        <Step
-          dark
-          totalSteps={evaluationQuestions.length}
-          currentStep={questionIndex + 1}
-        />
         {renderQuestion(data.question)}
         <View style={styles.options}>
           {data.options.map((item, index) =>
@@ -57,6 +52,11 @@ const Evaluate = (props) => {
             }),
           )}
         </View>
+        <Step
+          dark
+          totalSteps={evaluationQuestions.length}
+          currentStep={questionIndex + 1}
+        />
       </View>
     );
   };

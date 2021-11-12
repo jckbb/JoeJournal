@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {View, PanResponder, Dimensions, Animated} from 'react-native';
 
 import styles from './styles';
@@ -11,6 +11,7 @@ export const drawerState = {
 };
 
 const BottomDrawer = ({children, onDrawerStateChange, ...props}) => {
+  const [shouldRenderChildren, setShouldRenderChildren] = useState(true);
   const y = useRef(new Animated.Value(drawerState.Closed)).current;
   const state = useRef(new Animated.Value(drawerState.Closed)).current;
   const margin = 0.05 * height;
@@ -34,10 +35,14 @@ const BottomDrawer = ({children, onDrawerStateChange, ...props}) => {
     const valueToMove = movementValue(moveY);
     const nextState = getNextState(state._value, valueToMove, margin);
     state.setValue(nextState);
+    // setShouldRenderChildren(true);
     animateMove(y, nextState, onDrawerStateChange(nextState));
   };
 
-  const onMoveShouldSetPanResponder = (_, {dy}) => Math.abs(dy) >= 10;
+  const onMoveShouldSetPanResponder = (_, {dy}) => {
+    // if (shouldRenderChildren) setShouldRenderChildren(false);
+    return Math.abs(dy) >= 10;
+  };
 
   const panResponder = useRef(
     PanResponder.create({
@@ -90,8 +95,8 @@ const BottomDrawer = ({children, onDrawerStateChange, ...props}) => {
         },
       ]}
       {...panResponder.panHandlers}>
-      <View style={styles.chin} />
-      {children}
+      <View style={[styles.chin]} />
+      {shouldRenderChildren ? children : null}
     </Animated.View>
   );
 };

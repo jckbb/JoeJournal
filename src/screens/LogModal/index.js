@@ -69,10 +69,10 @@ const LogModal = (props) => {
 
   return (
     <ModalWrapper visible={props.isVisible} onCloseRequest={props.onClose}>
-      <View style={{marginLeft: 15}}>
+      <View style={{paddingHorizontal: '20%'}}>
         <Title dark>{'History'}</Title>
+        {logList && renderList()}
       </View>
-      {logList && renderList()}
     </ModalWrapper>
   );
 };

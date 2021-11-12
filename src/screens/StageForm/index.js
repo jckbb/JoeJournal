@@ -22,6 +22,7 @@ import {
   addStage,
   removeStage,
   updateField,
+  updateTotal,
 } from './data/actions';
 import reducer, {initialState} from './data/formReducer';
 import {
@@ -42,31 +43,27 @@ import {PRIMARY_COLOR_700} from '../../common/res/colors';
 const StageForm = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [showFormErrors, setFormErrors] = useState(false);
-  const [totalWaterAmount, setTotalWaterAmount] = useState(props.data.prep.totalWaterAmount);
-  const [totalTime, setTotalTime] = useState(0);
 
   useEffect(() => {
-    let totalWater = 0;
+    console.log('update total');
     let totalTime = 0;
-    for (const stageId in state.stage) {
-      const stageData = state.stage[stageId];
+    let totalWater = 0;
+    state.stageByIndex.forEach((item, index) => {
+      const waitDuration =
+        state.stage[item].waitDuration.value === undefined ? 0 : state.stage[item].waitDuration.value;
+      const pourDuration =
+        state.stage[item].pourDuration.value === undefined ? 0 : state.stage[item].pourDuration.value;
 
-      if (stageData.waterAmount.value !== undefined) {
-        totalWater += stageData.waterAmount.value;
-      }
-
-      if (stageData.pourDuration.value !== undefined) {
-        totalTime += stageData.pourDuration.value;
-      }
-
-      if (stageData.waitDuration.value !== undefined) {
-        totalTime += stageData.waitDuration.value;
-      }
-    }
-
-    setTotalTime(totalTime);
-    setTotalWaterAmount(totalWater);
-  }, [state.stage]);
+      totalTime += waitDuration + pourDuration;
+      totalWater +=
+        state.stage[item].waterAmount.value === undefined ? 0 : state.stage[item].waterAmount.value;
+    });
+    dispatch(updateTotal(totalTime, totalWater));
+  }, [
+    state.stage[state.selectedStage].pourDuration,
+    state.stage[state.selectedStage].waitDuration,
+    state.stage[state.selectedStage].waterAmount,
+  ]);
 
   const handleSubmit = () => {
     const isStageFormValid = stageFormValidation(
@@ -79,8 +76,12 @@ const StageForm = (props) => {
       return;
     }
 
-    const record = convertFormDataToRecord(state.stage);
-    props.onComplete('brew', record);
+    const stageRecords = convertFormDataToRecord(state.stage);
+
+    props.onComplete('brew', {
+      totalWater: state.totalWater,
+      stages: stageRecords,
+    });
   };
 
   const handleRemoveStage = () => {
@@ -135,21 +136,19 @@ const StageForm = (props) => {
   );
 
   const renderTotals = () => (
-    <View
-      style={[
-        styles.row,
-        {flexWrap: 'wrap', justifyContent: 'center', marginTop: 20},
-      ]}>
-      <View style={[styles.row, {alignItems:'center'}]}>
+    <View style={[styles.row, styles.totals]}>
+      <View style={[styles.row, {alignItems: 'center'}]}>
         <TimerSvg fill={PRIMARY_COLOR_700} />
-        <Text style={styles.totalText}>{parseTimeToString(totalTime)}</Text>
+        <Text style={styles.totalText}>
+          {parseTimeToString(state.totalTime)}
+        </Text>
       </View>
-      <View style={[styles.row, {alignItems:'center', marginLeft: 8}]}>
+      <View style={[styles.row, {alignItems: 'center', marginLeft: 8}]}>
         <WaterSvg fill={PRIMARY_COLOR_700} />
         <Text
           style={
             styles.totalText
-          }>{`${totalWaterAmount}${unitType.gram}`}</Text>
+          }>{`${state.totalWater}${unitType.gram}`}</Text>
       </View>
     </View>
   );
@@ -157,8 +156,10 @@ const StageForm = (props) => {
   return (
     <View style={styles.stageForm}>
       <StatusBar hidden />
-      <Step dark totalSteps={2} currentStep={2} />
-      <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={{flex: 1, paddingTop: 35}}
+        contentContainerStyle={{paddingBottom: 35}}
+        showsVerticalScrollIndicator={false}>
         <Title dark>{TITLE}</Title>
         {renderTotals()}
         <View style={[styles.row, styles.stageTabs]}>
@@ -228,7 +229,11 @@ const StageForm = (props) => {
           />
           <View style={{justifyContent: 'center'}}>
             <TouchableOpacity
-              style={styles.removeButton}
+              disabled={state.stageByIndex.length === 1}
+              style={[
+                styles.removeButton,
+                state.stageByIndex.length === 1 && {opacity: 0.4},
+              ]}
               onPress={handleRemoveStage}>
               <Text style={styles.removeText}>{'Remove'}</Text>
             </TouchableOpacity>
@@ -238,6 +243,7 @@ const StageForm = (props) => {
           <PrimaryButton onPress={handleSubmit}>{'Complete'}</PrimaryButton>
         </View>
       </ScrollView>
+      <Step dark totalSteps={2} currentStep={2} />
     </View>
   );
 };

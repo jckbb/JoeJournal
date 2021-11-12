@@ -9,12 +9,12 @@ export const waterPouredField = {
 
 export const pourTimeField = {
   LABEL: 'Pour Time',
-  PLACEHOLDER: `40${unitType.seconds}`,
+  PLACEHOLDER: `5${unitType.seconds}`,
 };
 
 export const waitTimeField = {
   LABEL: 'Wait Time',
-  PLACEHOLDER: `110${unitType.seconds}`,
+  PLACEHOLDER: `35${unitType.seconds}`,
 };
 
 export const descriptionField = {

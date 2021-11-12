@@ -9,7 +9,7 @@ import Step from '../../common/components/Step';
 
 import {unitType, grinderData} from '../../common/res/strings';
 import reducer, {initialState} from './data/formReducer';
-import {updateField} from './data/actions';
+import {updateField, updateForm} from './data/actions';
 
 import {
   TITLE,
@@ -22,16 +22,15 @@ import {convertFormDataToRecord} from './utils';
 import styles from './styles';
 
 const PrepForm = (props) => {
+  const grinderName = props.data.setup ? props.data.setup.grinder : undefined;
   const [state, dispatch] = useReducer(reducer, initialState);
   const [showFormErrors, setFormErrors] = useState(false);
-  const [ratio, setRatio] = useState(undefined);
 
   useEffect(() => {
-    if (ratio === undefined || state.coffeeAmount.value === undefined) return;
-
-    const total = ratio * state.coffeeAmount.value;
-    dispatch(updateField('totalWaterAmount', total));
-  }, [ratio, state.coffeeAmount.value]);
+    if (props.data.prep) {
+      dispatch(updateForm(props.data.prep));
+    }
+  }, [props.data]);
 
   const handleSubmit = () => {
     let isFormValid = true;
@@ -52,20 +51,20 @@ const PrepForm = (props) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.prepForm}>
       <StatusBar hidden />
       <Step dark totalSteps={2} currentStep={1} />
-      <ScrollView style={{flex: 1}}>
-        <View style={{marginLeft: '10%'}}>
-          <Title dark>{TITLE}</Title>
-        </View>
+      <ScrollView style={{flex: 1, paddingTop: 35}}>
         <View style={styles.form}>
+          <Title dark>{TITLE}</Title>
           <SliderField
             hasTopRoom
             label={dialField.LABEL}
             value={state.dial.value}
             minDial={1}
-            maxDial={grinderData[props.data.setup.grinder].maxDial}
+            maxDial={
+              grinderName !== undefined ? grinderData[grinderName].maxDial : 0
+            }
             minLabel={'Coarse'}
             maxLabel={'Fine'}
             step={1}
@@ -95,18 +94,6 @@ const PrepForm = (props) => {
               dispatch(updateField('coffeeAmount', value));
             }}
           />
-          <View style={[styles.row, styles.ratio]}>
-            <NumberField
-              error={showFormErrors && state.totalWaterAmount.hasError}
-              label={ratioField.LABEL}
-              placeholder={ratioField.PLACEHOLDER}
-              value={ratio}
-              onChangeNumber={(value) => {
-                setRatio(value);
-              }}
-            />
-            <Text style={styles.ratioText}>{'to 1'}</Text>
-          </View>
           <View style={{marginTop: 30}}>
             <PrimaryButton onPress={handleSubmit}>{'Continue'}</PrimaryButton>
           </View>

@@ -1,5 +1,5 @@
 import React, {useReducer, useState} from 'react';
-import {View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 
 import ModalWrapper from '../../common/components/ModalWrapper';
 import TextField from '../../common/components/TextField';
@@ -52,49 +52,53 @@ const AddBeanFormModal = props => {
 
   return (
     <ModalWrapper visible={props.visible} onCloseRequest={handleCloseRequest}>
-      <View style={styles.form}>
-        <Title dark>{TITLE}</Title>
-        <TextField
-          hasTopRoom
-          dark
-          border
-          error={showFormErrors && state.origin.hasError}
-          label={originField.LABEL}
-          value={state.origin.value}
-          placeholder={originField.PLACEHOLDER}
-          onChangeText={value => {
-            dispatch(updateField('origin', value));
-          }}
-        />
-        <TextField
-          hasTopRoom
-          dark
-          border
-          error={showFormErrors && state.roaster.hasError}
-          label={roasterField.LABEL}
-          value={state.roaster.value}
-          placeholder={roasterField.PLACEHOLDER}
-          onChangeText={value => {
-            dispatch(updateField('roaster', value));
-          }}
-        />
-        <TextListField
-          hasTopRoom
-          dark
-          border
-          label={noteField.LABEL}
-          value={state.notes.value}
-          placeholder={noteField.PLACEHOLDER}
-          onChangeText={value => {
-            dispatch(updateField('notes', value));
-          }}
-        />
-        <View style={styles.submit}>
-          <ModalButton disabled={false} onPress={handleSubmit}>
-            {SUBMIT}
-          </ModalButton>
+      <ScrollView style={{flex: 1}}>
+        <View style={styles.form}>
+          <Title dark>{TITLE}</Title>
+          <TextField
+            capitalize
+            hasTopRoom
+            dark
+            border
+            error={showFormErrors && state.origin.hasError}
+            label={originField.LABEL}
+            value={state.origin.value}
+            placeholder={originField.PLACEHOLDER}
+            onChangeText={value => {
+              dispatch(updateField('origin', value));
+            }}
+          />
+          <TextField
+            capitalize
+            hasTopRoom
+            dark
+            border
+            error={showFormErrors && state.roaster.hasError}
+            label={roasterField.LABEL}
+            value={state.roaster.value}
+            placeholder={roasterField.PLACEHOLDER}
+            onChangeText={value => {
+              dispatch(updateField('roaster', value));
+            }}
+          />
+          <TextListField
+            hasTopRoom
+            dark
+            border
+            label={noteField.LABEL}
+            value={state.notes.value}
+            placeholder={noteField.PLACEHOLDER}
+            onChangeText={value => {
+              dispatch(updateField('notes', value));
+            }}
+          />
+          <View style={styles.submit}>
+            <ModalButton disabled={false} onPress={handleSubmit}>
+              {SUBMIT}
+            </ModalButton>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </ModalWrapper>
   );
 };

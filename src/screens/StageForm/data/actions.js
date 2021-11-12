@@ -3,7 +3,16 @@ export const actionTypes = {
   ADD_STAGE: 'add stage',
   REMOVE_STAGE: 'remove stage',
   UPDATE_SELECTED_STAGE: 'update selected stage',
+  UPDATE_TOTAL: 'update total',
 };
+
+export const updateTotal = (timeData, waterData) => ({
+  type: actionTypes.UPDATE_TOTAL,
+  payload: {
+    totalTime: timeData,
+    totalWater: waterData,
+  },
+});
 
 export const updateSelectedStage = (id) => ({
   type: actionTypes.UPDATE_SELECTED_STAGE,

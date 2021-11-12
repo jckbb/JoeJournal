@@ -8,6 +8,8 @@ export default StyleSheet.create({
     minHeight: FIELD_BOX_HEIGHT,
     paddingLeft: 8,
     textAlignVertical: 'top',
+  },
+  capitalize: {
     textTransform: 'capitalize',
   },
   label: {
