@@ -33,7 +33,7 @@ export default StyleSheet.create({
   },
   title: {
     marginBottom: 20,
-    marginLeft: 15,
+    marginLeft: '20%',
   },
   detailText: {
     fontSize: 20,

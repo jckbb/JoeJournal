@@ -2,6 +2,7 @@ import {StyleSheet} from 'react-native';
 import {
   PRIMARY_COLOR_700,
   SECONDARY_COLOR_300,
+  PRIMARY_COLOR_800,
   SECONDARY_COLOR_600,
   WHITE,
 } from '../../common/res/colors';
@@ -18,7 +19,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   removeText: {
-    color: 'white',
+    color: PRIMARY_COLOR_800,
     fontWeight: '700',
     fontSize: 25,
   },
@@ -51,8 +52,9 @@ export default StyleSheet.create({
   },
   stageForm: {
     flex: 1,
-    marginHorizontal: '10%',
+    paddingHorizontal: '20%',
   },
+  totals: {flexWrap: 'wrap', marginVertical: 20},
   totalText: {
     fontSize: 22,
     fontWeight: '700',

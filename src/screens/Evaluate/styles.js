@@ -1,10 +1,11 @@
 import {StyleSheet} from 'react-native';
-import {SECONDARY_COLOR_700, PRIMARY_COLOR_900, PRIMARY_COLOR_700} from '../../common/res/colors';
+import {PRIMARY_COLOR_900, PRIMARY_COLOR_700} from '../../common/res/colors';
 
 export default StyleSheet.create({
   overview: {
     flex: 1,
     marginHorizontal: 20,
+    paddingTop: 35,
   },
   options: {
     marginBottom: 10,

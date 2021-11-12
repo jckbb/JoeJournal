@@ -6,7 +6,7 @@ export const iconColor = PRIMARY_COLOR_800;
 export default StyleSheet.create({
   button: {
     position: 'absolute',
-    top: 25,
+    top: 20,
     right: 25,
   },
 });

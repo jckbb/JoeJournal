@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Modal} from 'react-native';
+import {ScrollView, Modal} from 'react-native';
 import CloseButton from './components/CloseButton';
 
 import styles from './styles';
@@ -19,7 +19,7 @@ const ModalWrapper = ({children, ...props}) => {
       onRequestClose={() => {
         props.onRequestClose();
       }}>
-      <View style={styles.modal}>{children}</View>
+      <ScrollView style={styles.modal}>{children}</ScrollView>
       <CloseButton onPress={props.onCloseRequest} />
     </Modal>
   );

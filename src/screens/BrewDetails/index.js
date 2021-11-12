@@ -53,9 +53,7 @@ const BrewDetails = (props) => {
 
   return (
     <View style={styles.brewDetails}>
-      <ScrollView
-        style={styles.brewDetails}
-        contentContainerStyle={{paddingBottom: 35}}>
+      <ScrollView style={{flex: 1}} contentContainerStyle={{paddingBottom: 35}}>
         <View style={styles.title}>
           <Title dark>{TITLE}</Title>
         </View>
@@ -77,7 +75,7 @@ const BrewDetails = (props) => {
           <Text style={styles.headerText}>{'Prep'}</Text>
           <Detail
             label={'Water Amount'}
-            value={`${brewData.totalWaterAmount}${unitType.gram}`}
+            value={`${brewData.totalWater}${unitType.gram}`}
           />
           <Detail
             label={'Water Temperature'}

@@ -8,7 +8,11 @@ const TextField = (props) => {
     <View style={[props.hasTopRoom && styles.topSpacing]}>
       <Text style={styles.label}>{props.label}</Text>
       <TextInput
-        style={[styles.textbox, props.error && {borderColor: 'red'}]}
+        style={[
+          styles.textbox,
+          props.capitalize && styles.capitalize,
+          props.error && {borderColor: 'red'},
+        ]}
         placeholder={props.placeholder}
         value={props.value ? props.value : ''}
         onChangeText={props.onChangeText}

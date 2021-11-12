@@ -23,12 +23,20 @@ export const initialState = {
   stage: {
     0: initialStage,
   },
+  totalWater: 0,
+  totalTime: 0,
   stageByIndex: [0],
   selectedStage: 0,
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case actionTypes.UPDATE_TOTAL:
+      return {
+        ...state,
+        totalWater: action.payload.totalWater,
+        totalTime: action.payload.totalTime,
+      };
     case actionTypes.UPDATE_FIELD:
       return {
         ...state,

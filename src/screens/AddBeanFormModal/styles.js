@@ -4,7 +4,7 @@ export default StyleSheet.create({
   form: {
     flex: 1,
     marginTop: '5%',
-    marginHorizontal: '10%',
+    paddingHorizontal: '20%',
   },
   submit: {
     marginTop: 40,

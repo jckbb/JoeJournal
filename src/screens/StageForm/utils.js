@@ -29,7 +29,10 @@ export const convertFormDataToRecord = (stages) => {
         [field]: value,
       };
     }
-
+    stageData = {
+      ...stageData,
+      id: stageId,
+    };
     result = [...result, stageData];
   }
 

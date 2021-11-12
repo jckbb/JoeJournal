@@ -9,7 +9,7 @@ export const iconColor = PRIMARY_COLOR_900;
 export default StyleSheet.create({
   home: {
     flex: 1,
-    paddingHorizontal: '15%',
+    paddingHorizontal: '20%',
   },
   form: {
     flex: 1,

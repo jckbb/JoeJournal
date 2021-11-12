@@ -1,6 +1,8 @@
 import React, {useRef, useEffect, useReducer, useState} from 'react';
 import {BackHandler} from 'react-native';
 
+import Toast from '../common/components/Toast';
+
 import Setup from './Setup';
 import PrepForm from './PrepForm';
 import StageForm from './StageForm';
@@ -20,21 +22,24 @@ const Root = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [screen, setScreen] = useState('setup');
   const [multiStepFormData, setMutliStepFormData] = useState({});
+  const [toastVisible, setToastVisibility] = useState(false);
   const screenRef = useRef('');
 
   useEffect(() => {
+    // handleWipe();
     screenRef.current = screen;
   }, [screen]);
 
   const backAction = () => {
     switch (screenRef.current) {
       case 'brew':
-      case 'prep':
       case 'evaluate':
+        setMutliStepFormData({});
         setScreen('setup');
         break;
       case 'stage':
-        setScreen('prep');
+      case 'prep':
+        setToastVisibility(true);
         break;
       default:
         BackHandler.exitApp();
@@ -98,7 +103,7 @@ const Root = () => {
     const brewData = {
       ...multiStepFormData.setup,
       ...multiStepFormData.prep,
-      stages: data,
+      ...data,
     };
 
     await setBrew(state.brewId, brewData);
@@ -106,6 +111,15 @@ const Root = () => {
     dispatch(updateBrew(state.brewId, brewData));
     setMutliStepFormData({});
     handleNavigateTo(nextScreen);
+  };
+
+  const handleStageBack = (data) => {
+    if (data) {
+      setMutliStepFormData((prev) => ({
+        ...prev,
+        stage: data,
+      }));
+    }
   };
 
   const renderScreen = (type) => {
@@ -119,6 +133,7 @@ const Root = () => {
           <StageForm
             data={multiStepFormData}
             onComplete={handleStageComplete}
+            onBackRequest={handleStageBack}
           />
         );
       case 'brew':
@@ -147,7 +162,26 @@ const Root = () => {
     }
   };
 
-  return renderScreen(screen);
+  return (
+    <>
+      {renderScreen(screen)}
+      <Toast
+        visible={toastVisible}
+        label={'Are you sure?'}
+        onCancel={() => {
+          setToastVisibility(false);
+        }}
+        onAccept={() => {
+          const nextScreen = screen === 'stage' ? 'prep' : 'setup';
+          if (nextScreen === 'setup') {
+            setMutliStepFormData({});
+          }
+          handleNavigateTo(nextScreen);
+          setToastVisibility(false);
+        }}
+      />
+    </>
+  );
 };
 
 export default Root;
